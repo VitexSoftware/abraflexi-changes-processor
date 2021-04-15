@@ -37,7 +37,7 @@ class Flexhistory extends AbstractMigration
                 ['null' => true, 'signed' => false])
             ->addColumn('recordid', 'integer',
                 ['null' => false, 'signed' => false])
-            ->addColumn('json', 'text')
+            ->addColumn('json', 'text',['limit'=> \Phinx\Db\Adapter\MysqlAdapter::TEXT_LONG ])
             ->addIndex(['recordid', 'evidence'])
             ->addIndex(['changeid'], ['unique' => true])
             ->create();

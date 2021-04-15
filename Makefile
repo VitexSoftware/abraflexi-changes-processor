@@ -27,6 +27,10 @@ dbreset:
 	chmod 666 db/abraflexi-webhook-acceptor.sqlite
 	chmod ugo+rwX db
 
+reset:
+	vendor/bin/phinx seed:run -c ./phinx-adapter.php  -s Reset
+
+
 demo: dbreset migration demodata
 
 hourly:

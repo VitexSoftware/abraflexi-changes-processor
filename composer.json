@@ -13,7 +13,8 @@
     "require": {
         "vitexsoftware/flexibee-bricks": "*",
         "vitexsoftware/ease-fluentpdo": "*",
-        "vitexsoftware/abraflexi-reminder": "dev-ease-core"
+        "vitexsoftware/abraflexi-reminder": "dev-ease-core",
+        "rogervila/array-diff-multidimensional": "*"
     },
     "require-dev": {
         "robmorgan/phinx": "dev-master"

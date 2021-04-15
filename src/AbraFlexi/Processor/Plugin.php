@@ -56,9 +56,10 @@ abstract class Plugin extends \AbraFlexi\RW {
      */
     public function __construct($id, $options) {
         parent::__construct($id, $options);
-        $this->cache = new FlexiHistory();
+        $this->cache = array_key_exists('history', $options) ? $options['history'] : new FlexiHistory();
         $this->myTable = 'flexihistory';
         $this->createColumn = 'when';
+        $this->debug = true;
     }
 
     /**
@@ -84,26 +85,44 @@ abstract class Plugin extends \AbraFlexi\RW {
     }
 
     /**
+     * 
+     * @return integer
+     */
+    public function importRecord() {
+        $recordId = $this->getMyKey();
+        $evidence = $this->getEvidence();
+        $change = [
+            'operation' => 'import',
+            'evidence' => $evidence,
+            'recordid' => $recordId,
+            'json' => addslashes(json_encode($this->getData()))];
+        if ($this->changeid) {
+            $change['changeid'] = $this->changeid;
+        }
+        return $this->cache->insertToSQL($change);
+    }
+
+    /**
      * @todo Ukladat jen potrebna data
      */
     public function saveHistory() {
         $recordId = $this->getMyKey();
         $evidence = $this->getEvidence();
-        if ($this->getLastHistoryState($evidence, $recordId) != $this->getData()) {
+        if ($this->cache->getLastHistoryState($evidence, $recordId) != $this->getData()) {
             $change = [
                 'operation' => $this->operation,
                 'evidence' => $evidence,
                 'recordid' => $recordId,
-                'json' => $this->dblink->addslashes(json_encode($this->getData()))];
+                'json' => addslashes(json_encode($this->getData()))];
             if ($this->changeid) {
                 $change['changeid'] = $this->changeid;
             }
-            $this->insertToSQL($change);
+            $this->cache->insertToSQL($change);
         }
     }
 
     public function getLastHistoryState($evidence, $recordId) {
-        $lastChangeJson = $this->dblink->queryToValue('SELECT json FROM flexihistory WHERE recordid=' . $recordId . ' ORDER BY `when` DESC LIMIT 1 ');
+        $lastChangeJson = $this->cache->listingQuery()->where('recordid', $recordId)->orderBy('when DESC')->limit(1);
         return empty($lastChangeJson) ? null : json_decode($lastChangeJson, true);
     }
 
@@ -122,25 +141,40 @@ abstract class Plugin extends \AbraFlexi\RW {
         $result = false;
         switch ($operation) {
             case 'create':
-                if ($this->keepHistory) {
-                    $this->createRecordHistory();
-                }
+                $this->createRecordHistory();
                 $result = $this->create();
                 break;
             case 'update':
                 $result = $this->update();
-                if ($this->keepHistory) {
-                    $this->updateRecordHistory();
-                }
+                $this->updateRecordHistory();
                 break;
             case 'delete':
                 $result = $this->delete();
-                if ($this->keepHistory) {
-                    $this->deleteRecordHistory();
-                }
+                $this->deleteRecordHistory();
                 break;
         }
         return $result;
+    }
+
+    /**
+     * Discover current MetaState
+     * @return int
+     */
+    public function getMetaState() {
+        if ($this->debug === true) {
+            $this->addStatusMessage(_('MetaState processing is not yet implemented'), 'warning');
+        }
+        return $this->operation;
+    }
+
+    /**
+     * Meta State of 
+     * 
+     * @return boolean meta saved
+     */
+    public function updateMetaState() {
+        $meta = $this->getMetaState();
+        return empty($meta) ? 0 : $this->cache->updateToSQL(['meta' => $meta], ['recordid' => $this->getMyKey(), 'evidence' => $this->getEvidence()]);
     }
 
     /**
@@ -151,7 +185,7 @@ abstract class Plugin extends \AbraFlexi\RW {
             $this->addStatusMessage(\AbraFlexi\RO::uncode($this->getRecordIdent()) . ': ' . _('No Create Action Defined'),
                     'debug');
         }
-        return null;
+        return true;
     }
 
     /**
@@ -191,7 +225,19 @@ abstract class Plugin extends \AbraFlexi\RW {
      */
     public function getPreviousData() {
         $prevData = $this->cache->listingQuery()->where('evidence', $this->getEvidence())->where('recordid', $this->getMyKey())->fetch();
-        return (!empty($prevData) && count($prevData) ? json_decode($prevData['json']): [] );
+        if (($this->debug === true) && empty($prevData)) {
+            $this->addStatusMessage(sprintf(_('No cached data for %s %s found'), $this->getEvidence(), $this->getRecordIdent()), empty($result) ? 'error' : 'success' );
+        }
+
+        return (!empty($prevData) && count($prevData)) ? array_merge(self::jsonToData($prevData['json']), $prevData) : [];
+    }
+
+    public static function jsonToData($json) {
+        return json_decode(stripslashes($json), true);
+    }
+
+    public function dataToJson(array $data) {
+        return addslashes(json_encode($data));
     }
 
     /**
@@ -203,9 +249,49 @@ abstract class Plugin extends \AbraFlexi\RW {
         if (empty($previous)) {
             $previous = $this->getData();
         } else {
-            $previous = array_diff($this->getData(), $previous);
+
+            $previous = $this->dataDifference($this->getData(), $previous);
         }
         return $previous;
+    }
+
+    public function dataDifference($data, $datb) {
+        $flexiData = $this->normalizeArray($data);
+        $sqlData = $this->normalizeArray($datb);
+        return \Rogervila\ArrayDiffMultidimensional::compare($flexiData, $sqlData);
+    }
+
+    public function normalizeArray($record) {
+        $evidence = $this->getEvidence();
+        foreach ($record as $column => $value) {
+            if (strstr($column, '@')) { //Skip Caption columns
+                unset($record[$column]);
+            } else {
+                $columnInfo = $this->getColumnInfo($column, $evidence);
+                if (is_null($columnInfo)) {
+                    $this->addStatusMessage(sprintf(_('Unknown response field %s. (Please update library or static definitions)'), $column . '@' . $evidence), 'debug');
+                } else {
+                    switch ($columnInfo['type']) {
+                        case 'datetime':
+                            $record[$column] = (empty($value) ? null : (is_array($value) ? $value['date'] : ( is_object($value) ? \AbraFlexi\RO::dateToFlexiDateTime($value) : $value ) ));
+                            break;
+                        case 'date':
+                            $record[$column] = (empty($value) ? null : (is_array($value) ? $value['date'] : ( is_object($value) ? \AbraFlexi\RO::dateToFlexiDate($value) : $value ) ));
+                            break;
+                        default :
+                            if (is_array($value)) {
+                                foreach ($value as $key => $data) {
+                                    $record[$column][$key] = $this->normalizeArray($data);
+                                }
+                            } else {
+                                $record[$column] = strval($record[$column]);
+                            }
+                            break;
+                    }
+                }
+            }
+        }
+        return $record;
     }
 
     /**
@@ -226,12 +312,26 @@ abstract class Plugin extends \AbraFlexi\RW {
             'operation' => $this->operation,
             'evidence' => $evidence,
             'recordid' => $recordId,
-            'json' => addslashes(json_encode($this->getData()))];
-        return $this->cache->insertToSQL($change);
+            'json' => addslashes(json_encode($this->getData())),
+            'meta' => $this->getMetaState()
+        ];
+        $result = $this->cache->insertToSQL($change);
+        if ($this->debug === true) {
+            $this->addStatusMessage(sprintf(_('Creating new cache record for %s %s'), $this->getEvidence(), $this->getRecordIdent()), empty($result) ? 'error' : 'success' );
+        }
+        return $result;
     }
 
     public function updateRecordHistory() {
-        return $this->cache->updateToSQL(['operation' => $this->operation, 'json' => addslashes(json_encode($this->getData()))], ['evidence' => $this->getEvidence(), 'recordid' => $this->getMyKey()]);
+        $me = ['evidence' => $this->getEvidence(), 'recordid' => $this->getMyKey()];
+        if (($this->debug === true) && empty($this->cache->listingQuery()->where($me)->count())) {
+            $this->createRecordHistory();
+        }
+        $result = $this->cache->updateToSQL(['operation' => $this->operation, 'json' => addslashes(json_encode($this->getData()))], $me);
+        if ($this->debug === true) {
+            $this->addStatusMessage(sprintf(_('Updating cache record for %s %s'), $this->getEvidence(), $this->getRecordIdent()), empty($result) ? 'error' : 'success' );
+        }
+        return $result;
     }
 
     public function deleteRecordHistory() {

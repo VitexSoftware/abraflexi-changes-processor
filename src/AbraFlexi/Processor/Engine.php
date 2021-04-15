@@ -71,6 +71,7 @@ class Engine extends \AbraFlexi\Changes {
         $this->myTable = 'changesapi';
         $this->lastProcessedVersion = $this->getLastProcessedVersion();
         $this->locked = $this->locked();
+        $this->debug = true;
     }
 
     /**
@@ -94,19 +95,14 @@ class Engine extends \AbraFlexi\Changes {
             $docId = empty($externalIDs) ? $id : current($externalIDs);
 
             $handlerClassName = \AbraFlexi\RO::evidenceToClassName($evidence);
-            $handlerClassFile = dirname(__FILE__) . '/AbraFlexi/Processsor/Plugins/' . $handlerClassName . '.php';
-            if (file_exists($handlerClassFile)) {
-                require_once $handlerClassFile;
-            }
-
             $handlerClass = '\\AbraFlexi\\Processor\\Plugins\\' . $handlerClassName;
             if (class_exists($handlerClass)) {
                 $changeMeta = ['evidence' => $evidence, 'operation' => $operation,
                     'external-ids' => $externalIDs,
                     'changeid' => $inVersion];
                 $saver = $this->getHandler($handlerClass, $docId, $changeMeta);
-                if (($saver->lastResponseCode == 200) && $saver->process($operation) && ($this->debug === true)) {
-                    $this->addToLog($changepos . '/' . count($this->changes), 'success');
+                if (($saver->lastResponseCode === 200) && $saver->process($operation) && ($this->debug === true)) {
+
                     $ident = \AbraFlexi\RO::uncode($saver->getRecordIdent());
                     if (!empty($ident)) {
                         $id .= ' ' . $ident;
@@ -116,9 +112,12 @@ class Engine extends \AbraFlexi\Changes {
                                     $operation, $evidence, $id,
                                     $this->lastProcessedVersion), 'success');
                 }
+            } else {
+                $this->addStatusMessage(sprintf( _('Request unexistent module %s'), $handlerClass) , 'warning');
             }
             $this->wipeCacheRecord($inVersion);
             $doneIDd[$inVersion] = $inVersion;
+            $this->saveLastProcessedVersion($inVersion);
         }
         return $doneIDd;
     }
@@ -178,16 +177,24 @@ class Engine extends \AbraFlexi\Changes {
      * Ulozi posledni zpracovanou verzi
      *
      * @param int $version
+     * 
+     * @return string Restult
      */
     public function saveLastProcessedVersion($version) {
+        $this->myTable = 'changesapi';
+        $this->createColumn = false;
         $this->lastProcessedVersion = $version;
         $this->myCreateColumn = null;
-        $this->deleteFromSQL(['serverurl' => constant('ABRAFLEXI_URL')]);
-        if (is_null($this->insertToSQL(['serverurl' => constant('ABRAFLEXI_URL'),
-                            'changeid' => $version]))) {
+        $this->deleteFromSQL(['serverurl' => \Ease\Functions::cfg('ABRAFLEXI_URL')]);
+        $result = $this->insertToSQL(['serverurl' => \Ease\Functions::cfg('ABRAFLEXI_URL'), 'doneid' => $version]);
+        if (is_null($result)) {
             $this->addStatusMessage(_("Last Processed Change ID Saving Failed"),
                     'error');
+        } elseif($this->debug === true) {
+            $this->addStatusMessage( sprintf( _("Last Processed Change ID %s save"), $version ), $result ? 'success' : 'error');
+            
         }
+        return $result;
     }
 
     /**
@@ -198,7 +205,7 @@ class Engine extends \AbraFlexi\Changes {
     public function getLastProcessedVersion() {
         $lastProcessedVersion = null;
         $chRaw = $this->getColumnsFromSQL(['changeid'],
-                ['serverurl' => constant('ABRAFLEXI_URL')]);
+                ['serverurl' => \Ease\Functions::cfg('ABRAFLEXI_URL')]);
         if (isset($chRaw[0]['changeid'])) {
             $lastProcessedVersion = intval($chRaw[0]['changeid']);
         } else {
@@ -362,6 +369,11 @@ class Engine extends \AbraFlexi\Changes {
     public function wipeCacheRecord($inVersion) {
         $this->setMyTable('changes_cache');
         $result = $this->deleteFromSQL(['inversion' => $inVersion]);
+        
+              
+        if($this->debug === true){
+            $this->addStatusMessage( sprintf( _("Cached change wipe %s (%s remain)"), $inVersion, $this->listingQuery()->count()), $result ? 'success' : 'error');
+        }
         $this->setMyTable('flexihistory');
         return $result;
     }

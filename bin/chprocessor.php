@@ -9,14 +9,14 @@ namespace AbraFlexi\Processor;
  * @copyright  2017-2020 Spoje.Net
  */
 define('APP_NAME', 'WebHookAcceptor');
-define('EASE_LOGGER','console|syslog');
+define('EASE_LOGGER', 'console|syslog');
 require_once __DIR__ . '/../vendor/autoload.php';
 
 \Ease\Shared::singleton()->loadConfig('../.env', true);
 
 $hooker = new Engine();
+$hooker->logBanner();
 //$hooker->debug = true;
-
 //$hooker->debug = true;
 $lockerPid = $hooker->locked();
 if ($lockerPid == 0) {

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b1fd56a5affe42c9ec1001d39b3846d7",
+    "content-hash": "4b51874a489c4252eabf1b31b0476f22",
     "packages": [
         {
             "name": "fpdo/fluentpdo",
@@ -379,6 +379,47 @@
             "time": "2021-03-21T15:43:46+00:00"
         },
         {
+            "name": "rogervila/array-diff-multidimensional",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/rogervila/array-diff-multidimensional.git",
+                "reference": "5b4591dcc728ea0e3060da4015606c8374beb24f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/rogervila/array-diff-multidimensional/zipball/5b4591dcc728ea0e3060da4015606c8374beb24f",
+                "reference": "5b4591dcc728ea0e3060da4015606c8374beb24f",
+                "shasum": ""
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.8 || ^5.0 || ^6.0 || ^7.0 || ^8.0 || ^9.0"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Rogervila\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Roger Vilà",
+                    "email": "rogervila@me.com"
+                }
+            ],
+            "description": "Compare the difference between two multidimensional arrays",
+            "support": {
+                "issues": "https://github.com/rogervila/array-diff-multidimensional/issues",
+                "source": "https://github.com/rogervila/array-diff-multidimensional/tree/master"
+            },
+            "time": "2021-03-03T07:06:29+00:00"
+        },
+        {
             "name": "spipu/html2pdf",
             "version": "v5.2.2",
             "source": {
@@ -680,12 +721,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/VitexSoftware/php-ease-fluentpdo.git",
-                "reference": "1fd49d8a1461fab3d378edda3936ebfee2ea72d5"
+                "reference": "dd791f11e7e28cc5a9e706bf93237453dd2c877d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/VitexSoftware/php-ease-fluentpdo/zipball/1fd49d8a1461fab3d378edda3936ebfee2ea72d5",
-                "reference": "1fd49d8a1461fab3d378edda3936ebfee2ea72d5",
+                "url": "https://api.github.com/repos/VitexSoftware/php-ease-fluentpdo/zipball/dd791f11e7e28cc5a9e706bf93237453dd2c877d",
+                "reference": "dd791f11e7e28cc5a9e706bf93237453dd2c877d",
                 "shasum": ""
             },
             "require": {
@@ -728,7 +769,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2021-04-03T16:52:42+00:00"
+            "time": "2021-04-11T09:45:46+00:00"
         },
         {
             "name": "vitexsoftware/ease-html",
@@ -1311,12 +1352,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/config.git",
-                "reference": "a73184bd4c6ec0d977ecc351f84da864b37d470a"
+                "reference": "6105c88534b857c14191af17c1fbe60a1abd30ad"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/config/zipball/a73184bd4c6ec0d977ecc351f84da864b37d470a",
-                "reference": "a73184bd4c6ec0d977ecc351f84da864b37d470a",
+                "url": "https://api.github.com/repos/symfony/config/zipball/6105c88534b857c14191af17c1fbe60a1abd30ad",
+                "reference": "6105c88534b857c14191af17c1fbe60a1abd30ad",
                 "shasum": ""
             },
             "require": {
@@ -1382,7 +1423,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-04-01T10:43:52+00:00"
+            "time": "2021-04-07T16:09:00+00:00"
         },
         {
             "name": "symfony/console",
@@ -1390,12 +1431,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "fb7e2447d39984358343685fb9f0e800cd79e6a3"
+                "reference": "9a90698d4624b85a578007a00312338d3adecaf8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/fb7e2447d39984358343685fb9f0e800cd79e6a3",
-                "reference": "fb7e2447d39984358343685fb9f0e800cd79e6a3",
+                "url": "https://api.github.com/repos/symfony/console/zipball/9a90698d4624b85a578007a00312338d3adecaf8",
+                "reference": "9a90698d4624b85a578007a00312338d3adecaf8",
                 "shasum": ""
             },
             "require": {
@@ -1481,7 +1522,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-03-28T09:44:11+00:00"
+            "time": "2021-04-09T09:54:19+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",
