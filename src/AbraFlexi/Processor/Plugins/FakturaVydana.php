@@ -213,8 +213,23 @@ class FakturaVydana extends Plugin {
                     $metaState = 'remind' . $r;
                 }
             }
+            if ($this->isReminded(4)) {
+                $metaState = 'penalised';
+            }
         }
         return $metaState;
+    }
+
+    /**
+     * Check reminds & penalisation dates
+     * 
+     * @param int $r 
+     * 
+     * @return boolean
+     */
+    public function isReminded($r) {
+        $cols = [1 => 'datUp1', 2 => 'datUp2', 3 => 'datSmir', 4 => 'datPenale'];
+        return empty($this->getDataValue($cols[$r])) === false;
     }
 
 }

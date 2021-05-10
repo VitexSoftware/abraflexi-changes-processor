@@ -14,15 +14,13 @@ namespace AbraFlexi\Processor;
  *
  * @author vitex
  */
-class Engine extends \AbraFlexi\Changes {
+class Engine extends \Ease\SQL\Engine {
 
     /**
      *
      * @var boolean 
      */
     public $locked = false;
-
-    use \Ease\SQL\Orm;
 
     public $format = 'json';
 
@@ -65,8 +63,8 @@ class Engine extends \AbraFlexi\Changes {
     /**
      * Prijmac WebHooku
      */
-    public function __construct() {
-        parent::__construct();
+    public function __construct($options = []) {
+        parent::__construct(null,$options);
         $this->lockfile = sys_get_temp_dir() . '/webhook.lock';
         $this->myTable = 'changesapi';
         $this->lastProcessedVersion = $this->getLastProcessedVersion();
@@ -113,7 +111,7 @@ class Engine extends \AbraFlexi\Changes {
                                     $this->lastProcessedVersion), 'success');
                 }
             } else {
-                $this->addStatusMessage(sprintf( _('Request unexistent module %s'), $handlerClass) , 'warning');
+                $this->addStatusMessage(sprintf(_('Request unexistent module %s'), $handlerClass), 'warning');
             }
             $this->wipeCacheRecord($inVersion);
             $doneIDd[$inVersion] = $inVersion;
@@ -190,9 +188,8 @@ class Engine extends \AbraFlexi\Changes {
         if (is_null($result)) {
             $this->addStatusMessage(_("Last Processed Change ID Saving Failed"),
                     'error');
-        } elseif($this->debug === true) {
-            $this->addStatusMessage( sprintf( _("Last Processed Change ID %s save"), $version ), $result ? 'success' : 'error');
-            
+        } elseif ($this->debug === true) {
+            $this->addStatusMessage(sprintf(_("Last Processed Change ID %s save"), $version), $result ? 'success' : 'error');
         }
         return $result;
     }
@@ -369,10 +366,9 @@ class Engine extends \AbraFlexi\Changes {
     public function wipeCacheRecord($inVersion) {
         $this->setMyTable('changes_cache');
         $result = $this->deleteFromSQL(['inversion' => $inVersion]);
-        
-              
-        if($this->debug === true){
-            $this->addStatusMessage( sprintf( _("Cached change wipe %s (%s remain)"), $inVersion, $this->listingQuery()->count()), $result ? 'success' : 'error');
+
+        if ($this->debug === true) {
+            $this->addStatusMessage(sprintf(_("Cached change wipe %s (%s remain)"), $inVersion, $this->listingQuery()->count()), $result ? 'success' : 'error');
         }
         $this->setMyTable('flexihistory');
         return $result;

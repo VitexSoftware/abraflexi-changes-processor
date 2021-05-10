@@ -12,7 +12,9 @@ define('APP_NAME', 'WebHookAcceptor');
 define('EASE_LOGGER', 'console|syslog');
 require_once __DIR__ . '/../vendor/autoload.php';
 
-\Ease\Shared::singleton()->loadConfig('../.env', true);
+if (file_exists('../.env')) {
+    \Ease\Shared::singleton()->loadConfig('../.env', true);
+}
 
 $hooker = new Engine();
 $hooker->logBanner();

@@ -55,11 +55,11 @@ abstract class Plugin extends \AbraFlexi\RW {
      * @param array $options 
      */
     public function __construct($id, $options) {
-        parent::__construct($id, $options);
         $this->cache = array_key_exists('history', $options) ? $options['history'] : new FlexiHistory();
         $this->myTable = 'flexihistory';
         $this->createColumn = 'when';
-        $this->debug = true;
+        $this->throwException = false;
+        parent::__construct($id, $options);
     }
 
     /**
@@ -85,8 +85,9 @@ abstract class Plugin extends \AbraFlexi\RW {
     }
 
     /**
+     * create new cache record
      * 
-     * @return integer
+     * @return integer Id of inserted row
      */
     public function importRecord() {
         $recordId = $this->getMyKey();
@@ -127,15 +128,17 @@ abstract class Plugin extends \AbraFlexi\RW {
     }
 
     /**
-     *
-     * @param type $operation
+     * Current operation
+     * @param string $operation
      */
     public function setOperation($operation) {
         $this->operation = $operation;
     }
 
     /**
-     *
+     * Process current change
+     * 
+     * @return boolean operation restult
      */
     public function process($operation) {
         $result = false;
@@ -158,6 +161,7 @@ abstract class Plugin extends \AbraFlexi\RW {
 
     /**
      * Discover current MetaState
+     * 
      * @return int
      */
     public function getMetaState() {
@@ -232,15 +236,30 @@ abstract class Plugin extends \AbraFlexi\RW {
         return (!empty($prevData) && count($prevData)) ? array_merge(self::jsonToData($prevData['json']), $prevData) : [];
     }
 
+    /**
+     * Decode json from databse to data
+     * 
+     * @param string $json Slashed json
+     * 
+     * @return array
+     */
     public static function jsonToData($json) {
         return json_decode(stripslashes($json), true);
     }
 
+    /**
+     * Convert data to json ready to be stored in database
+     * 
+     * @param array $data to be stored in sql as json
+     * 
+     * @return string slashed json
+     */
     public function dataToJson(array $data) {
         return addslashes(json_encode($data));
     }
 
     /**
+     * get Changes to previous record
      * 
      * @return array
      */
@@ -255,12 +274,29 @@ abstract class Plugin extends \AbraFlexi\RW {
         return $previous;
     }
 
+    /**
+     * Discover difference between two AbraFlexi records
+     * 
+     * @param array $data   Old Record
+     * @param array $datb   New Record
+     * 
+     * @return array different columns 
+     */
     public function dataDifference($data, $datb) {
         $flexiData = $this->normalizeArray($data);
         $sqlData = $this->normalizeArray($datb);
         return \Rogervila\ArrayDiffMultidimensional::compare($flexiData, $sqlData);
     }
 
+    
+    
+    /**
+     * Prepare AbraFlexi data to be comapred
+     * 
+     * @param array $record raw data
+     * 
+     * @return array
+     */
     public function normalizeArray($record) {
         $evidence = $this->getEvidence();
         foreach ($record as $column => $value) {
@@ -322,8 +358,12 @@ abstract class Plugin extends \AbraFlexi\RW {
         return $result;
     }
 
+    /**
+     * 
+     * @return type
+     */
     public function updateRecordHistory() {
-        $me = ['evidence' => $this->getEvidence(), 'recordid' => $this->getMyKey()];
+        $me = ['evidence' => $this->getEvidence(), 'recordid' => $this->getMyKey(),'meta' => $this->getMetaState()];
         if (($this->debug === true) && empty($this->cache->listingQuery()->where($me)->count())) {
             $this->createRecordHistory();
         }
@@ -334,8 +374,16 @@ abstract class Plugin extends \AbraFlexi\RW {
         return $result;
     }
 
+    /**
+     * 
+     * @return type
+     */
     public function deleteRecordHistory() {
-        return $this->cache->deleteFromSQL(['recordid' => $this->getMyKey(), 'evidence' => $this->getEvidence()]);
+        $result = $this->cache->deleteFromSQL(['recordid' => $this->getMyKey(), 'evidence' => $this->getEvidence()]);
+        if ($this->debug === true) {
+            $this->addStatusMessage(sprintf(_('Removing cache record for %s %s'), $this->getEvidence(), $this->getRecordIdent()), empty($result) ? 'error' : 'success' );
+        }
+        return $result;
     }
 
 }
