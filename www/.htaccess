@@ -1,0 +1,6 @@
+RewriteEngine on
+
+RewriteCond %{REQUEST_PATH} !-f
+RewriteRule ^((?!index\.php).+)$ index.php [L]
+
+#FallbackResource index.php

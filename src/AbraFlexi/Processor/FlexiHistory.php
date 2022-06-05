@@ -17,6 +17,7 @@ class FlexiHistory extends \Ease\SQL\Engine {
 
     public $myTable = 'flexihistory';
     public $options = [];
+    public $keyColumn = 'recordid';
 
     /**
      * 
@@ -34,7 +35,7 @@ class FlexiHistory extends \Ease\SQL\Engine {
         $this->abraFlexi = new \AbraFlexi\RW($identifier, $options);
         $this->options = $options;
     }
-
+   
     /**
      * 
      * @return \AbraFlexi\Processor\handlerClass
@@ -89,7 +90,7 @@ class FlexiHistory extends \Ease\SQL\Engine {
      * @return array|null
      */
     public function getCurrentData() {
-        $dataRaw = $this->getColumnsFromAbraFlexi('*', ['id' => $this->getMyKey()]);
+        $dataRaw = $this->abraFlexi->getColumnsFromAbraFlexi('*', ['id' => $this->getMyKey()]);
         return count($dataRaw) ? $dataRaw[0] : null;
     }
 

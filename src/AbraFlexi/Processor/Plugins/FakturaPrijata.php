@@ -40,8 +40,7 @@ class FakturaPrijata extends \AbraFlexi\Processor\Plugin {
         switch (\AbraFlexi\RO::uncode($this->getDataValue('typDokl'))) {
             case 'ZAVAZEK':
                 $copyer = new \AbraFlexi\Bricks\Convertor($this,
-                        new \SpojeNet\System\Zavazek(array_merge($extraValues,
-                                        ['typDokl' => 'code:OST .ZÁVAZKY', 'stitky' => 'SYSTEM']))
+                        new \SpojeNet\System\Zavazek(['typDokl' => 'code:OST .ZÁVAZKY', 'stitky' => 'SYSTEM'])
                 );
 
                 $zavazek = $copyer->conversion();
@@ -58,30 +57,6 @@ class FakturaPrijata extends \AbraFlexi\Processor\Plugin {
                                     $this), 'error');
                 }
 
-                break;
-
-            case 'FAKTURA':
-                if (!empty($this->getDataValue('kontaktEmail'))) {
-                    $notify = $this->getDataValue('kontaktEmail');
-                } else {
-                    $adrHelper = new \AbraFlexi\Adresar();
-                    $adrRaw = $adrHelper->getColumnsFromAbraFlexi(['email'],
-                            ['kod' => \AbraFlexi\RO::uncode($this->getDataValue('firma'))]);
-                    $notify = empty($adrRaw) ? '' : $adrRaw[0]['email'];
-                    unset($adrHelper);
-                }
-
-                if (!empty($notify)) {
-//                    if (!strstr($this->getDataValue('stitky'), 'SETTLE_NOTIFIED')) {
-
-
-                    $this->setDataValue('email', $notify);
-                    $potvrzovac = new \AbraFlexi\Reminder\InvoiceRecievedConfirmation($this);
-                    if ($potvrzovac->send()) {
-//                            $this->insertToAbraFlexi(['id' => $this->getRecordID(),
-//                                'stitky' => 'INVOICE_ACCEPT_NOTIFIED']);
-                    }
-                }
                 break;
 
             default:

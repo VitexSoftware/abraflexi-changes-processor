@@ -49,6 +49,30 @@ abstract class Plugin extends \AbraFlexi\RW {
     private $cache = null;
 
     /**
+     * Record source system url
+     * 
+     * @var string
+     */
+    public $sourceId = 0;
+
+    /**
+     * 
+     * @var string
+     */
+    private $metaState;
+    
+    /**
+     * 
+     * @var string
+     */
+    private $createColumn;
+    /**
+     * 
+     * @var string
+     */
+    private $myTable = 'changes_cache';
+
+    /**
      * Handle Incoming change
      *
      * @param int $id changed record id
@@ -56,7 +80,7 @@ abstract class Plugin extends \AbraFlexi\RW {
      */
     public function __construct($id, $options) {
         $this->cache = array_key_exists('history', $options) ? $options['history'] : new FlexiHistory();
-        $this->myTable = 'flexihistory';
+        $this->myTable = 'changes_cache';
         $this->createColumn = 'when';
         $this->throwException = false;
         parent::__construct($id, $options);
@@ -96,7 +120,7 @@ abstract class Plugin extends \AbraFlexi\RW {
             'operation' => 'import',
             'evidence' => $evidence,
             'recordid' => $recordId,
-            'json' => addslashes(json_encode($this->getData()))];
+            'json' => self::serialize($this->getData())];
         if ($this->changeid) {
             $change['changeid'] = $this->changeid;
         }
@@ -114,7 +138,7 @@ abstract class Plugin extends \AbraFlexi\RW {
                 'operation' => $this->operation,
                 'evidence' => $evidence,
                 'recordid' => $recordId,
-                'json' => addslashes(json_encode($this->getData()))];
+                'json' => self::serialize($this->getData())];
             if ($this->changeid) {
                 $change['changeid'] = $this->changeid;
             }
@@ -122,6 +146,13 @@ abstract class Plugin extends \AbraFlexi\RW {
         }
     }
 
+    /**
+     * 
+     * @param type $evidence
+     * @param type $recordId
+     * 
+     * @return type
+     */
     public function getLastHistoryState($evidence, $recordId) {
         $lastChangeJson = $this->cache->listingQuery()->where('recordid', $recordId)->orderBy('when DESC')->limit(1);
         return empty($lastChangeJson) ? null : json_decode($lastChangeJson, true);
@@ -142,6 +173,7 @@ abstract class Plugin extends \AbraFlexi\RW {
      */
     public function process($operation) {
         $result = false;
+        $this->metaState = null;
         switch ($operation) {
             case 'create':
                 $this->createRecordHistory();
@@ -168,7 +200,7 @@ abstract class Plugin extends \AbraFlexi\RW {
         if ($this->debug === true) {
             $this->addStatusMessage(_('MetaState processing is not yet implemented'), 'warning');
         }
-        return $this->operation;
+        return is_null($this->metaState) ? $this->operation : $this->metaState;
     }
 
     /**
@@ -228,34 +260,12 @@ abstract class Plugin extends \AbraFlexi\RW {
      * @return array
      */
     public function getPreviousData() {
-        $prevData = $this->cache->listingQuery()->where('evidence', $this->getEvidence())->where('recordid', $this->getMyKey())->fetch();
+        $prevData = $this->cache->listingQuery()->where('evidence', $this->getEvidence())->where('source', $this->sourceId)->where('recordid', $this->getMyKey())->fetch();
         if (($this->debug === true) && empty($prevData)) {
-            $this->addStatusMessage(sprintf(_('No cached data for %s %s found'), $this->getEvidence(), $this->getRecordIdent()), empty($result) ? 'error' : 'success' );
+            $this->addStatusMessage(sprintf(_('No cached data for %s %s found'), $this->getEvidence(), $this->getRecordIdent()), empty($prevData) ? 'error' : 'success' );
         }
 
-        return (!empty($prevData) && count($prevData)) ? array_merge(self::jsonToData($prevData['json']), $prevData) : [];
-    }
-
-    /**
-     * Decode json from databse to data
-     * 
-     * @param string $json Slashed json
-     * 
-     * @return array
-     */
-    public static function jsonToData($json) {
-        return json_decode(stripslashes($json), true);
-    }
-
-    /**
-     * Convert data to json ready to be stored in database
-     * 
-     * @param array $data to be stored in sql as json
-     * 
-     * @return string slashed json
-     */
-    public function dataToJson(array $data) {
-        return addslashes(json_encode($data));
+        return (!empty($prevData) && count($prevData)) ? array_merge(self::unserialize($prevData['json']), $prevData) : [];
     }
 
     /**
@@ -268,7 +278,6 @@ abstract class Plugin extends \AbraFlexi\RW {
         if (empty($previous)) {
             $previous = $this->getData();
         } else {
-
             $previous = $this->dataDifference($this->getData(), $previous);
         }
         return $previous;
@@ -283,13 +292,11 @@ abstract class Plugin extends \AbraFlexi\RW {
      * @return array different columns 
      */
     public function dataDifference($data, $datb) {
-        $flexiData = $this->normalizeArray($data);
-        $sqlData = $this->normalizeArray($datb);
+        $flexiData = is_array($data) ? $this->normalizeArray($data) : [];
+        $sqlData = is_array($datb) ? $this->normalizeArray($datb) : [];
         return \Rogervila\ArrayDiffMultidimensional::compare($flexiData, $sqlData);
     }
 
-    
-    
     /**
      * Prepare AbraFlexi data to be comapred
      * 
@@ -317,7 +324,7 @@ abstract class Plugin extends \AbraFlexi\RW {
                         default :
                             if (is_array($value)) {
                                 foreach ($value as $key => $data) {
-                                    $record[$column][$key] = $this->normalizeArray($data);
+                                    $record[$column][$key] = is_array($data) ? $this->normalizeArray($data) : $data;
                                 }
                             } else {
                                 $record[$column] = strval($record[$column]);
@@ -348,7 +355,8 @@ abstract class Plugin extends \AbraFlexi\RW {
             'operation' => $this->operation,
             'evidence' => $evidence,
             'recordid' => $recordId,
-            'json' => addslashes(json_encode($this->getData())),
+            'json' => self::serialize($this->getData()),
+            'source' => $this->sourceId,
             'meta' => $this->getMetaState()
         ];
         $result = $this->cache->insertToSQL($change);
@@ -360,18 +368,41 @@ abstract class Plugin extends \AbraFlexi\RW {
 
     /**
      * 
-     * @return type
+     * @return int
      */
     public function updateRecordHistory() {
-        $me = ['evidence' => $this->getEvidence(), 'recordid' => $this->getMyKey(),'meta' => $this->getMetaState()];
+        $me = ['evidence' => $this->getEvidence(), 'recordid' => $this->getMyKey(), 'source' => $this->sourceId];
         if (($this->debug === true) && empty($this->cache->listingQuery()->where($me)->count())) {
             $this->createRecordHistory();
         }
-        $result = $this->cache->updateToSQL(['operation' => $this->operation, 'json' => addslashes(json_encode($this->getData()))], $me);
+
+        $result = $this->cache->updateToSQL(['recordid' => $me['recordid'], 'operation' => $this->operation, 'source' => $this->sourceId, 'meta' => $this->getMetaState(), 'json' => self::serialize($this->getData())], $me);
         if ($this->debug === true) {
             $this->addStatusMessage(sprintf(_('Updating cache record for %s %s'), $this->getEvidence(), $this->getRecordIdent()), empty($result) ? 'error' : 'success' );
         }
         return $result;
+    }
+
+    /**
+     * Serialize AbraFlexi data before storing
+     * 
+     * @param array $abraflexiData 
+     * 
+     * @return strinh
+     */
+    public function serialize($abraflexiData) {
+        return addslashes(serialize($abraflexiData));
+    }
+
+    /**
+     * Restre AbraflexiData
+     * 
+     * @param string $abraflexiString
+     * 
+     * @return array
+     */
+    public function unserialize($abraflexiString) {
+        return unserialize(stripslashes($abraflexiString));
     }
 
     /**
@@ -384,6 +415,52 @@ abstract class Plugin extends \AbraFlexi\RW {
             $this->addStatusMessage(sprintf(_('Removing cache record for %s %s'), $this->getEvidence(), $this->getRecordIdent()), empty($result) ? 'error' : 'success' );
         }
         return $result;
+    }
+
+    /**
+     * Get All Classes in namespace
+     * 
+     * @param string $namespace
+     * 
+     * @return array<string>
+     */
+    public static function classesInNamespace($namespace) {
+        $namespace .= '\\';
+        $allClasses = get_declared_classes();
+        print_r(asort($allClasses));
+        $myClasses = array_filter(get_declared_classes(), function ($item) use ($namespace) {
+            return substr($item, 0, strlen($namespace)) === $namespace;
+        });
+        $theClasses = [];
+        foreach ($myClasses AS $class):
+            $theParts = explode('\\', $class);
+            $theClasses[] = end($theParts);
+        endforeach;
+        return $theClasses;
+    }
+
+    /**
+     * Retrurn number of loadable classes in given path
+     * 
+     * @param string $path
+     * 
+     * @return int
+     */
+    public static function loadClassesInDir($path) {
+        $found = 0;
+
+        if (is_dir($path)) {
+
+            $d = dir($path);
+
+            while (false !== ($entry = $d->read())) {
+                if (pathinfo($entry, PATHINFO_EXTENSION) == 'php') {
+                    include_once $path . '/' . $entry;
+                }
+            }
+            $d->close();
+        }
+        return $found;
     }
 
 }

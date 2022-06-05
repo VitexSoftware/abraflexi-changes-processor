@@ -21,7 +21,6 @@ class Engine extends \Ease\SQL\Engine {
      * @var boolean 
      */
     public $locked = false;
-
     public $format = 'json';
 
     /**
@@ -37,10 +36,16 @@ class Engine extends \Ease\SQL\Engine {
     public $globalVersion = null;
 
     /**
-     *
+     * Evidence handler cache
      * @var array 
      */
     public $handlerCache = [];
+
+    /**
+     * Cache for Notify object
+     * @var array 
+     */
+    public $notifiers = [];
 
     /**
      * Posledni zpracovana verze
@@ -61,15 +66,23 @@ class Engine extends \Ease\SQL\Engine {
     private $lockfile = '/tmp/webhook.lock';
 
     /**
+     * Current SourceID
+     * @var int
+     */
+    private $sourceId;
+    private $myCreateColumn;
+
+    /**
      * Prijmac WebHooku
      */
     public function __construct($options = []) {
-        parent::__construct(null,$options);
+        parent::__construct(null, $options);
         $this->lockfile = sys_get_temp_dir() . '/webhook.lock';
         $this->myTable = 'changesapi';
         $this->lastProcessedVersion = $this->getLastProcessedVersion();
         $this->locked = $this->locked();
         $this->debug = true;
+        Plugin::loadClassesInDir(__DIR__ . '/Notify');
     }
 
     /**
@@ -87,6 +100,8 @@ class Engine extends \Ease\SQL\Engine {
             $evidence = $change['@evidence'];
             $inVersion = intval($change['@in-version']);
             $operation = $change['@operation'];
+            $source = $change['@source'];
+            $this->sourceId = $change['@sourceid'];
             $id = intval($change['id']);
             $externalIDs = isset($change['external-ids']) ? $change['external-ids'] : [];
 
@@ -95,9 +110,17 @@ class Engine extends \Ease\SQL\Engine {
             $handlerClassName = \AbraFlexi\RO::evidenceToClassName($evidence);
             $handlerClass = '\\AbraFlexi\\Processor\\Plugins\\' . $handlerClassName;
             if (class_exists($handlerClass)) {
-                $changeMeta = ['evidence' => $evidence, 'operation' => $operation,
-                    'external-ids' => $externalIDs,
-                    'changeid' => $inVersion];
+
+                $changeMeta = array_merge(
+                        \AbraFlexi\RO::companyUrlToOptions($source),
+                        [
+                            'evidence' => $evidence,
+                            'sourceid' => $this->sourceId,
+                            'operation' => $operation,
+                            'external-ids' => $externalIDs,
+                            'changeid' => $inVersion
+                ]);
+
                 $saver = $this->getHandler($handlerClass, $docId, $changeMeta);
                 if (($saver->lastResponseCode === 200) && $saver->process($operation) && ($this->debug === true)) {
 
@@ -109,6 +132,14 @@ class Engine extends \Ease\SQL\Engine {
                                     $changepos, count($this->changes), $inVersion,
                                     $operation, $evidence, $id,
                                     $this->lastProcessedVersion), 'success');
+
+                    foreach (Plugin::classesInNamespace('AbraFlexi\Processor\Notify') as $notifierClass) {
+                        if (!array_key_exists($notifierClass, $this->notifiers)) {
+                            $toInstance = '\\AbraFlexi\\Processor\\Notify\\' . $notifierClass;
+                            $this->notifiers[$notifierClass] = new $toInstance;
+                        }
+                        $notifierClass->notify($saver);
+                    }
                 }
             } else {
                 $this->addStatusMessage(sprintf(_('Request unexistent module %s'), $handlerClass), 'warning');
@@ -127,7 +158,7 @@ class Engine extends \Ease\SQL\Engine {
      * @param int    $id
      * @param array  $changeMeta
      * 
-     * @return WebHookHandler
+     * @return \AbraFlexi\Processor\Plugin
      */
     public function &gethandler($handlerClass, $id, $changeMeta) {
         if (isset($this->handlerCache[$handlerClass][$id])) {
@@ -135,9 +166,11 @@ class Engine extends \Ease\SQL\Engine {
         } else {
             $this->handlerCache[$handlerClass][$id] = new $handlerClass($id, $changeMeta);
             if ($this->handlerCache[$handlerClass][$id]->lastResponseCode != 200) {
-                $this->addStatusMessage(sprintf(_('Record %s not found in %s'), json_encode($changeMeta)), 'error');
+                $this->addStatusMessage(sprintf(_('Record %s not found in %s'), $id, json_encode($changeMeta)), 'error');
             }
         }
+        $this->handlerCache[$handlerClass][$id]->sourceId = $changeMeta['sourceid'];
+        $this->handlerCache[$handlerClass][$id]->setUp($changeMeta);
         return $this->handlerCache[$handlerClass][$id];
     }
 
@@ -152,9 +185,10 @@ class Engine extends \Ease\SQL\Engine {
      */
     public function takeApiChanges(array $changes) {
         $result = null;
+        $changesToLog = [];
         if (array_key_exists('winstrom', $changes)) {
             $this->globalVersion = intval($changes['winstrom']['@globalVersion']);
-            $this->changes = self::reindexArrayBy($changes['winstrom']['changes'],
+            $this->changes = \Ease\Functions::reindexArrayBy($changes['winstrom']['changes'],
                             '@in-version');
 
             ksort($this->changes);
@@ -183,14 +217,11 @@ class Engine extends \Ease\SQL\Engine {
         $this->createColumn = false;
         $this->lastProcessedVersion = $version;
         $this->myCreateColumn = null;
-        $this->deleteFromSQL(['serverurl' => \Ease\Functions::cfg('ABRAFLEXI_URL')]);
-        $result = $this->insertToSQL(['serverurl' => \Ease\Functions::cfg('ABRAFLEXI_URL'), 'doneid' => $version]);
-        if (is_null($result)) {
-            $this->addStatusMessage(_("Last Processed Change ID Saving Failed"),
-                    'error');
-        } elseif ($this->debug === true) {
+        $result = $this->updateToSQL(['doneid' => $version, 'id' => $this->sourceId]);
+        if ($this->debug === true) {
             $this->addStatusMessage(sprintf(_("Last Processed Change ID %s save"), $version), $result ? 'success' : 'error');
         }
+        $this->myTable = 'flexihistory';
         return $result;
     }
 
@@ -277,7 +308,7 @@ class Engine extends \Ease\SQL\Engine {
      */
     public function processCachedChanges() {
         $result = false;
-        $changesRaw = $this->fluent->from('changes_cache')->orderBy('inversion');
+        $changesRaw = $this->fluent->from('changes_cache')->select('serverurl')->leftJoin('changesapi ON changes_cache.source=changesapi.id')->orderBy('inversion');
         if (!empty($changesRaw)) {
             $changesToProcess = [];
             foreach ($changesRaw as $changeId => $changeDataSaved) {
@@ -303,6 +334,8 @@ class Engine extends \Ease\SQL\Engine {
     public static function sqlColsToJsonCols($sqlData) {
         $jsonData['@in-version'] = $sqlData['inversion'];
         $jsonData['id'] = $sqlData['recordid'];
+        $jsonData['@source'] = $sqlData['serverurl'];
+        $jsonData['@sourceid'] = intval($sqlData['source']);
         $jsonData['@evidence'] = $sqlData['evidence'];
         $jsonData['@operation'] = $sqlData['operation'];
         $jsonData['external-ids'] = unserialize(stripslashes($sqlData['externalids']));
@@ -365,8 +398,7 @@ class Engine extends \Ease\SQL\Engine {
      */
     public function wipeCacheRecord($inVersion) {
         $this->setMyTable('changes_cache');
-        $result = $this->deleteFromSQL(['inversion' => $inVersion]);
-
+        $result = $this->deleteFromSQL(['inversion' => $inVersion, 'source' => $this->sourceId]);
         if ($this->debug === true) {
             $this->addStatusMessage(sprintf(_("Cached change wipe %s (%s remain)"), $inVersion, $this->listingQuery()->count()), $result ? 'success' : 'error');
         }
@@ -374,14 +406,5 @@ class Engine extends \Ease\SQL\Engine {
         return $result;
     }
 
-    public function dbApiUrl($apiData) {
-        $this->setEvidence($apiData['@evidence']);
-        if (array_key_exists('external-ids', $apiData) && !empty($apiData['external-ids'])) {
-            $this->setMyKey(current($apiData['external-ids']));
-        } else {
-            $this->setMyKey($apiData['id']);
-        }
-        return $this->getApiURL();
-    }
 
 }

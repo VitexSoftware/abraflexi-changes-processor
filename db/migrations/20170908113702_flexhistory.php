@@ -2,8 +2,7 @@
 
 use Phinx\Migration\AbstractMigration;
 
-class Flexhistory extends AbstractMigration
-{
+class Flexhistory extends AbstractMigration {
 
     /**
      * Change Method.
@@ -26,20 +25,23 @@ class Flexhistory extends AbstractMigration
      * Remember to call "create()" or "update()" and NOT "save()" when working
      * with the Table class.
      */
-    public function change()
-    {
+    public function change() {
         $table = $this->table('flexihistory');
         $table
-            ->addColumn('operation', 'string', ['limit' => 32])
-            ->addColumn('evidence', 'string', ['limit' => 128])
-            ->addColumn('when', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
-            ->addColumn('changeid', 'integer',
-                ['null' => true, 'signed' => false])
-            ->addColumn('recordid', 'integer',
-                ['null' => false, 'signed' => false])
-            ->addColumn('json', 'text',['limit'=> \Phinx\Db\Adapter\MysqlAdapter::TEXT_LONG ])
-            ->addIndex(['recordid', 'evidence'])
-            ->addIndex(['changeid'], ['unique' => true])
-            ->create();
+                        ->addColumn('operation', 'string', ['limit' => 32])
+                        ->addColumn('evidence', 'string', ['limit' => 128])
+                        ->addColumn('when', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
+                        ->addColumn('changeid', 'integer',
+                                ['null' => true, 'signed' => false])
+                        ->addColumn('recordid', 'integer',
+                                ['null' => false, 'signed' => false])
+                        ->addColumn('json', 'text', ['limit' => \Phinx\Db\Adapter\MysqlAdapter::TEXT_LONG])
+                        ->addIndex(['recordid', 'evidence'])
+                        ->addIndex(['changeid'], ['unique' => true]) 
+                        ->addColumn('source', 'integer', ['comment' => 'The Api record come from'])
+                        ->addForeignKey('source', 'changesapi', ['id'], [
+                            'constraint' => 'serverurl-must-exist', 'delete' => 'CASCADE', 'update' => 'NO_ACTION'])
+                        ->create();
     }
+
 }
