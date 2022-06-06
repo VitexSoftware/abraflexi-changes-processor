@@ -35,7 +35,7 @@ class FlexiHistory extends \Ease\SQL\Engine {
         $this->abraFlexi = new \AbraFlexi\RW($identifier, $options);
         $this->options = $options;
     }
-   
+
     /**
      * 
      * @return \AbraFlexi\Processor\handlerClass
@@ -57,31 +57,50 @@ class FlexiHistory extends \Ease\SQL\Engine {
         return $plugins;
     }
 
-    public function importHistory() {
+    /**
+     * 
+     */
+    public function importHistory($sourceId = 0) {
         if ($this->listingQuery()->count()) {
             $this->addStatusMessage(sprintf(_('History table %s is not empty'), $this->getMyTable()), 'warning');
+            $checkPresence = true;
         } else {
-            $this->abraFlexi->logBanner(\Ease\Functions::cfg('APP_NAME'));
-            foreach ($this->getPlugins() as $plugin) {
-                $position = 0;
-                $plugin->addStatusMessage('Processing: ' . $plugin->getEvidenceURL());
-                $ids = $plugin->getColumnsFromAbraFlexi(['id'], ['limit' => 0]);
-                $allids = $ids ? count($ids) : 0;
-                $this->addStatusMessage(sprintf(_('%d records found in evidence %s'), $allids, $plugin->getEvidence()));
-                foreach ($ids as $id) {
-                    $position++;
-                    if ($plugin->loadFromAbraFlexi(intval($id['id']))) {
-                        $info = $position . '/' . $allids . ' ' . $plugin->getDataValue('kod');
-                        $result = $plugin->importRecord();
-                        $plugin->addStatusMessage(sprintf(_('Saving record %s into history table'), $info), $result ? 'success' : 'error');
+            $checkPresence = false;
+        }
+        
+        $this->abraFlexi->logBanner(\Ease\Functions::cfg('APP_NAME'));
+        foreach ($this->getPlugins() as $plugin) {
+            $position = 0;
+            $plugin->addStatusMessage('Processing: ' . $plugin->getEvidenceURL());
+            $ids = $plugin->getColumnsFromAbraFlexi(['id'], ['limit' => 0]);
+            $allids = $ids ? count($ids) : 0;
+            $this->addStatusMessage(sprintf(_('%d records found in evidence %s'), $allids, $plugin->getEvidence()));
+            foreach ($ids as $id) {
+                $position++;
+                if ($plugin->loadFromAbraFlexi(intval($id['id']))) {
+                    $info = $position . '/' . $allids . ' ' . $plugin->getDataValue('kod');
+                    $plugin->sourceId = $sourceId;
+                    if($checkPresence && $plugin->checkRecordPresence()){
+                        $this->addStatusMessage(sprintf(_('Record %s already cached'), $plugin->getApiURL()), 'warning');
+                        continue;
                     }
+                    $result = $plugin->importRecord();
+                    $plugin->addStatusMessage(sprintf(_('Saving record %s into history table'), $info), $result ? 'success' : 'error');
                 }
             }
         }
     }
 
+    /**
+     * 
+     * 
+     * @param type $evidence
+     * @param type $recordId
+     * 
+     * @return type
+     */
     public function getLastHistoryState($evidence, $recordId) {
-        $lastChangeJson = $this->listingQuery()->where('recordid', $recordId)->orderBy('when DESC')->limit(1);
+        $lastChangeJson = $this->listingQuery()->where('recordid', $recordId)->where('evidence', $evidence)->orderBy('when DESC')->limit(1);
         return empty($lastChangeJson) ? null : json_decode($lastChangeJson, true);
     }
 

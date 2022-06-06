@@ -60,12 +60,13 @@ abstract class Plugin extends \AbraFlexi\RW {
      * @var string
      */
     private $metaState;
-    
+
     /**
      * 
      * @var string
      */
     private $createColumn;
+
     /**
      * 
      * @var string
@@ -120,11 +121,20 @@ abstract class Plugin extends \AbraFlexi\RW {
             'operation' => 'import',
             'evidence' => $evidence,
             'recordid' => $recordId,
+            'source' => $this->sourceId,
             'json' => self::serialize($this->getData())];
         if ($this->changeid) {
             $change['changeid'] = $this->changeid;
         }
         return $this->cache->insertToSQL($change);
+    }
+
+    /**
+     * 
+     * @return int
+     */
+    public function checkRecordPresence() {
+        return $this->cache->listingQuery()->where('evidence', $this->getEvidence())->where('recordid', $this->getMyKey())->where('source', $this->sourceId)->count();
     }
 
     /**
@@ -391,7 +401,7 @@ abstract class Plugin extends \AbraFlexi\RW {
      * @return strinh
      */
     public function serialize($abraflexiData) {
-        return addslashes(serialize($abraflexiData));
+        return serialize($abraflexiData);
     }
 
     /**
@@ -402,7 +412,8 @@ abstract class Plugin extends \AbraFlexi\RW {
      * @return array
      */
     public function unserialize($abraflexiString) {
-        return unserialize(stripslashes($abraflexiString));
+        echo $abraflexiString;
+        return unserialize($abraflexiString);
     }
 
     /**
