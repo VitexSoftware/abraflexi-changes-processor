@@ -6,16 +6,16 @@
  */
 
 /*
-+------------+--------------+------+-----+---------------------+----------------+
-| Field      | Type         | Null | Key | Default             | Extra          |
-+------------+--------------+------+-----+---------------------+----------------+
-| id         | int(11)      | NO   | PRI | NULL                | auto_increment |
-| uri        | varchar(200) | NO   | MUL | NULL                |                |
-| meta       | varchar(40)  | NO   |     | NULL                |                |
-| discovered | datetime     | NO   | MUL | current_timestamp() |                |
-| processed  | datetime     | YES  |     | NULL                |                |
-+------------+--------------+------+-----+---------------------+----------------+
-*/
+  +------------+--------------+------+-----+---------------------+----------------+
+  | Field      | Type         | Null | Key | Default             | Extra          |
+  +------------+--------------+------+-----+---------------------+----------------+
+  | id         | int(11)      | NO   | PRI | NULL                | auto_increment |
+  | uri        | varchar(200) | NO   | MUL | NULL                |                |
+  | meta       | varchar(40)  | NO   |     | NULL                |                |
+  | discovered | datetime     | NO   | MUL | current_timestamp() |                |
+  | processed  | datetime     | YES  |     | NULL                |                |
+  +------------+--------------+------+-----+---------------------+----------------+
+ */
 
 namespace AbraFlexi\Processor\Notify;
 
@@ -24,7 +24,7 @@ namespace AbraFlexi\Processor\Notify;
  *
  * @author vitex
  */
-class Db extends \Ease\SQL\Engine {
+class Db extends \Ease\SQL\Engine implements Notifier {
 
     public $myTable = 'meta';
 
@@ -33,7 +33,7 @@ class Db extends \Ease\SQL\Engine {
      * @param \AbraFlexi\Processor\Plugin $handler
      */
     function notify(\AbraFlexi\Processor\Plugin $handler) {
-        $this->addStatusMessage('Notify to Database', is_integer($this->insertToSQL(['uri'=>$handler->getApiURL(),'meta'=>$handler->getMetaState()])) ? 'success' : 'error' );
+        $this->addStatusMessage('Notify to Database', is_integer($this->insertToSQL(['uri' => $handler->getApiURL(), 'meta' => $handler->getMetaState()])) ? 'success' : 'error' );
     }
 
 }

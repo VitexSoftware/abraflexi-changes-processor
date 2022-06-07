@@ -12,52 +12,39 @@ namespace AbraFlexi\Processor\Notify;
  *
  * @author vitex
  */
-class MakeCom {
+class MakeCom extends \Ease\Sand implements Notifier {
 
+    /**
+     * MakeCom endpoint 
+     * @var string
+     */
     private $endPoint = '';
 
+    /**
+     * MakeCOM Notifier 
+     */
     public function __construct() {
         $this->endPoint = \Ease\Functions::cfg('FOREGIN_ENPOINT');
     }
 
-    function interested($webhookData) {
-        $result = [];
-        $destinations = [
-            'destination' => 'integromat',
-            'filters' => [
-                'agenda' => [
-                    'faktura-vydana' =>
-                    ['operations' =>
-                        [
-                            'update' => ['cols' => ['stavuhrk' => 'stavUhr.uhrazeno', 'storno' => 't']],
-                        ]
-                    ]
-                ],
-            ]
-        ];
+    /**
+     * Accept or skip several metastates of interest
+     * 
+     * @param \AbraFlexi\Processor\Plugin $engine
+     * 
+     * @return boolean
+     */
+    function interested($engine) {
+        $want = false;
+        switch ($engine->getMetaState()) {
+            case 'settle':
+                $want = false;
+                break;
 
-        $history = new WebHooker();
-        $history->setEvidence($webhookData['@evidence']);
-        $history->setMyKey(intval($webhookData['id']));
-
-        foreach ($destinations['filters']['agenda'] as $agenda => $agendaRules) {
-            if ($webhookData['@evidence'] == $agenda) {
-                foreach ($agendaRules['operations'] as $op => $opRules) {
-                    if ($op == $webhookData['@operation']) {
-                        $changes = $history->getChanges();
-                        foreach ($changes as $change) {
-                            if (array_key_exists($change['sloupec'], $opRules['cols'])) {
-                                if ($change['zmenena_na'] == $opRules['cols'][$change['sloupec']]) {
-                                    $result[$change['sloupec']] = $change['sloupec'] . ':' . $change['zmenena_na'];
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+            default:
+                break;
         }
-
-        return $result;
+        return $want;
     }
 
     /**
@@ -67,25 +54,22 @@ class MakeCom {
     function notify(\AbraFlexi\Processor\Plugin $engine) {
         $this->addStatusMessage('Notify MakeCOM', 'debug');
 
-        foreach ($data['winstrom']['changes'] as $id => $record) {
+        $record = $engine->getData();
 
-            if ($ch = interested($record)) {
+        if (self::interested($engine)) {
 
-                $data['winstrom']['changes'][$id]['premodified'] = 'OK';
-                $engine->setEvidence($record['@evidence']);
-                $engine->setMyKey(intval($record['id']));
+            $data['winstrom']['changes'][$id]['premodified'] = 'OK';
+
 //    $engine->loadFromAbraFlexi(empty($record['external-ids']) ? (int)$record['id'] : current($record['external-ids']) );
 //    $data['winstrom']['changes'][$id]['id'] = $engine->getRecordID();
-                $data['winstrom']['changes'][$id]['id'] = $record['id'];
-                foreach ($ch as $change) {
-                    $data['winstrom']['changes'][$id]['external-ids'][] = 'ext:' . ($change);
-                }
+            $data['winstrom']['changes'][$id]['id'] = $record['id'];
 
-                $data['winstrom']['changes'][$id]['modified'] = true;
+            if ($engine->extids) {
+                $data['winstrom']['changes'][$id]['external-ids'] = $engine->extids;
             }
-        }
+            $data['winstrom']['changes'][$id]['external-ids'][] = 'ext:meta:' . $engine->getMetaState();
 
-        if (!empty($data)) {
+            $data['winstrom']['changes'][$id]['modified'] = true;
 
             $content = json_encode($data);
 

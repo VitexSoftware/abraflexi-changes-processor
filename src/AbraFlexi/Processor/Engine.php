@@ -128,8 +128,8 @@ class Engine extends \Ease\SQL\Engine {
                     if (!empty($ident)) {
                         $id .= ' ' . $ident;
                     }
-                    $this->addStatusMessage(sprintf(_('Processing Change %s/%s version %d ( %s %s/%s ) Last %d'),
-                                    $changepos, count($this->changes), $inVersion,
+                    $this->addStatusMessage(sprintf(_('Processing Change %s/%s version %d  ⇶ %s ( %s %s/%s ) Last %d'),
+                                    $changepos, count($this->changes), $inVersion, $saver->getMetaState() ,
                                     $operation, $evidence, $id,
                                     $this->lastProcessedVersion), 'success');
 
@@ -138,13 +138,13 @@ class Engine extends \Ease\SQL\Engine {
                             $toInstance = '\\AbraFlexi\\Processor\\Notify\\' . $notifierClass;
                             $this->notifiers[$notifierClass] = new $toInstance;
                         }
-                        $notifierClass->notify($saver);
+                        $this->notifiers[$notifierClass]->notify($saver);
                     }
                 }
             } else {
                 $this->addStatusMessage(sprintf(_('Request unexistent module %s'), $handlerClass), 'warning');
             }
-            $this->wipeCacheRecord($inVersion);
+            $this->wipeCacheRecord($inVersion); //TODO HERE ?
             $doneIDd[$inVersion] = $inVersion;
             $this->saveLastProcessedVersion($inVersion);
         }
@@ -405,6 +405,5 @@ class Engine extends \Ease\SQL\Engine {
         $this->setMyTable('flexihistory');
         return $result;
     }
-
 
 }
