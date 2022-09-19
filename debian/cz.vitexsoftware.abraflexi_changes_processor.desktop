@@ -1,0 +1,12 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+
+Name=AbraFlexi Changes Processor
+Comment=Listen for AbraFlexi changes
+Categories=Office;Finance;
+
+Icon=abraflexi-changes-processor
+Exec=sensible-browser http://localhost/abraflexi-changes-processor/
+Terminal=false
+

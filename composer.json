@@ -1,0 +1,31 @@
+{
+    "name": "vitexsoftware/abraflexi-changes-processor",
+    "description": "AbraFlexi Changes Proscessor",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Vítězslav Dvořák",
+            "email": "info@vitexsoftware.cz"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "vitexsoftware/abraflexi-bricks": "*",
+        "vitexsoftware/ease-fluentpdo": "*",
+        "rogervila/array-diff-multidimensional": "*",
+        "mevdschee/php-crud-api": "dev-main"
+    },
+    "require-dev": {
+        "robmorgan/phinx": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "AbraFlexi\\Processor\\": "src/AbraFlexi/Processor/",
+            "AbraFlexi\\Processor\\Plugins\\": "src/AbraFlexi/Processor/Plugins/",
+            "AbraFlexi\\Processor\\Notify\\": "src/AbraFlexi/Processor/Notify/",
+            "AbraFlexi\\Processor\\Ui\\": "src/AbraFlexi/Processor/Ui/"
+        }
+    }
+
+}

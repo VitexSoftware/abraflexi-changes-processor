@@ -1,0 +1,6 @@
+abraflexi-changes-processor (0.1) UNRELEASED; urgency=low
+
+  * Initial release. Closes: #nnnn
+    <nnnn is the bug number of your ITP>
+
+ -- Vítězslav Dvořák <info@vitexsoftware.cz>  Tue, 07 Jun 2022 23:39:37 +0200

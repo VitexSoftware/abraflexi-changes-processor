@@ -1,1 +1,4 @@
 .env
+vendor
+debian/abraflexi-changes-processor
+debian/.debhelper

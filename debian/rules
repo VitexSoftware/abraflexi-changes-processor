@@ -1,0 +1,33 @@
+#!/usr/bin/make -f
+# You must remove unused comment lines for the released package.
+#export DH_VERBOSE = 1
+#export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+#export DEB_CFLAGS_MAINT_APPEND  = -Wall -pedantic
+#export DEB_LDFLAGS_MAINT_APPEND = -Wl,--as-needed
+
+%:
+	dh $@  
+
+#override_dh_auto_install:
+#	dh_auto_install -- prefix=/usr
+
+#override_dh_install:
+#	dh_install --list-missing -X.pyc -X.pyo
+
+override_dh_install:
+	dh_install
+	jq '.version = "'`dpkg-parsechangelog | sed -n 's/^Version: //p'| sed 's/~.*//'`'"'  debian/conf/composer.json |sponge debian/conf/composer.json
+	sed -i '/__DIR__/c\require_once "/var/lib/composer/abraflexi-changes-processor/autoload.php";' debian/abraflexi-changes-processor/usr/share/abraflexi-changes-processor/*.php
+	sed -i -e 's/..\/vendor/\/var\/lib\/composer\/abraflexi-changes-processor/g'   debian/abraflexi-changes-processor/usr/share/abraflexi-changes-processor/*.php
+	sed -i -e 's/.\/vendor/\/var\/lib\/composer\/abraflexi-changes-processor/g'    debian/abraflexi-changes-processor/usr/lib/abraflexi-changes-processor/phinx-adapter.php
+	sed -i '/\.env/c\$$cfg="/etc\/abraflexi-changes-processor\/.env";'  debian/abraflexi-changes-processor/usr/*/abraflexi-changes-processor/*.php
+	sed -i '/prefix =/c\ $$prefix = "\/usr\/lib\/abraflexi-changes-processor\/db\/";' debian/abraflexi-changes-processor/usr/lib/abraflexi-changes-processor/phinx-adapter.php
+	sed -i '/DB_DATABASE/c\ $$sqlOptions["database"] = "\/var\/lib\/dbconfig-common\/sqlite3\/abraflexi-changes-processor\/".basename(\\Ease\\Functions::cfg("DB_DATABASE"));' debian/abraflexi-changes-processor/usr/lib/abraflexi-changes-processor/phinx-adapter.php
+	sed -i -e 's/..\/i18n/\/usr\/share\/locale/g'            	     debian/abraflexi-changes-processor/usr/share/abraflexi-changes-processor/*.php
+	mkdir -p                                                             debian/abraflexi-changes-processor-sqlite/usr/lib/abraflexi-changes-processor
+	cp debian/conf/.env.template                                         debian/abraflexi-changes-processor-sqlite/usr/lib/abraflexi-changes-processor
+	mkdir -p                                                             debian/abraflexi-changes-processor-mysql/usr/lib/abraflexi-changes-processor
+	cp debian/conf/.env.template                                         debian/abraflexi-changes-processor-mysql/usr/lib/abraflexi-changes-processor
+	mkdir -p                                                             debian/abraflexi-changes-processor-pgsql/usr/lib/abraflexi-changes-processor
+	cp debian/conf/.env.template                                         debian/abraflexi-changes-processor-pgsql/usr/lib/abraflexi-changes-processor
+	sed -i '/DB_DATABASE/c\DB_DATABASE=_DBC_DBNAME_'                     debian/abraflexi-changes-processor-*sql/usr/lib/abraflexi-changes-processor/.env.template

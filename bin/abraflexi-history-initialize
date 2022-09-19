@@ -1,0 +1,2 @@
+#!/bin/sh
+php -q -f /usr/lib/abraflexi-changes-processor/InitializeHistory.php $1
