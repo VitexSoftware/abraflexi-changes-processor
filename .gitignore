@@ -2,3 +2,15 @@
 vendor
 debian/abraflexi-changes-processor
 debian/.debhelper
+/debian/abraflexi-changes-processor-pgsql.substvars
+/debian/abraflexi-changes-processor-sqlite.debhelper.log
+/debian/abraflexi-changes-processor-mysql.substvars
+/debian/abraflexi-changes-processor-sqlite.substvars
+/debian/abraflexi-changes-processor-mysql.debhelper.log
+/debian/abraflexi-changes-processor-pgsql.debhelper.log
+/debian/abraflexi-changes-processor-sqlite/
+/debian/abraflexi-changes-processor-pgsql/
+/debian/abraflexi-changes-processor-mysql/
+/debian/abraflexi-changes-processor.debhelper.log
+/debian/files
+/.phpunit.result.cache
