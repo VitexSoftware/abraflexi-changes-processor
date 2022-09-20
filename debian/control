@@ -4,11 +4,11 @@ Priority: optional
 Maintainer: Vítězslav Dvořák <info@vitexsoftware.cz>
 Build-Depends: debhelper-compat (= 12)
 Standards-Version: 4.5.0
-Homepage: https://github.com/VitexSoftware/abraflexi-webhook-processor
+Homepage: https://github.com/VitexSoftware/abraflexi-changes-processor
 
-Package: abraflexi-webhook-processor
+Package: abraflexi-changes-processor
 Multi-Arch: foreign
-Depends: ${misc:Depends}, php-spojenet-abraflexi, php-cli, locales-all, php-vitexsoftware-ease-fluentpdo, abraflexi-webhook-processor-sqlite|abraflexi-webhook-processor-mysql|abraflexi-webhook-processor-pgsql, libjs-jquery-datatables, php-vitexsoftware-abraflexi-bricks
+Depends: ${misc:Depends}, php-spojenet-abraflexi, php-cli, locales-all, php-vitexsoftware-ease-fluentpdo, abraflexi-changes-processor-sqlite|abraflexi-changes-processor-mysql|abraflexi-changes-processor-pgsql, libjs-jquery-datatables, php-vitexsoftware-abraflexi-bricks
 Suggests: abraflexi-server,abraflexi-client-config, abraflexi-digest, abraflexi-matcher, abraflexi-reminder, abraflexi-contract-invoices, abraflexi-mailer, abraflexi-email-importer
 Recommends: sensible-utils
 Pre-Depends: php-robmorgan-phinx|php-cakephp-phinx|php-cakephp-phinx|phinx, dbconfig-common
@@ -17,30 +17,30 @@ Architecture: all
 Description: Process AbraFlexi changes
  Acceptor Process AbraFlexi change notifiation and store in SQL database.
 
-Package: abraflexi-webhook-processor-sqlite
+Package: abraflexi-changes-processor-sqlite
 Multi-Arch: foreign
 Pre-Depends: dbconfig-sqlite3, php-sqlite3, sqlite3
-Depends: ${misc:Depends},abraflexi-webhook-processor
-Conflicts: abraflexi-webhook-processor-mysql, abraflexi-webhook-processor-pgsql
+Depends: ${misc:Depends},abraflexi-changes-processor
+Conflicts: abraflexi-changes-processor-mysql, abraflexi-changes-processor-pgsql
 Architecture: all
 Description: sqlite support for AbraFlexi changes processor
  Mandatory dependencies for use Multi FlexiBee setup with SQLite database
 
-Package: abraflexi-webhook-processor-mysql
+Package: abraflexi-changes-processor-mysql
 Multi-Arch: foreign
 Pre-Depends: dbconfig-mysql, php-mysql, php-robmorgan-phinx|php-cakephp-phinx
-Depends: ${misc:Depends},abraflexi-webhook-processor
-Conflicts: abraflexi-webhook-processor-sqlite, abraflexi-webhook-processor-pgsql
+Depends: ${misc:Depends},abraflexi-changes-processor
+Conflicts: abraflexi-changes-processor-sqlite, abraflexi-changes-processor-pgsql
 Suggests: mariadb-server
 Architecture: all
 Description: mariadb support for AbraFlexi changes processor
  Mandatory dependencies for use Multi FlexiBee setup with MySQL/MariaDB databas
 
-Package: abraflexi-webhook-processor-pgsql
+Package: abraflexi-changes-processor-pgsql
 Multi-Arch: foreign
 Pre-Depends: dbconfig-pgsql, php-pgsql, php-robmorgan-phinx|php-cakephp-phinx
-Depends: ${misc:Depends},abraflexi-webhook-processor, 
-Conflicts: abraflexi-webhook-processor-mysql, abraflexi-webhook-processor-sqlite
+Depends: ${misc:Depends},abraflexi-changes-processor, 
+Conflicts: abraflexi-changes-processor-mysql, abraflexi-changes-processor-sqlite
 Suggests: postgresql
 Architecture: all
 Description: postgres support for AbraFlexi changes processor
