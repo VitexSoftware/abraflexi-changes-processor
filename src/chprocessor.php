@@ -12,7 +12,7 @@ define('APP_NAME', 'AbraFlexiChangesProcessor');
 define('EASE_LOGGER', 'console|syslog');
 require_once __DIR__ . '/../vendor/autoload.php';
 
-if (file_exists('../.env')) {
+if (file_exists('../.env')) { 
     \Ease\Shared::singleton()->loadConfig('../.env', true);
 }
 

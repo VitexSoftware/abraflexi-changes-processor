@@ -28,15 +28,14 @@ if [ -f /usr/share/dbconfig-common/dpkg/postinst ]; then
 
     phinx migrate -c /usr/lib/abraflexi-changes-processor/phinx-adapter.php
 
-    if [ -f /var/lib/abraflexi-changes-processor/changesprocessor ] ; then
-        chown root:www-data /var/lib/abraflexi-changes-processor/
-        chmod ug+rw /var/lib/abraflexi-changes-processor/
-        chown root:www-data /var/lib/abraflexi-changes-processor/changesprocessor
-        chmod ug+rw /var/lib/abraflexi-changes-processor/changesprocessor
-    fi
+#    if [ -f /var/lib/abraflexi-changes-processor/changesprocessor ] ; then
+#        chown root:www-data /var/lib/abraflexi-changes-processor/
+#        chmod ug+rw /var/lib/abraflexi-changes-processor/
+#        chown root:www-data /var/lib/abraflexi-changes-processor/changesprocessor
+#        chmod ug+rw /var/lib/abraflexi-changes-processor/changesprocessor
+#    fi
 
 fi
-
 
 
 case "$1" in
