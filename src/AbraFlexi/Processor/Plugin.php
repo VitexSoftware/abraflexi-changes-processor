@@ -80,11 +80,11 @@ abstract class Plugin extends \AbraFlexi\RW {
      * @param array $options 
      */
     public function __construct($id, $options) {
-        $this->cache = array_key_exists('history', $options) ? $options['history'] : new FlexiHistory();
         $this->myTable = 'changes_cache';
         $this->createColumn = 'when';
         $this->throwException = false;
         parent::__construct($id, $options);
+        $this->cache = array_key_exists('history', $options) ? $options['history'] : new FlexiHistory(null, $this->getConnectionOptions());
     }
 
     /**

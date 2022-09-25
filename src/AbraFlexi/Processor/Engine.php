@@ -48,10 +48,10 @@ class Engine extends \Ease\SQL\Engine {
     public $notifiers = [];
 
     /**
-     * Posledni zpracovana verze
+     * Last processed versions
      * @var int
      */
-    public $lastProcessedVersion = null;
+    public $lastProcessedVersions = [];
 
     /**
      * Database helper
@@ -90,11 +90,10 @@ class Engine extends \Ease\SQL\Engine {
         parent::__construct(null, $options);
         $this->lockfile = sys_get_temp_dir() . '/webhook.lock';
         $this->myTable = 'changesapi';
-        $this->lastProcessedVersion = $this->getLastProcessedVersion();
         $this->locked = $this->locked();
         $this->debug = true;
         Plugin::loadClassesInDir(__DIR__ . '/Notify');
-        $this->loadCredentials();
+        $this->loadAbraFlexiServers();
     }
 
     /**
@@ -132,8 +131,9 @@ class Engine extends \Ease\SQL\Engine {
                             'operation' => $operation,
                             'external-ids' => $externalIDs,
                             'changeid' => $inVersion,
-                            'login' => $this->credentials[$source]['login'],
-                            'password' => $this->credentials[$source]['password']
+                            'user' => $this->credentials[$source]['login'],
+                            'password' => $this->credentials[$source]['password'],
+                            'debug' => boolval($this->debug)
                         ]
                 );
 
@@ -326,8 +326,11 @@ class Engine extends \Ease\SQL\Engine {
     /**
      * 
      */
-    public function loadCredentials() {
-        $this->credentials = \Ease\Functions::reindexArrayBy($this->fluent->from('changesapi')->select('serverurl,login,password',true)->fetchAll(), 'serverurl');
+    public function loadAbraFlexiServers() {
+        $this->credentials = \Ease\Functions::reindexArrayBy($this->getFluentPDO()->from('changesapi')->select('id,serverurl,login,password,doneid', true)->fetchAll(), 'serverurl');
+        foreach ($this->credentials as $flexiServer) {
+            $this->lastProcessedVersions[$flexiServer['id']] = intval($flexiServer['doneid']);
+        }
     }
 
     /**
@@ -345,9 +348,7 @@ class Engine extends \Ease\SQL\Engine {
             }
             $this->changes = \Ease\Functions::reindexArrayBy($changesToProcess, '@in-version');
             $changesDone = $this->processAbraFlexiChanges($this->changes);
-            if ($changesDone) {
-                $this->saveLastProcessedVersion(max($changesDone));
-            }
+
             $result = !empty($changesDone);
         }
         return $result;
@@ -435,6 +436,10 @@ class Engine extends \Ease\SQL\Engine {
         }
         $this->setMyTable('flexihistory');
         return $result;
+    }
+
+    public function getLastProcessedVersions() {
+        return [];
     }
 
 }
