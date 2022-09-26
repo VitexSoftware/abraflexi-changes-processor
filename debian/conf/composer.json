@@ -4,6 +4,7 @@
   "version": "0.1",
   "type": "project",
   "require": {
+    "rogervila/array-diff-multidimensional": "*",
     "deb/abraflexi": "*",
     "deb/ease-bricks": "*",
     "deb/abraflexi-bricks": "*",
