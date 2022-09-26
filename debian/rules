@@ -22,6 +22,7 @@ override_dh_install:
 	sed -i -e 's/.\/vendor/\/var\/lib\/composer\/abraflexi-changes-processor/g'    debian/abraflexi-changes-processor/usr/lib/abraflexi-changes-processor/phinx-adapter.php
 	sed -i 's/\.\.\/\.env/\/etc\/abraflexi-changes-processor\/\.env/' debian/abraflexi-changes-processor/usr/*/abraflexi-changes-processor/*.php
 	sed -i '/prefix =/c\ $$prefix = "\/usr\/lib\/abraflexi-changes-processor\/db\/";' debian/abraflexi-changes-processor/usr/lib/abraflexi-changes-processor/phinx-adapter.php
+	sed -i 's/__DIR__/"\/etc\/abraflexi-changes-processor"/' debian/abraflexi-changes-processor/usr/lib/abraflexi-changes-processor/phinx-adapter.php
 	sed -i '/DB_DATABASE/c\ $$sqlOptions["database"] = "\/var\/lib\/dbconfig-common\/sqlite3\/abraflexi-changes-processor\/".basename(\\Ease\\Functions::cfg("DB_DATABASE"));' debian/abraflexi-changes-processor/usr/lib/abraflexi-changes-processor/phinx-adapter.php
 	sed -i -e 's/..\/i18n/\/usr\/share\/locale/g'            	     debian/abraflexi-changes-processor/usr/share/abraflexi-changes-processor/*.php
 	mkdir -p                                                             debian/abraflexi-changes-processor-sqlite/usr/lib/abraflexi-changes-processor

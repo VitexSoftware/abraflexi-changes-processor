@@ -10,7 +10,6 @@ namespace AbraFlexi\Processor;
  * @copyright  2017-2020 Spoje.Net 2021-2022 VitexSoftware
  */
 define('APP_NAME', 'HistoryInitializer');
-define('EASE_LOGGER', 'console|syslog');
 require_once __DIR__ . '/../vendor/autoload.php';
 
 if (file_exists('../.env')) {
