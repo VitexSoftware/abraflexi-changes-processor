@@ -92,7 +92,7 @@ class MakeCom extends \Ease\Sand implements Notifier {
 
             curl_close($curl);
 
-            $engine->addStatusMessage($json_response, $status == 200 ? 'success' : 'error' );
+            $engine->addStatusMessage('MakeCOM: '.$json_response, $status == 200 ? 'success' : 'error' );
         }
     }
 

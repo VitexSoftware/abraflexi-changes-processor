@@ -153,8 +153,8 @@ abstract class Plugin extends \AbraFlexi\RW {
             if ($this->changeid) {
                 $change['changeid'] = $this->changeid;
             }
-            if($cutId){
-                $this->cache->cutFlexiHistory($cutId);        
+            if ($cutId) {
+                $this->cache->cutFlexiHistory($cutId);
             }
             $this->cache->insertToSQL($change);
         }
@@ -243,8 +243,7 @@ abstract class Plugin extends \AbraFlexi\RW {
      */
     public function update() {
         if ($this->debug === true) {
-            $this->addStatusMessage(\AbraFlexi\RO::uncode($this->getRecordIdent()) . ': ' . _('No Update Action Defined') . ' ' . json_encode($this->getChanges()),
-                    'debug');
+            $this->addStatusMessage(\AbraFlexi\RO::uncode($this->getRecordIdent()) . ': ' . _('No Update Action Defined'), 'debug');
         }
         return null;
     }
@@ -288,13 +287,17 @@ abstract class Plugin extends \AbraFlexi\RW {
      * @return array
      */
     public function getChanges() {
-        $previous = $this->getPreviousData();
-        if (empty($previous)) {
-            $previous = $this->getData();
+        if ($this->operation == 'create') {
+            $change = $this->getData();
         } else {
-            $previous = $this->dataDifference($this->getData(), $previous);
+            $previous = $this->getPreviousData();
+            if (empty($previous)) {
+                throw new \AbraFlexi\Exception(sprintf(_('No FlexiHistory for %s %s'), $this->evidence, $this->getRecordIdent()), $this);
+            } else {
+                $change = $this->dataDifference($this->getData(), $previous);
+            }
         }
-        return $previous;
+        return $change;
     }
 
     /**
@@ -420,7 +423,6 @@ abstract class Plugin extends \AbraFlexi\RW {
         return unserialize($abraflexiString);
     }
 
-    
     /**
      * 
      * @return type

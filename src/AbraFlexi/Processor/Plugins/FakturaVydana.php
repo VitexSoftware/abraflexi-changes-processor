@@ -44,8 +44,12 @@ class FakturaVydana extends Plugin {
      * @return boolean
      */
     public function isSettled() {
-        $changes = $this->getChanges();
-        return isset($changes['datUhr']) && !empty($changes['datUhr']) ? true : false;
+        try {
+            $changes = $this->getChanges();
+        } catch (\AbraFlexi\Exception $exc) {
+            $changes = [];
+        }
+        return isset($changes['datUhr']) && !empty((string) $changes['datUhr']) ? true : false;
     }
 
     /**
@@ -54,7 +58,11 @@ class FakturaVydana extends Plugin {
      * @return boolean
      */
     public function isStorned() {
-        $changes = $this->getChanges();
+        try {
+            $changes = $this->getChanges();
+        } catch (\AbraFlexi\Exception $exc) {
+            $changes = [];
+        }
         return (isset($changes['storno']) && !empty($changes['storno'])) ? true : false;
     }
 
@@ -69,18 +77,18 @@ class FakturaVydana extends Plugin {
         return true;
     }
 
-    /**
-     * Invoice was updated. What to do now ?
-     * 
-     * @return boolean Change was processed. Ok remeber it
-     */
-    public function update() {
-        if ($this->isSettled()) {
-            $this->addStatusMessage(sprintf('Processing settled invoice %s ',
-                            $this->getDataValue('kod')));
-        }
-        return true;
-    }
+//    /**
+//     * Invoice was updated. What to do now ?
+//     * 
+//     * @return boolean Change was processed. Ok remeber it
+//     */
+//    public function update() {
+//        if ($this->isSettled()) {
+//            $this->addStatusMessage(sprintf('Processing settled invoice %s ',
+//                            $this->getDataValue('kod')));
+//        }
+//        return true;
+//    }
 
     /**
      * Discover Invoice meta state
@@ -90,12 +98,6 @@ class FakturaVydana extends Plugin {
     public function getMetaState() {
         $metaState = $this->operation;
         if ($metaState == 'update') {
-            if ($this->isSettled()) {
-                $metaState = 'settled';
-            }
-            if ($this->isStorned()) {
-                $metaState = 'storno';
-            }
             foreach ([1, 2, 3] as $r) {
                 if ($this->isReminded($r)) {
                     $metaState = 'remind' . $r;
@@ -103,6 +105,12 @@ class FakturaVydana extends Plugin {
             }
             if ($this->isReminded(4)) {
                 $metaState = 'penalised';
+            }
+            if ($this->isSettled()) {
+                $metaState = 'settled';
+            }
+            if ($this->isStorned()) {
+                $metaState = 'storno';
             }
         }
         return $metaState;
@@ -117,7 +125,7 @@ class FakturaVydana extends Plugin {
      */
     public function isReminded($r) {
         $cols = [1 => 'datUp1', 2 => 'datUp2', 3 => 'datSmir', 4 => 'datPenale'];
-        return empty($this->getDataValue($cols[$r])) === false;
+        return empty((string) $this->getDataValue($cols[$r])) === false;
     }
 
 }

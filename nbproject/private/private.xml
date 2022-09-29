@@ -4,7 +4,11 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/home/vitex/Projects/EASE/abraflexi-changes-processor/src/chprocessor.php</file>
+            <file>file:/home/vitex/Projects/EASE/abraflexi-changes-processor/src/AbraFlexi/Processor/Plugin.php</file>
+            <file>file:/home/vitex/Projects/EASE/abraflexi-changes-processor/src/AbraFlexi/Processor/Plugins/FakturaVydana.php</file>
             <file>file:/home/vitex/Projects/EASE/abraflexi-changes-processor/.env</file>
+            <file>file:/home/vitex/Projects/EASE/abraflexi-changes-processor/src/AbraFlexi/Processor/Notify/MakeCom.php</file>
+            <file>file:/home/vitex/Projects/EASE/abraflexi-changes-processor/src/AbraFlexi/Processor/Plugins/Banka.php</file>
             <file>file:/home/vitex/Projects/EASE/abraflexi-changes-processor/src/AbraFlexi/Processor/Engine.php</file>
         </group>
     </open-files>
