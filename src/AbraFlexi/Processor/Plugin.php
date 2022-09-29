@@ -59,7 +59,7 @@ abstract class Plugin extends \AbraFlexi\RW {
      * 
      * @var string
      */
-    private $metaState;
+    protected $metaState = null;
 
     /**
      * 

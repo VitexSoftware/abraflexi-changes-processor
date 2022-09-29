@@ -77,18 +77,18 @@ class FakturaVydana extends Plugin {
         return true;
     }
 
-//    /**
-//     * Invoice was updated. What to do now ?
-//     * 
-//     * @return boolean Change was processed. Ok remeber it
-//     */
-//    public function update() {
-//        if ($this->isSettled()) {
-//            $this->addStatusMessage(sprintf('Processing settled invoice %s ',
-//                            $this->getDataValue('kod')));
-//        }
-//        return true;
-//    }
+    /**
+     * Invoice was updated. What to do now ?
+     * 
+     * @return boolean Change was processed. Ok remeber it
+     */
+    public function update() {
+        if ($this->isSettled()) {
+            $this->addStatusMessage(sprintf('Processing settled invoice %s ',
+                            $this->getDataValue('kod')));
+        }
+        return true;
+    }
 
     /**
      * Discover Invoice meta state
@@ -96,24 +96,26 @@ class FakturaVydana extends Plugin {
      * @return string settle|storno|remind1|remind2|remind3|penalised|create|update|delete
      */
     public function getMetaState() {
-        $metaState = $this->operation;
-        if ($metaState == 'update') {
-            foreach ([1, 2, 3] as $r) {
-                if ($this->isReminded($r)) {
-                    $metaState = 'remind' . $r;
+        if (is_null($this->metaState)) {
+            $this->metaState = $this->operation;
+            if ($this->metaState == 'update') {
+                foreach ([1, 2, 3] as $r) {
+                    if ($this->isReminded($r)) {
+                        $this->metaState = 'remind' . $r;
+                    }
+                }
+                if ($this->isReminded(4)) {
+                    $this->metaState = 'penalised';
+                }
+                if ($this->isSettled()) {
+                    $this->metaState = 'settled';
+                }
+                if ($this->isStorned()) {
+                    $this->metaState = 'storno';
                 }
             }
-            if ($this->isReminded(4)) {
-                $metaState = 'penalised';
-            }
-            if ($this->isSettled()) {
-                $metaState = 'settled';
-            }
-            if ($this->isStorned()) {
-                $metaState = 'storno';
-            }
         }
-        return $metaState;
+        return $this->metaState;
     }
 
     /**
