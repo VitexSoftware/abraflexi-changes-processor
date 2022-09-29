@@ -138,7 +138,7 @@ class Engine extends \Ease\SQL\Engine {
                 );
 
                 $saver = $this->getHandler($handlerClass, $docId, $changeMeta);
-                if (($saver->lastResponseCode === 200) && $saver->process($operation) && ($this->debug === true)) {
+                if (($saver->lastResponseCode === 200) && $saver->process($operation)) {
 
                     $ident = \AbraFlexi\RO::uncode($saver->getRecordIdent());
                     if (!empty($ident)) {
@@ -147,7 +147,7 @@ class Engine extends \Ease\SQL\Engine {
                     $this->addStatusMessage(sprintf(_('Processing Change %s/%s version %d  ⇶ %s ( %s %s/%s ) Last %d'),
                                     $changepos, count($this->changes), $inVersion, $saver->getMetaState(),
                                     $operation, $evidence, $id,
-                                    $this->lastProcessedVersion), 'success');
+                                    $this->lastProcessedVersions[$this->sourceId]), 'success');
 
                     foreach (Plugin::classesInNamespace('AbraFlexi\Processor\Notify') as $notifierClass) {
                         if (!array_key_exists($notifierClass, $this->notifiers)) {
@@ -340,7 +340,7 @@ class Engine extends \Ease\SQL\Engine {
      */
     public function processCachedChanges() {
         $result = false;
-        $changesRaw = $this->fluent->from('changes_cache')->select('serverurl')->leftJoin('changesapi ON changes_cache.source=changesapi.id')->orderBy('inversion');
+        $changesRaw = $this->fluent->from('changes_cache')->select('serverurl')->leftJoin('changesapi ON changes_cache.source=changesapi.id')->orderBy('inversion');        
         if (!empty($changesRaw)) {
             $changesToProcess = [];
             foreach ($changesRaw as $changeId => $changeDataSaved) {

@@ -139,8 +139,9 @@ abstract class Plugin extends \AbraFlexi\RW {
 
     /**
      * @todo Ukladat jen potrebna data
+     * @param int $cutId delete all records bigger than id
      */
-    public function saveHistory() {
+    public function saveHistory($cutId = null) {
         $recordId = $this->getMyKey();
         $evidence = $this->getEvidence();
         if ($this->cache->getLastHistoryState($evidence, $recordId) != $this->getData()) {
@@ -151,6 +152,9 @@ abstract class Plugin extends \AbraFlexi\RW {
                 'json' => self::serialize($this->getData())];
             if ($this->changeid) {
                 $change['changeid'] = $this->changeid;
+            }
+            if($cutId){
+                $this->cache->cutFlexiHistory($cutId);        
             }
             $this->cache->insertToSQL($change);
         }
@@ -413,10 +417,10 @@ abstract class Plugin extends \AbraFlexi\RW {
      * @return array
      */
     public function unserialize($abraflexiString) {
-        echo $abraflexiString;
         return unserialize($abraflexiString);
     }
 
+    
     /**
      * 
      * @return type

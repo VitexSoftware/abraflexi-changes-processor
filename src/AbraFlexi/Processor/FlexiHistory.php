@@ -137,4 +137,13 @@ class FlexiHistory extends \Ease\SQL\Engine {
         return $previous;
     }
 
+    /**
+     * Delete FlexiCache records newer than $id
+     * 
+     * @param int $id
+     */
+    public function cutFlexiHistory($id = 1) {
+        $this->getFluentPDO()->deleteFrom($this->getMyTable())->where('id <', $id)->execute();
+    }
+    
 }
