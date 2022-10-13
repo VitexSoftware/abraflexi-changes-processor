@@ -13,7 +13,7 @@ namespace AbraFlexi\Processor;
  *
  * @author vitex
  */
-class ChangesApi extends \Ease\SQL\Engine {
+class ChangesApi extends Engine {
 
     public $myTable = 'changesapi';
 

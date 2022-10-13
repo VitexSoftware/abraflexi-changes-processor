@@ -63,7 +63,7 @@ class Engine extends \Ease\SQL\Engine {
      * Webhook Processor lockfile
      * @var string 
      */
-    private $lockfile = '/tmp/webhook.lock';
+    protected $lockfile = '/tmp/webhook.lock';
 
     /**
      * Current SourceID
@@ -89,7 +89,6 @@ class Engine extends \Ease\SQL\Engine {
     public function __construct($options = []) {
         parent::__construct(null, $options);
         $this->lockfile = sys_get_temp_dir() . '/webhook.lock';
-        $this->myTable = 'changesapi';
         $this->locked = $this->locked();
         $this->debug = true;
         Plugin::loadClassesInDir(__DIR__ . '/Notify');
@@ -340,8 +339,8 @@ class Engine extends \Ease\SQL\Engine {
      */
     public function processCachedChanges() {
         $result = false;
-        $changesRaw = $this->fluent->from('changes_cache')->select('serverurl')->leftJoin('changesapi ON changes_cache.source=changesapi.id')->orderBy('inversion');        
-        if (!empty($changesRaw)) {
+        $changesRaw = $this->fluent->from('changes_cache')->select('serverurl')->leftJoin('changesapi ON changes_cache.source=changesapi.id')->orderBy('inversion');
+        if ($changesRaw->count()) {
             $changesToProcess = [];
             foreach ($changesRaw as $changeId => $changeDataSaved) {
                 $changesToProcess[$changeId] = self::sqlColsToJsonCols($changeDataSaved);

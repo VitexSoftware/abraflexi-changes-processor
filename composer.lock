@@ -948,12 +948,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/VitexSoftware/php-abraflexi-bricks.git",
-                "reference": "d86e64c2da96b0a3c123219f2461a470efeaffe5"
+                "reference": "f937a3548e01fcf4c1d51801f46b3862aa8cdece"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/VitexSoftware/php-abraflexi-bricks/zipball/d86e64c2da96b0a3c123219f2461a470efeaffe5",
-                "reference": "d86e64c2da96b0a3c123219f2461a470efeaffe5",
+                "url": "https://api.github.com/repos/VitexSoftware/php-abraflexi-bricks/zipball/f937a3548e01fcf4c1d51801f46b3862aa8cdece",
+                "reference": "f937a3548e01fcf4c1d51801f46b3862aa8cdece",
                 "shasum": ""
             },
             "require": {
@@ -988,7 +988,7 @@
                 "issues": "https://github.com/VitexSoftware/php-abraflexi-bricks/issues",
                 "source": "https://github.com/VitexSoftware/php-abraflexi-bricks/tree/main"
             },
-            "time": "2022-09-27T20:18:50+00:00"
+            "time": "2022-09-29T00:09:07+00:00"
         },
         {
             "name": "vitexsoftware/ease-core",
@@ -1056,12 +1056,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/VitexSoftware/php-ease-fluentpdo.git",
-                "reference": "4bf58c66a2deaa7e2fa62bb0266ae3dd75ee67bb"
+                "reference": "98f5d288a6c4cf511959e0a2b7ca2b1f9fd25793"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/VitexSoftware/php-ease-fluentpdo/zipball/4bf58c66a2deaa7e2fa62bb0266ae3dd75ee67bb",
-                "reference": "4bf58c66a2deaa7e2fa62bb0266ae3dd75ee67bb",
+                "url": "https://api.github.com/repos/VitexSoftware/php-ease-fluentpdo/zipball/98f5d288a6c4cf511959e0a2b7ca2b1f9fd25793",
+                "reference": "98f5d288a6c4cf511959e0a2b7ca2b1f9fd25793",
                 "shasum": ""
             },
             "require": {
@@ -1104,7 +1104,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2022-08-19T13:34:28+00:00"
+            "time": "2022-10-02T01:11:38+00:00"
         },
         {
             "name": "vitexsoftware/ease-html",
@@ -1165,12 +1165,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/core.git",
-                "reference": "77e53e3784863c1b8006464b82ab842ee7c58e6b"
+                "reference": "6c8c20a59c5d6b03809d5fbc7e1b2f1a5ba910fd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/core/zipball/77e53e3784863c1b8006464b82ab842ee7c58e6b",
-                "reference": "77e53e3784863c1b8006464b82ab842ee7c58e6b",
+                "url": "https://api.github.com/repos/cakephp/core/zipball/6c8c20a59c5d6b03809d5fbc7e1b2f1a5ba910fd",
+                "reference": "6c8c20a59c5d6b03809d5fbc7e1b2f1a5ba910fd",
                 "shasum": ""
             },
             "require": {
@@ -1214,7 +1214,7 @@
                 "issues": "https://github.com/cakephp/cakephp/issues",
                 "source": "https://github.com/cakephp/core"
             },
-            "time": "2022-08-26T02:01:18+00:00"
+            "time": "2022-09-25T07:14:39+00:00"
         },
         {
             "name": "cakephp/database",
@@ -1222,12 +1222,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/database.git",
-                "reference": "eec6239b0734e2a4dfe212dc93bcd505c7d296ef"
+                "reference": "d33ced21bcf92390a9184c67c6feb8dfa61100d9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/database/zipball/eec6239b0734e2a4dfe212dc93bcd505c7d296ef",
-                "reference": "eec6239b0734e2a4dfe212dc93bcd505c7d296ef",
+                "url": "https://api.github.com/repos/cakephp/database/zipball/d33ced21bcf92390a9184c67c6feb8dfa61100d9",
+                "reference": "d33ced21bcf92390a9184c67c6feb8dfa61100d9",
                 "shasum": ""
             },
             "require": {
@@ -1269,7 +1269,7 @@
                 "issues": "https://github.com/cakephp/cakephp/issues",
                 "source": "https://github.com/cakephp/database"
             },
-            "time": "2022-08-18T21:01:25+00:00"
+            "time": "2022-09-25T07:14:39+00:00"
         },
         {
             "name": "cakephp/datasource",
@@ -1277,12 +1277,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/datasource.git",
-                "reference": "6fbd1f49833dedf3bd351e1a98b18133a6b9e86c"
+                "reference": "4c95fdf1de61cbc8d8ab4b34643f4acc250fc569"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/datasource/zipball/6fbd1f49833dedf3bd351e1a98b18133a6b9e86c",
-                "reference": "6fbd1f49833dedf3bd351e1a98b18133a6b9e86c",
+                "url": "https://api.github.com/repos/cakephp/datasource/zipball/4c95fdf1de61cbc8d8ab4b34643f4acc250fc569",
+                "reference": "4c95fdf1de61cbc8d8ab4b34643f4acc250fc569",
                 "shasum": ""
             },
             "require": {
@@ -1327,7 +1327,7 @@
                 "issues": "https://github.com/cakephp/cakephp/issues",
                 "source": "https://github.com/cakephp/datasource"
             },
-            "time": "2022-08-18T20:55:21+00:00"
+            "time": "2022-09-25T07:14:39+00:00"
         },
         {
             "name": "cakephp/utility",
@@ -1549,12 +1549,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/phinx.git",
-                "reference": "9a6ce1e7fdf0fa4e602ba5875b5bc9442ccaa115"
+                "reference": "6eb0f295e140ed2804d93396755f0ce9ada4ec07"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/phinx/zipball/9a6ce1e7fdf0fa4e602ba5875b5bc9442ccaa115",
-                "reference": "9a6ce1e7fdf0fa4e602ba5875b5bc9442ccaa115",
+                "url": "https://api.github.com/repos/cakephp/phinx/zipball/6eb0f295e140ed2804d93396755f0ce9ada4ec07",
+                "reference": "6eb0f295e140ed2804d93396755f0ce9ada4ec07",
                 "shasum": ""
             },
             "require": {
@@ -1626,9 +1626,9 @@
             ],
             "support": {
                 "issues": "https://github.com/cakephp/phinx/issues",
-                "source": "https://github.com/cakephp/phinx/tree/0.12.12"
+                "source": "https://github.com/cakephp/phinx/tree/0.12.13"
             },
-            "time": "2022-07-09T18:53:51+00:00"
+            "time": "2022-10-03T04:57:40+00:00"
         },
         {
             "name": "symfony/config",

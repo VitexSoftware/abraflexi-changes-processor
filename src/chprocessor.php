@@ -15,7 +15,7 @@ if (file_exists('../.env')) {
     \Ease\Shared::singleton()->loadConfig('../.env', true);
 }
 
-$hooker = new Engine();
+$hooker = new ChangesApi();
 $hooker->logBanner();
 //$hooker->debug = true;
 

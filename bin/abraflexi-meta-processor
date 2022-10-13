@@ -1,0 +1,2 @@
+#!/bin/sh
+php -q -f /usr/share/abraflexi-changes-processor/metaprocessor.php $1
