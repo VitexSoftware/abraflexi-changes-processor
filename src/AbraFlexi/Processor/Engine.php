@@ -81,7 +81,7 @@ class Engine extends \Ease\SQL\Engine {
      * 
      * @var array
      */
-    private $credentials = [];
+    protected $credentials = [];
 
     /**
      * Prijmac WebHooku
