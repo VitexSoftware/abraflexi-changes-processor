@@ -133,7 +133,7 @@ class Meta extends Engine {
             'EASE_LOGGER' => empty($meta['email']) ? 'syslog' : 'syslog|email',
         ];
 
-        foreach ($envNames as $envName => $sqlValue) {
+        foreach (array_merge($meta, $envNames) as $envName => $sqlValue) {
             $this->addStatusMessage(sprintf(_('Setting Environment %s to %s'), $envName, $sqlValue), 'debug');
             putenv($envName . '=' . $sqlValue);
         }
