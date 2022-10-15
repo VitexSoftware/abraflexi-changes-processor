@@ -140,13 +140,13 @@ class Meta extends Engine {
 
         $exec = $command;
         $cmdparams = '';
-        $this->addStatusMessage('begin' . $exec . ' ' . $cmdparams . '@' . $command);
+        $this->addStatusMessage('begin: ' . $exec . ' ' . $cmdparams . '@' . $command);
 
         foreach (explode("\n", shell_exec($exec . ' ' . $cmdparams)) as $row) {
             $this->addStatusMessage($row, 'debug');
         }
 
-        $this->addStatusMessage('end' . $exec . '@' . $command);
+        $this->addStatusMessage('end: ' . $exec . '@' . $command);
 
         return $command;
     }
