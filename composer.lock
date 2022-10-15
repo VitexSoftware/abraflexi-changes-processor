@@ -70,12 +70,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/mevdschee/php-crud-api.git",
-                "reference": "92a246945954fec6bb63a3ec7076f9d0f20a6ce7"
+                "reference": "85702b2624f2d374176e9a019d09c6ba4851490e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mevdschee/php-crud-api/zipball/92a246945954fec6bb63a3ec7076f9d0f20a6ce7",
-                "reference": "92a246945954fec6bb63a3ec7076f9d0f20a6ce7",
+                "url": "https://api.github.com/repos/mevdschee/php-crud-api/zipball/85702b2624f2d374176e9a019d09c6ba4851490e",
+                "reference": "85702b2624f2d374176e9a019d09c6ba4851490e",
                 "shasum": ""
             },
             "require": {
@@ -139,7 +139,7 @@
                 "issues": "https://github.com/mevdschee/php-crud-api/issues",
                 "source": "https://github.com/mevdschee/php-crud-api/tree/main"
             },
-            "time": "2022-09-08T11:32:42+00:00"
+            "time": "2022-10-10T09:03:44+00:00"
         },
         {
             "name": "nyholm/psr7",
@@ -889,12 +889,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Spoje-NET/php-abraflexi.git",
-                "reference": "950b96ec38401641186dfa8dd0c33cdd1b4caf68"
+                "reference": "4638f36135a5cf753f504fe0cc8472dbfd76d672"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Spoje-NET/php-abraflexi/zipball/950b96ec38401641186dfa8dd0c33cdd1b4caf68",
-                "reference": "950b96ec38401641186dfa8dd0c33cdd1b4caf68",
+                "url": "https://api.github.com/repos/Spoje-NET/php-abraflexi/zipball/4638f36135a5cf753f504fe0cc8472dbfd76d672",
+                "reference": "4638f36135a5cf753f504fe0cc8472dbfd76d672",
                 "shasum": ""
             },
             "require": {
@@ -940,7 +940,7 @@
                 "issues": "https://github.com/Spoje-NET/php-abraflexi/issues",
                 "source": "https://github.com/Spoje-NET/php-abraflexi/tree/main"
             },
-            "time": "2022-09-14T03:05:26+00:00"
+            "time": "2022-10-14T10:52:17+00:00"
         },
         {
             "name": "vitexsoftware/abraflexi-bricks",
@@ -948,17 +948,17 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/VitexSoftware/php-abraflexi-bricks.git",
-                "reference": "f937a3548e01fcf4c1d51801f46b3862aa8cdece"
+                "reference": "d21128dedfc3d4989399a328f8b6e2d98b9aede3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/VitexSoftware/php-abraflexi-bricks/zipball/f937a3548e01fcf4c1d51801f46b3862aa8cdece",
-                "reference": "f937a3548e01fcf4c1d51801f46b3862aa8cdece",
+                "url": "https://api.github.com/repos/VitexSoftware/php-abraflexi-bricks/zipball/d21128dedfc3d4989399a328f8b6e2d98b9aede3",
+                "reference": "d21128dedfc3d4989399a328f8b6e2d98b9aede3",
                 "shasum": ""
             },
             "require": {
-                "spojenet/flexibee": "dev-main",
-                "vitexsoftware/ease-html": ">=1.25"
+                "spojenet/flexibee": "*",
+                "vitexsoftware/ease-core-bricks": "*"
             },
             "require-dev": {
                 "codeception/codeception": "*",
@@ -988,7 +988,7 @@
                 "issues": "https://github.com/VitexSoftware/php-abraflexi-bricks/issues",
                 "source": "https://github.com/VitexSoftware/php-abraflexi-bricks/tree/main"
             },
-            "time": "2022-09-29T00:09:07+00:00"
+            "time": "2022-10-04T18:29:04+00:00"
         },
         {
             "name": "vitexsoftware/ease-core",
@@ -1051,17 +1051,70 @@
             "time": "2022-09-15T16:27:36+00:00"
         },
         {
+            "name": "vitexsoftware/ease-core-bricks",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/VitexSoftware/php-ease-bricks.git",
+                "reference": "9c2d9bfe34b38875d1b036568cb4c2338a9b89c0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/VitexSoftware/php-ease-bricks/zipball/9c2d9bfe34b38875d1b036568cb4c2338a9b89c0",
+                "reference": "9c2d9bfe34b38875d1b036568cb4c2338a9b89c0",
+                "shasum": ""
+            },
+            "require": {
+                "vitexsoftware/ease-html": ">=1.31"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Ease\\": "src/Ease",
+                    "Ease\\ui\\": "src/Ease/ui"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Vítězslav Dvořák",
+                    "email": "info@vitexsoftware.cz",
+                    "homepage": "http://vitexsoftware.com/"
+                }
+            ],
+            "description": "EasePHP framework addons and code snipplets",
+            "homepage": "http://v.s.cz/ease.php",
+            "support": {
+                "issues": "https://github.com/VitexSoftware/php-ease-bricks/issues",
+                "source": "https://github.com/VitexSoftware/php-ease-bricks/tree/1.2"
+            },
+            "funding": [
+                {
+                    "url": "https://www.patreon.com/VitexSoftware",
+                    "type": "patreon"
+                }
+            ],
+            "time": "2022-10-04T18:10:52+00:00"
+        },
+        {
             "name": "vitexsoftware/ease-fluentpdo",
             "version": "dev-main",
             "source": {
                 "type": "git",
                 "url": "https://github.com/VitexSoftware/php-ease-fluentpdo.git",
-                "reference": "98f5d288a6c4cf511959e0a2b7ca2b1f9fd25793"
+                "reference": "3d7d3e071c2fc259c08881687149ad23f1070080"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/VitexSoftware/php-ease-fluentpdo/zipball/98f5d288a6c4cf511959e0a2b7ca2b1f9fd25793",
-                "reference": "98f5d288a6c4cf511959e0a2b7ca2b1f9fd25793",
+                "url": "https://api.github.com/repos/VitexSoftware/php-ease-fluentpdo/zipball/3d7d3e071c2fc259c08881687149ad23f1070080",
+                "reference": "3d7d3e071c2fc259c08881687149ad23f1070080",
                 "shasum": ""
             },
             "require": {
@@ -1072,8 +1125,9 @@
                 "vitexsoftware/ease-framework": "*"
             },
             "require-dev": {
+                "cakephp/migrations": "3.x-dev",
                 "phpunit/phpunit": "^9",
-                "robmorgan/phinx": "^0.12.3"
+                "robmorgan/phinx": "^0.12.x-dev"
             },
             "default-branch": true,
             "type": "library",
@@ -1104,7 +1158,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2022-10-02T01:11:38+00:00"
+            "time": "2022-10-13T12:27:37+00:00"
         },
         {
             "name": "vitexsoftware/ease-html",
@@ -1549,12 +1603,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/phinx.git",
-                "reference": "6eb0f295e140ed2804d93396755f0ce9ada4ec07"
+                "reference": "1186e10fd9d8cf4583ffe23a86b96fd61da7bbe2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/phinx/zipball/6eb0f295e140ed2804d93396755f0ce9ada4ec07",
-                "reference": "6eb0f295e140ed2804d93396755f0ce9ada4ec07",
+                "url": "https://api.github.com/repos/cakephp/phinx/zipball/1186e10fd9d8cf4583ffe23a86b96fd61da7bbe2",
+                "reference": "1186e10fd9d8cf4583ffe23a86b96fd61da7bbe2",
                 "shasum": ""
             },
             "require": {
@@ -1626,9 +1680,9 @@
             ],
             "support": {
                 "issues": "https://github.com/cakephp/phinx/issues",
-                "source": "https://github.com/cakephp/phinx/tree/0.12.13"
+                "source": "https://github.com/cakephp/phinx/tree/0.x"
             },
-            "time": "2022-10-03T04:57:40+00:00"
+            "time": "2022-10-13T09:22:35+00:00"
         },
         {
             "name": "symfony/config",
@@ -1715,12 +1769,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "3f97f6c7b7e26848a90c0c0cfb91eeb2bb8618be"
+                "reference": "984ea2c0f45f42dfed01d2f3987b187467c4b16d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/3f97f6c7b7e26848a90c0c0cfb91eeb2bb8618be",
-                "reference": "3f97f6c7b7e26848a90c0c0cfb91eeb2bb8618be",
+                "url": "https://api.github.com/repos/symfony/console/zipball/984ea2c0f45f42dfed01d2f3987b187467c4b16d",
+                "reference": "984ea2c0f45f42dfed01d2f3987b187467c4b16d",
                 "shasum": ""
             },
             "require": {
@@ -1806,7 +1860,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-08-26T13:50:20+00:00"
+            "time": "2022-10-07T08:01:20+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",
@@ -2584,12 +2638,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/string.git",
-                "reference": "2900c668a32138a34118740de3e4d5a701801f53"
+                "reference": "089e7237497fae7a9c404d0c3aeb8db3254733e4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/string/zipball/2900c668a32138a34118740de3e4d5a701801f53",
-                "reference": "2900c668a32138a34118740de3e4d5a701801f53",
+                "url": "https://api.github.com/repos/symfony/string/zipball/089e7237497fae7a9c404d0c3aeb8db3254733e4",
+                "reference": "089e7237497fae7a9c404d0c3aeb8db3254733e4",
                 "shasum": ""
             },
             "require": {
@@ -2662,7 +2716,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-09-01T01:52:16+00:00"
+            "time": "2022-10-05T15:16:54+00:00"
         }
     ],
     "aliases": [],

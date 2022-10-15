@@ -134,7 +134,7 @@ class Meta extends Engine {
         ];
 
         foreach (array_merge($meta, $envNames) as $envName => $sqlValue) {
-            $this->addStatusMessage(sprintf(_('Setting Environment %s to %s'), $envName, $sqlValue), 'debug');
+            $this->addStatusMessage(sprintf(_('Setting Environment %s to %s'), strtoupper($envName), $sqlValue), 'debug');
             putenv($envName . '=' . $sqlValue);
         }
 

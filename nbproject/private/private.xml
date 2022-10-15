@@ -2,6 +2,22 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/home/vitex/Projects/EASE/abraflexi-changes-processor/src/chprocessor.php</file>
+            <file>file:/home/vitex/Projects/EASE/abraflexi-changes-processor/vendor/composer/ClassLoader.php</file>
+            <file>file:/home/vitex/Projects/EASE/abraflexi-changes-processor/src/AbraFlexi/Processor/Plugins/FakturaPrijata.php</file>
+            <file>file:/home/vitex/Projects/EASE/abraflexi-changes-processor/.env</file>
+            <file>file:/home/vitex/Projects/EASE/abraflexi-changes-processor/src/metaprocessor.php</file>
+            <file>file:/home/vitex/Projects/EASE/abraflexi-changes-processor/db/migrations/20220919181733_credentials.php</file>
+            <file>file:/home/vitex/Projects/EASE/abraflexi-changes-processor/db/migrations/20221002210858_meta_rules.php</file>
+            <file>file:/home/vitex/Projects/EASE/abraflexi-changes-processor/db/migrations/20210414121024_meta_states.php</file>
+            <file>file:/home/vitex/Projects/EASE/abraflexi-changes-processor/db/migrations/20220928185042_apis_create_update.php</file>
+            <file>file:/home/vitex/Projects/EASE/abraflexi-changes-processor/src/AbraFlexi/Processor/Plugin.php</file>
+            <file>file:/home/vitex/Projects/EASE/abraflexi-changes-processor/src/AbraFlexi/Processor/Plugins/FakturaVydana.php</file>
+            <file>file:/home/vitex/Projects/EASE/abraflexi-changes-processor/src/AbraFlexi/Processor/Meta.php</file>
+            <file>file:/home/vitex/Projects/EASE/abraflexi-changes-processor/db/migrations/20221013183122_empty_credentials.php</file>
+            <file>file:/home/vitex/Projects/EASE/abraflexi-changes-processor/src/AbraFlexi/Processor/Plugins/ObjednavkaPrijata.php</file>
+            <file>file:/home/vitex/Projects/EASE/abraflexi-changes-processor/src/AbraFlexi/Processor/Engine.php</file>
+        </group>
     </open-files>
 </project-private>

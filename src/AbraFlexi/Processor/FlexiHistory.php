@@ -50,7 +50,7 @@ class FlexiHistory extends \Ease\SQL\Engine {
                 $handlerClass = '\\AbraFlexi\\Processor\\Plugins\\' . $handlerClassName;
                 if (class_exists($handlerClass)) {
                     $plugins[$handlerClassName] = new $handlerClass(null, ['history' => $this]);
-                };
+                }
             }
         }
         $d->close();
