@@ -2,8 +2,11 @@ AbraFlexi Changes Processor
 ===========================
 
 
-Process & notify chanches collected by [AbraFlexi WebHook Acceptor](https://github.com/VitexSoftware/abraflexi-webhook-acceptor)
+Process & notify changes collected by [AbraFlexi WebHook Acceptor](https://github.com/VitexSoftware/abraflexi-webhook-acceptor)
 
+Second stage use set of [Plugins](src/AbraFlexi/Processor/Plugins) to discover the "Meta State".  
+
+Third stage process collected Meta States using custom commands.
 
 .env file contents
 ------------------
