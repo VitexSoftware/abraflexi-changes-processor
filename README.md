@@ -45,3 +45,7 @@ sudo apt install abraflexi-webhook-acceptor
 
 
 
+Tools
+-----
+
+* [Order Status changes](https://github.com/Spoje-NET/abraflexi-order-status-changer) change order status according the keyword value in note

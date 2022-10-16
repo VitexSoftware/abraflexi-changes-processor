@@ -36,6 +36,8 @@ class Meta extends Engine {
 
     public function handle($meta) {
         $result = [];
+        $this->setMyKey($meta['id']);
+        $this->setObjectName();
         $components = parse_url($meta['uri']);
         $pathParts = explode('/', $components['path']);
         $meta['documentID'] = urldecode($pathParts[4]);
@@ -135,7 +137,7 @@ class Meta extends Engine {
 
         foreach (array_merge($meta, $envNames) as $envName => $sqlValue) {
             $this->addStatusMessage(sprintf(_('Setting Environment %s to %s'), strtoupper($envName), $sqlValue), 'debug');
-            putenv($envName . '=' . $sqlValue);
+            putenv(strtoupper($envName) . '=' . $sqlValue);
         }
 
         $exec = $command;
