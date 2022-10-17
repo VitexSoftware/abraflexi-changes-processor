@@ -123,7 +123,8 @@ class Meta extends Engine {
      * @return type
      */
     public function executeCommand($command, $meta) {
-
+        $stdout = '';
+        $stderr = '';
         $meta['email'] = '';
 
         $envNames = [
@@ -142,15 +143,44 @@ class Meta extends Engine {
 
         $exec = $command;
         $cmdparams = '';
-        $this->addStatusMessage('start: ' . $exec . ' ' . $cmdparams);
+        $this->addStatusMessage('start: ' . $exec . ' ' . $cmdparams, 'debug');
+        $this->addStatusMessage('done', $this->shellExec($exec . ' ' . $cmdparams, $stdout, $stderr) ? 'warning' : 'success' );
 
-        foreach (explode("\n", shell_exec($exec . ' ' . $cmdparams)) as $row) {
-            $this->addStatusMessage($row, 'debug');
+        if ($stdout) {
+            foreach (explode("\n", $stdout) as $row) {
+                $this->addStatusMessage($row, 'success');
+            }
+        }
+        if ($stderr) {
+            foreach (explode("\n", $stderr) as $row) {
+                $this->addStatusMessage($row, 'error');
+            }
         }
 
-        $this->addStatusMessage('end: ' . $exec);
+        $this->addStatusMessage('end: ' . $exec, 'debug');
 
         return $command;
+    }
+
+    /**
+     * Perform subcommand
+     * 
+     * @param string $cmd
+     * @param string $stdout
+     * @param string $stderr
+     * 
+     * @return int
+     */
+    function shellExec($cmd, &$stdout = null, &$stderr = null) {
+        $proc = proc_open($cmd, [
+            1 => ['pipe', 'w'],
+            2 => ['pipe', 'w'],
+                ], $pipes);
+        $stdout = stream_get_contents($pipes[1]);
+        fclose($pipes[1]);
+        $stderr = stream_get_contents($pipes[2]);
+        fclose($pipes[2]);
+        return proc_close($proc);
     }
 
 }
