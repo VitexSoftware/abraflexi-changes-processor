@@ -134,6 +134,7 @@ class Meta extends Engine {
             'ABRAFLEXI_COMPANY' => $meta['company'],
             'EASE_MAILTO' => $meta['email'],
             'EASE_LOGGER' => empty($meta['email']) ? 'syslog' : 'syslog|email',
+            'PATH' => \Ease\Functions::cfg('PATH','/usr/bin:/usr/local/bin')
         ];
 
         foreach (array_merge($meta, $envNames) as $envName => $sqlValue) {
