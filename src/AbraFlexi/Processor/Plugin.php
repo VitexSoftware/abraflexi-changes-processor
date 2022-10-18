@@ -208,7 +208,7 @@ abstract class Plugin extends \AbraFlexi\RW {
     /**
      * Discover current MetaState
      * 
-     * @return int
+     * @return string
      */
     public function getMetaState() {
         if ($this->debug === true) {
