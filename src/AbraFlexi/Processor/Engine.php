@@ -90,7 +90,6 @@ class Engine extends \Ease\SQL\Engine {
         parent::__construct(null, $options);
         $this->lockfile = sys_get_temp_dir() . '/webhook.lock';
         $this->locked = $this->locked();
-        $this->debug = true;
         Plugin::loadClassesInDir(__DIR__ . '/Notify');
         $this->loadAbraFlexiServers();
     }
