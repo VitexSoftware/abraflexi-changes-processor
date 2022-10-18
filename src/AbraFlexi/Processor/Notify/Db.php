@@ -29,10 +29,12 @@ class Db extends \Ease\SQL\Engine implements Notifier {
     public $myTable = 'meta';
 
     /**
+     * Save record into meta table
      * 
      * @param \AbraFlexi\Processor\Plugin $handler
      */
     function notify(\AbraFlexi\Processor\Plugin $handler) {
+        $handler->setDataValue('external-ids', null);
         $this->addStatusMessage('Notify to Database', is_integer($this->insertToSQL(['uri' => $handler->getApiURL(), 'meta' => $handler->getMetaState()])) ? 'success' : 'error' );
     }
 

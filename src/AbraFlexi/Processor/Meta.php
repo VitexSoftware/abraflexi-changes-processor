@@ -26,14 +26,29 @@ class Meta extends Engine {
      */
     protected $lockfile = '/tmp/meta.lock';
 
+    /**
+     * 
+     * @return type
+     */
     public function unprocessed() {
         return $this->listingQuery()->where('processed IS NULL')->orderBy('id');
     }
 
+    /**
+     * 
+     * @return type
+     */
     public function firstUnprocessed() {
         return $this->unprocessed()->limit(1);
     }
 
+    /**
+     * Handle Metastate
+     * 
+     * @param array $meta
+     * 
+     * @return type
+     */
     public function handle($meta) {
         $result = [];
         $this->setMyKey($meta['id']);
@@ -69,12 +84,22 @@ class Meta extends Engine {
         return $result;
     }
 
+    /**
+     * 
+     */
     public function processMetas() {
         foreach ($this->unprocessed() as $meta) {
             $this->handle($meta);
         }
     }
 
+    /**
+     * Obtaing Commands to handle given meta state
+     * 
+     * @param array $meta
+     * 
+     * @return array of commands
+     */
     public function getRulesFor($meta) {
 
 //    [id] => 1
@@ -106,6 +131,13 @@ class Meta extends Engine {
         return $rules;
     }
 
+    /**
+     * Get Commands for query
+     * 
+     * @param \Envms\FluentPDO\Query $rules
+     * 
+     * @return array
+     */
     public function getCommandsFor($rules) {
         $commands = [];
         while ($command = $rules->fetch()) {
@@ -134,7 +166,7 @@ class Meta extends Engine {
             'ABRAFLEXI_COMPANY' => $meta['company'],
             'EASE_MAILTO' => $meta['email'],
             'EASE_LOGGER' => empty($meta['email']) ? 'syslog' : 'syslog|email',
-            'PATH' => \Ease\Functions::cfg('PATH','/usr/bin:/usr/local/bin')
+            'PATH' => \Ease\Functions::cfg('PATH', '/usr/bin:/usr/local/bin')
         ];
 
         foreach (array_merge($meta, $envNames) as $envName => $sqlValue) {
@@ -144,8 +176,10 @@ class Meta extends Engine {
 
         $exec = $command;
         $cmdparams = '';
-        $this->addStatusMessage('start: ' . $exec . ' ' . $cmdparams, 'debug');
-        $this->addStatusMessage('done', $this->shellExec($exec . ' ' . $cmdparams, $stdout, $stderr) ? 'warning' : 'success' );
+        if ($this->debug) {
+            $this->addStatusMessage('start: ' . $exec . ' ' . $cmdparams, 'debug');
+        }
+        $this->addStatusMessage($exec . ' done', $this->shellExec($exec . ' ' . $cmdparams, $stdout, $stderr) ? 'warning' : 'success' );
 
         if ($stdout) {
             foreach (explode("\n", $stdout) as $row) {
@@ -158,8 +192,9 @@ class Meta extends Engine {
             }
         }
 
-        $this->addStatusMessage('end: ' . $exec, 'debug');
-
+        if ($this->debug) {
+            $this->addStatusMessage('end: ' . $exec, 'debug');
+        }
         return $command;
     }
 
