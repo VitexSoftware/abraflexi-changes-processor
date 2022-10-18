@@ -16,9 +16,9 @@ if (file_exists('../.env')) {
 }
 
 $hooker = new ChangesApi();
-$hooker->logBanner();
-//$hooker->debug = true;
-
+if(\Ease\Functions::cfg('APP_DEBUG')){
+    $hooker->logBanner(\Ease\Shared::appName());
+}
 
 if (\Ease\Functions::cfg('PROCESSING_ENABLED') == 'True' ) {
     $lockerPid = $hooker->locked();
