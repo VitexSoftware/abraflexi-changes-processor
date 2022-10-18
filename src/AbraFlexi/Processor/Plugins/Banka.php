@@ -9,21 +9,28 @@ namespace AbraFlexi\Processor\Plugins;
  */
 class Banka  extends \AbraFlexi\Processor\Plugin
 {
+    /**
+     * What we handle ?
+     * @var string
+     */
     public $evidence = 'banka';
+    
+    /**
+     * Payment metastate
+     * 
+     * @return string
+     */
+    public function getMetaState(): int {
+        return $this->isIncome() ? 'income' : parent::getMetaState();
+    }
 
     /**
-     * Match Payment when create
+     * Check if move is income
+     * 
+     * @return string
      */
-    public function create()
-    {
-        if ($this->getDataValue('typPohybuK') == 'typPohybu.prijem') {
-            if ($this->getDataValue('sparovano') == 'false') {
-                $steamer = new \AbraFlexi\Bricks\ParovacFaktur(\Ease\Shared::instanced()->configuration);
-                
-                
-                
-// TODO: Match Invoice:        $steamer->outInvoiceMatchByBank( $steamer->findBestPayment([$this->getData()], $invoice) $invoiceData, );
-            }
-        }
+    public function isIncome() {
+        return $this->getDataValue('typPohybuK') === 'typPohybu.prijem';
     }
+    
 }
