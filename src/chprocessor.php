@@ -11,16 +11,16 @@ namespace AbraFlexi\Processor;
 define('APP_NAME', 'AbraFlexiChangesProcessor');
 require_once __DIR__ . '/../vendor/autoload.php';
 
-if (file_exists('../.env')) { 
+if (file_exists('../.env')) {
     \Ease\Shared::singleton()->loadConfig('../.env', true);
 }
 
 $hooker = new ChangesApi();
-if(\Ease\Functions::cfg('APP_DEBUG')){
+if (\Ease\Functions::cfg('APP_DEBUG')) {
     $hooker->logBanner(\Ease\Shared::appName());
 }
 
-if (\Ease\Functions::cfg('PROCESSING_ENABLED') == 'True' ) {
+if (\Ease\Functions::cfg('PROCESSING_ENABLED') == 'True') {
     $lockerPid = $hooker->locked();
     if ($lockerPid == 0) {
         $hooker->lock();

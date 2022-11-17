@@ -17,14 +17,20 @@ class Rules extends AbstractSeed {
 
         $data = [
             [
-                'company' => '*',
-                'host' => '*',
+                'company' => '-',
+                'host' => '-',
+                'meta' => 'settled',
+                'subject' => 'faktura-vydana',
+                'command' => 'invoice-settled'
+            ], [
+                'company' => '-',
+                'host' => '-',
                 'meta' => 'create',
                 'subject' => 'banka',
                 'command' => 'abraflexi-match-payment'
             ], [
-                'company' => '*',
-                'host' => '*',
+                'company' => '-',
+                'host' => '-',
                 'meta' => 'penalised',
                 'subject' => 'faktura-vydana',
                 'command' => 'abraflexi-remind-invoice'

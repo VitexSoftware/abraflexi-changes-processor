@@ -1,10 +1,10 @@
 <?php
 
 /**
- * System.Spoje.Net - Příjemce WebHooku
+ * Changes Processor engine class
  *
  * @author     Vítězslav Dvořák <vitex@arachne.cz>
- * @copyright  2017-2021 Spoje.Net 20201 VitexSoftware
+ * @copyright  2021 VitexSoftware
  */
 
 namespace AbraFlexi\Processor;
@@ -21,6 +21,11 @@ class Engine extends \Ease\SQL\Engine {
      * @var boolean 
      */
     public $locked = false;
+
+    /**
+     * 
+     * @var string
+     */
     public $format = 'json';
 
     /**
@@ -147,7 +152,7 @@ class Engine extends \Ease\SQL\Engine {
                                     $operation, $evidence, $id,
                                     $this->lastProcessedVersions[$this->sourceId]), 'success');
 
-                    foreach (Plugin::classesInNamespace('AbraFlexi\Processor\Notify') as $notifierClass) {
+                    foreach (\Ease\Functions::classesInNamespace('AbraFlexi\Processor\Notify') as $notifierClass) {
                         if (!array_key_exists($notifierClass, $this->notifiers)) {
                             $toInstance = '\\AbraFlexi\\Processor\\Notify\\' . $notifierClass;
                             $this->notifiers[$notifierClass] = new $toInstance;

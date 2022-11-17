@@ -261,16 +261,6 @@ class PluginTest extends \PHPUnit\Framework\TestCase {
     }
 
     /**
-     * @covers AbraFlexi\Processor\Plugin::classesInNamespace
-     * @todo   Implement testclassesInNamespace().
-     */
-    public function testclassesInNamespace() {
-        $this->assertEquals('', $this->object->classesInNamespace());
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete('This test has not been implemented yet.');
-    }
-
-    /**
      * @covers AbraFlexi\Processor\Plugin::loadClassesInDir
      * @todo   Implement testloadClassesInDir().
      */

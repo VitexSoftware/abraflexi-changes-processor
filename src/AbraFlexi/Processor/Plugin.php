@@ -76,7 +76,7 @@ abstract class Plugin extends \AbraFlexi\RW {
     /**
      * Handle Incoming change
      *
-     * @param int $id changed record id
+     * @param int   $id      changed record id
      * @param array $options 
      */
     public function __construct($id, $options) {
@@ -375,6 +375,7 @@ abstract class Plugin extends \AbraFlexi\RW {
             'recordid' => $recordId,
             'json' => self::serialize($this->getData()),
             'source' => $this->sourceId,
+            'changeid' => $this->changeid,
             'meta' => $this->getMetaState()
         ];
         $result = $this->cache->insertToSQL($change);

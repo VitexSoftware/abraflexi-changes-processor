@@ -1,8 +1,10 @@
 <?php
 
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/PHPClass.php to edit this template
+/**
+ * Meta State Processor.
+ *
+ * @author     Vítězslav Dvořák <vitex@arachne.cz>
+ * @copyright  2022 VitexSoftware
  */
 
 namespace AbraFlexi\Processor;
@@ -70,7 +72,6 @@ class Meta extends Engine {
         }
 
         $rules = $this->getRulesFor($meta);
-
         $commands = $this->getCommandsFor($rules);
 
         if ($commands) {
@@ -78,10 +79,19 @@ class Meta extends Engine {
                 $result[$command] = $this->executeCommand($command, $meta);
             }
         }
-
-        $this->getFluentPDO()->update($this->getMyTable())->set('processed', new \Envms\FluentPDO\Literal('NOW()'))->where('id', $meta['id'])->execute();
-
+        $this->setMetaProcessed($meta['id']);
         return $result;
+    }
+
+    /**
+     * Set Meta Record as processed 
+     * 
+     * @param int $metaID
+     * 
+     * @return type
+     */
+    public function setMetaProcessed($metaID) {
+        return $this->getFluentPDO()->update($this->getMyTable())->set('processed', new \Envms\FluentPDO\Literal('NOW()'))->where('id', $metaID)->execute();
     }
 
     /**
@@ -149,8 +159,8 @@ class Meta extends Engine {
     /**
      * Run Command
      * 
-     * @param type $command
-     * @param array $meta
+     * @param string $command
+     * @param array $meta Command Metainfo
      * 
      * @return type
      */
@@ -217,6 +227,27 @@ class Meta extends Engine {
         $stderr = stream_get_contents($pipes[2]);
         fclose($pipes[2]);
         return proc_close($proc);
+    }
+
+    /**
+     * 
+     * @param array $newItemData
+     * 
+     * @return int
+     */
+    public function insertItem(array $newItemData) {
+        return $this->insertToSQL($newItemData);
+    }
+
+    /**
+     * 
+     * @param \AbraFlexi\RO $afrecord
+     * @param string $metaState
+     * 
+     * @return type
+     */
+    public function insertObject(\AbraFlexi\RO $afrecord, string $metaState, $changeid = 0) {
+        return $this->insertItem(['uri' => $afrecord->getApiURL(), 'meta' => $metaState, 'changeid' => $changeid]);
     }
 
 }

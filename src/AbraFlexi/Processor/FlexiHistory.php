@@ -1,9 +1,10 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * AbraFlexi document histroy class.
+ *
+ * @author     Vítězslav Dvořák <vitex@arachne.cz>
+ * @copyright  2022 VitexSoftware
  */
 
 namespace AbraFlexi\Processor;
@@ -29,7 +30,7 @@ class FlexiHistory extends \Ease\SQL\Engine {
      * History of AbraFlexi record handler
      * 
      * @param string $identifier
-     * @param array $options
+     * @param array  $options
      */
     public function __construct($identifier = null, $options = []) {
         parent::__construct($identifier, $options);

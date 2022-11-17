@@ -19,6 +19,8 @@ use AbraFlexi\Processor\Plugin;
 class FakturaVydana extends Plugin {
 
     use firma;
+    
+    use \AbraFlexi\subItems;
 
     /**
      * Order Data
