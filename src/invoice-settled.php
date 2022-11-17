@@ -15,6 +15,18 @@ if (file_exists('../.env')) {
     \Ease\Shared::singleton()->loadConfig('../.env', true);
 }
 
+$cfgKeys = ['ABRAFLEXI_URL', 'ABRAFLEXI_LOGIN', 'ABRAFLEXI_PASSWORD', 'ABRAFLEXI_COMPANY', 'DOCUMENTID', 'CHANGEID'];
+$configured = true;
+foreach ($cfgKeys as $cfgKey) {
+    if (empty(\Ease\Functions::cfg($cfgKey))) {
+        fwrite(STDERR, 'Requied configuration ' . $cfgKey . " is not set." . PHP_EOL);
+        $configured = false;
+    }
+}
+if ($configured === false) {
+    exit(1);
+}
+
 $invoicer = new Plugins\FakturaVydana(\Ease\Functions::cfg('DOCUMENTID'), []);
 if (\Ease\Functions::cfg('APP_DEBUG') == 'True') {
     $invoicer->logBanner(\Ease\Shared::appName());

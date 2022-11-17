@@ -21,7 +21,7 @@ class Rules extends AbstractSeed {
                 'host' => '-',
                 'meta' => 'settled',
                 'subject' => 'faktura-vydana',
-                'command' => 'invoice-settled'
+                'command' => 'abrafleix-invoice-settled'
             ], [
                 'company' => '-',
                 'host' => '-',
