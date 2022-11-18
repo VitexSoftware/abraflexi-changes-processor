@@ -390,12 +390,13 @@ abstract class Plugin extends \AbraFlexi\RW {
      * @return int
      */
     public function updateRecordHistory() {
-        $me = ['evidence' => $this->getEvidence(), 'recordid' => $this->getMyKey(), 'source' => $this->sourceId];
-        if (($this->debug === true) && empty($this->cache->listingQuery()->where($me)->count())) {
-            $this->createRecordHistory();
-        }
-
-        $result = $this->cache->updateToSQL(['recordid' => $me['recordid'], 'operation' => $this->operation, 'source' => $this->sourceId, 'meta' => $this->getMetaState(), 'json' => self::serialize($this->getData())], $me);
+//        $me = ['evidence' => $this->getEvidence(), 'recordid' => $this->getMyKey(), 'source' => $this->sourceId];
+//        if (($this->debug === true) && empty($this->cache->listingQuery()->where($me)->count())) {
+        $result = $this->createRecordHistory();
+//        }
+//
+//
+//        $result = $this->cache->updateToSQL(['recordid' => $me['recordid'], 'operation' => $this->operation, 'source' => $this->sourceId, 'meta' => $this->getMetaState(), 'json' => self::serialize($this->getData())], $me);
         if ($this->debug === true) {
             $this->addStatusMessage(sprintf(_('Updating cache record for %s %s'), $this->getEvidence(), $this->getRecordIdent()), empty($result) ? 'error' : 'success' );
         }
