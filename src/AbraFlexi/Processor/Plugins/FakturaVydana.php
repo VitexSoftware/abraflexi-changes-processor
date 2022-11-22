@@ -51,7 +51,7 @@ class FakturaVydana extends Plugin {
         } catch (\AbraFlexi\Exception $exc) {
             $changes = [];
         }
-        return isset($changes['datUhr']) && !empty((string) $changes['datUhr']) ? true : false;
+        return array_key_exists('stavUhrK', $changes) && ($changes['stavUhrK'] == 'stavUhr.uhrazeno'); 
     }
 
     /**

@@ -93,6 +93,7 @@ class Engine extends \Ease\SQL\Engine {
      */
     public function __construct($options = []) {
         parent::__construct(null, $options);
+        $this->debug = \Ease\Functions::cfg('DEBUG');
         $this->lockfile = sys_get_temp_dir() . '/webhook.lock';
         $this->locked = $this->locked();
         Plugin::loadClassesInDir(__DIR__ . '/Notify');
@@ -353,6 +354,8 @@ class Engine extends \Ease\SQL\Engine {
             $changesDone = $this->processAbraFlexiChanges($this->changes);
 
             $result = !empty($changesDone);
+        } else if (\Ease\Functions::cfg('APP_DEBUG')) {
+            $this->addStatusMessage('No records to process found');
         }
         return $result;
     }
@@ -377,6 +380,7 @@ class Engine extends \Ease\SQL\Engine {
 
     /**
      * Save Json Data to SQL cache
+     * 
      * @param array $changes
      * 
      * @return int lastChangeID

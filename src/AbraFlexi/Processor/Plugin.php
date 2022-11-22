@@ -376,6 +376,7 @@ abstract class Plugin extends \AbraFlexi\RW {
             'json' => self::serialize($this->getData()),
             'source' => $this->sourceId,
             'changeid' => $this->changeid,
+            'code' => $this->getRecordCode(),
             'meta' => $this->getMetaState()
         ];
         $result = $this->cache->insertToSQL($change);
