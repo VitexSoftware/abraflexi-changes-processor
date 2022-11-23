@@ -948,12 +948,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/VitexSoftware/php-abraflexi-bricks.git",
-                "reference": "e07ebf3ffba4f8446d7c54a3080afdcb7266ebfc"
+                "reference": "29b472b45cf94d45b3d13e099efe6840ced8ad97"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/VitexSoftware/php-abraflexi-bricks/zipball/e07ebf3ffba4f8446d7c54a3080afdcb7266ebfc",
-                "reference": "e07ebf3ffba4f8446d7c54a3080afdcb7266ebfc",
+                "url": "https://api.github.com/repos/VitexSoftware/php-abraflexi-bricks/zipball/29b472b45cf94d45b3d13e099efe6840ced8ad97",
+                "reference": "29b472b45cf94d45b3d13e099efe6840ced8ad97",
                 "shasum": ""
             },
             "require": {
@@ -988,7 +988,7 @@
                 "issues": "https://github.com/VitexSoftware/php-abraflexi-bricks/issues",
                 "source": "https://github.com/VitexSoftware/php-abraflexi-bricks/tree/main"
             },
-            "time": "2022-10-18T19:53:02+00:00"
+            "time": "2022-11-23T22:29:30+00:00"
         },
         {
             "name": "vitexsoftware/ease-core",
@@ -996,12 +996,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/VitexSoftware/php-ease-core.git",
-                "reference": "e75aaa477a987d086e2aca8c929b3b67de8cc1b1"
+                "reference": "69519b76d0b78abf03ac856bd27f6bddd033703f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/VitexSoftware/php-ease-core/zipball/e75aaa477a987d086e2aca8c929b3b67de8cc1b1",
-                "reference": "e75aaa477a987d086e2aca8c929b3b67de8cc1b1",
+                "url": "https://api.github.com/repos/VitexSoftware/php-ease-core/zipball/69519b76d0b78abf03ac856bd27f6bddd033703f",
+                "reference": "69519b76d0b78abf03ac856bd27f6bddd033703f",
                 "shasum": ""
             },
             "require": {
@@ -1048,7 +1048,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2022-11-17T14:10:05+00:00"
+            "time": "2022-11-23T20:32:31+00:00"
         },
         {
             "name": "vitexsoftware/ease-core-bricks",

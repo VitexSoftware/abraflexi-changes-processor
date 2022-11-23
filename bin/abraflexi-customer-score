@@ -1,0 +1,2 @@
+#!/bin/sh
+php -q -f /usr/share/abraflexi-changes-processor/zewlscore.php $1

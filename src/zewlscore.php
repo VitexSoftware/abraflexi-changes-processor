@@ -3,7 +3,7 @@
 namespace AbraFlexi\Processor;
 
 /**
- * Meta State Processor.
+ * CustomerScore obtainer
  *
  * @author     Vítězslav Dvořák <vitex@arachne.cz>
  * @copyright  2022 VitexSoftware
@@ -29,28 +29,10 @@ if ($argc > 1) {
     $docId = \Ease\Functions::cfg('DOCUMENTID');
 }
 
-$subject = \Ease\Functions::cfg('SUBJECT');
+$engine = new \AbraFlexi\Bricks\Customer($docId);
+$zewlScore = $engine->getCustomerScore();
 
-try {
-    switch ($subject) {
-        case 'banka':
-            $engine = new \AbraFlexi\Banka($docId);
-            break;
-        case 'pokladna':
-            $engine = new \AbraFlexi\Pokladna($docId);
-            break;
-        default:
-            \Ease\Logger\Regent::singleton()->addStatusMessage(_('Unhandled document type') . ': ' . $subject);
-            exit(1);
-            break;
-    }
-} catch (\AbraFlexi\Exception $exc) {
-    
-}
+$engine->addStatusMessage(_('Customer %s score: %s'), $engine->adresar->getRecordCode(), $zewlScore);
 
-
-
-$notifier = new \AbraFlexi\Bricks\PotvrzeniUhrady($engine);
-
-$engine->addStatusMessage(_('Payment Confirmation sent'), $notifier->send() ? 'success' : 'error');
+echo $zewlScore;
 
