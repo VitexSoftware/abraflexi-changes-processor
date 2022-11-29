@@ -46,3 +46,11 @@ Architecture: all
 Description: postgres support for AbraFlexi changes processor
  Mandatory dependencies for use Multi FlexiBee setup with PostgreSQL database
 
+Package: abraflexi-changes-processor-api
+Multi-Arch: foreign
+Depends: ${misc:Depends}, abraflexi-changes-processor
+Suggests: apache, nginx, lighttpd
+Architecture: all
+Description: Provide Process AbraFlexi changes API
+ Allow Acessing sql tables content via Rest API 
+

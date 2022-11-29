@@ -1,12 +1,10 @@
 <?php
-
 /**
  * Accpeted Invoice Confirmation Class
  *
  * @author     Vítězslav Dvořák <vitex@arachne.cz>
  * @copyright  2021-2022 VitexSoftware
  */
-
 
 namespace AbraFlexi\Processor;
 
@@ -15,8 +13,8 @@ namespace AbraFlexi\Processor;
  *
  * @author Vítězslav Dvořák <info@vitexsoftware.cz>
  */
-class PotvrzeniPrijetiFaktury extends Mailer {
-
+class PotvrzeniPrijetiFaktury extends Mailer
+{
     /**
      * Company signature
      * @var string 
@@ -27,7 +25,8 @@ class PotvrzeniPrijetiFaktury extends Mailer {
      * Odešle potvrzení úhrady
      * @param \AbraFlexi\FakturaVydana $invoice
      */
-    public function __construct($invoice = null) {
+    public function __construct($invoice = null)
+    {
         if (!is_null($invoice)) {
             $this->assignInvoice($invoice);
         }
@@ -37,14 +36,15 @@ class PotvrzeniPrijetiFaktury extends Mailer {
      * 
      * @param \AbraFlexi\FakturaPrijata $invoice
      */
-    public function assignInvoice($invoice) {
+    public function assignInvoice($invoice)
+    {
         $defaultLocale = 'cs_CZ';
         setlocale(LC_ALL, $defaultLocale);
         putenv("LC_ALL=$defaultLocale");
 
         $body = new \Ease\Container();
 
-        $to = \SpojeNet\System\Mailer::getNotificationEmailAddres(new \AbraFlexi\Adresar($invoice->getDataValue('firma')));
+        $to = (new \AbraFlexi\Adresar($invoice->getDataValue('firma')))->getNotificationEmailAddress();
 
         $customerName = $invoice->getDataValue('firma')->showAs;
         if (empty($customerName)) {
@@ -52,7 +52,7 @@ class PotvrzeniPrijetiFaktury extends Mailer {
         }
 
         $body->addItem(new \AbraFlexi\ui\CompanyLogo(['align' => 'right', 'id' => 'companylogo',
-                    'height' => '50', 'title' => _('Company logo')]));
+                'height' => '50', 'title' => _('Company logo')]));
 
         $prober = new \AbraFlexi\Company();
         $infoRaw = $prober->getFlexiData();
@@ -66,11 +66,12 @@ class PotvrzeniPrijetiFaktury extends Mailer {
 
 
         $body->addItem(new \Ease\Html\DivTag(sprintf(_('Dear customer %s,'),
-                                $customerName)));
+                    $customerName)));
         $body->addItem(new \Ease\Html\DivTag("\n<br>"));
 
         $body->addItem(new \Ease\Html\DivTag(sprintf(_('we confirm receipt of invoice %s as %s '),
-                                $invoice->getDataValue('cisDosle'), $invoice->getDataValue('kod'))));
+                    $invoice->getDataValue('cisDosle'),
+                    $invoice->getDataValue('kod'))));
         $body->addItem(new \Ease\Html\DivTag("\n<br>"));
 
         $body->addItem(new \Ease\Html\DivTag(_('With greetings')));
@@ -80,8 +81,8 @@ class PotvrzeniPrijetiFaktury extends Mailer {
         $body->addItem(nl2br($this->getSignature()));
 
         parent::__construct($to,
-                sprintf(_('Confirmation of receipt your invoice %s'), \AbraFlexi\RO::uncode($invoice->getRecordIdent())), $body);
+            sprintf(_('Confirmation of receipt your invoice %s'),
+                \AbraFlexi\RO::uncode($invoice->getRecordIdent())), $body);
         $this->setMailHeaders(['Cc' => \Ease\Functions::cfg('SEND_INFO_TO')]);
     }
-
 }

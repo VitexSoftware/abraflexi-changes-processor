@@ -8,17 +8,19 @@ namespace AbraFlexi\Processor;
  * @author     Vítězslav Dvořák <vitex@arachne.cz>
  * @copyright  2022 VitexSoftware
  */
-define('APP_NAME', 'AbraFlexiIncomeConfirm');
-require_once __DIR__ . '/../vendor/autoload.php';
+const APP_NAME = 'AbraFlexiIncomeConfirm';
+
+require_once __DIR__.'/../vendor/autoload.php';
 
 if (file_exists('../.env')) {
     \Ease\Shared::singleton()->loadConfig('../.env', true);
 }
 
 
-foreach (['ABRAFLEXI_URL', 'ABRAFLEXI_LOGIN', 'ABRAFLEXI_PASSWORD', 'ABRAFLEXI_COMPANY', 'EASE_LOGGER', 'SUBJECT'] as $cfgKey) {
+foreach (['ABRAFLEXI_URL', 'ABRAFLEXI_LOGIN', 'ABRAFLEXI_PASSWORD', 'ABRAFLEXI_COMPANY',
+'EASE_LOGGER', 'SUBJECT'] as $cfgKey) {
     if (empty(\Ease\Functions::cfg($cfgKey))) {
-        echo 'Requied configuration ' . $cfgKey . ' is not set.';
+        echo 'Requied configuration '.$cfgKey.' is not set.';
         exit(1);
     }
 }
@@ -40,17 +42,18 @@ try {
             $engine = new \AbraFlexi\Pokladna($docId);
             break;
         default:
-            \Ease\Logger\Regent::singleton()->addStatusMessage(_('Unhandled document type') . ': ' . $subject);
+            \Ease\Logger\Regent::singleton()->addStatusMessage(_('Unhandled document type').': '.$subject);
             exit(1);
             break;
     }
+
+    $notifier = new \AbraFlexi\Bricks\PotvrzeniUhrady($engine);
+
+    $engine->addStatusMessage(_('Payment Confirmation sent'),
+        $notifier->send() ? 'success' : 'error');
 } catch (\AbraFlexi\Exception $exc) {
     
 }
 
 
-
-$notifier = new \AbraFlexi\Bricks\PotvrzeniUhrady($engine);
-
-$engine->addStatusMessage(_('Payment Confirmation sent'), $notifier->send() ? 'success' : 'error');
 

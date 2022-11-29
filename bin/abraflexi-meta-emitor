@@ -1,0 +1,3 @@
+#!/bin/sh
+php -q -f /usr/share/abraflexi-changes-processor/emit.php $1
+

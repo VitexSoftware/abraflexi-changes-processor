@@ -40,7 +40,7 @@ class FakturaPrijata extends \AbraFlexi\Processor\Plugin {
         switch (\AbraFlexi\RO::uncode($this->getDataValue('typDokl'))) {
             case 'ZAVAZEK':
                 $copyer = new \AbraFlexi\Bricks\Convertor($this,
-                        new \SpojeNet\System\Zavazek(['typDokl' => 'code:OST .ZÁVAZKY', 'stitky' => 'SYSTEM'])
+                        new \AbraFlexi\Zavazek(['typDokl' => 'code:OST .ZÁVAZKY', 'stitky' => 'SYSTEM'])
                 );
 
                 $zavazek = $copyer->conversion();

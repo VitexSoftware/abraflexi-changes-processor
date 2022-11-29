@@ -17,6 +17,8 @@
         "mevdschee/php-crud-api": "dev-main"
     },
     "require-dev": {
+        "phpunit/phpunit": "*",
+        "phpstan/phpstan": "*",
         "robmorgan/phinx": "*"
     },
     "autoload": {

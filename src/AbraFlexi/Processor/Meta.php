@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Meta State Processor.
  *
@@ -14,8 +13,8 @@ namespace AbraFlexi\Processor;
  *
  * @author vitex
  */
-class Meta extends Engine {
-
+class Meta extends Engine
+{
     /**
      * We work with table meta
      * @var string
@@ -32,15 +31,17 @@ class Meta extends Engine {
      * 
      * @return type
      */
-    public function unprocessed() {
-        return $this->listingQuery()->where('processed IS NULL')->orderBy('id');
+    public function unprocessed()
+    {
+        return $this->listingQuery()->where('processed IS NULL')->where('after IS NULL OR after > NOW()')->orderBy('id');
     }
 
     /**
      * 
      * @return type
      */
-    public function firstUnprocessed() {
+    public function firstUnprocessed()
+    {
         return $this->unprocessed()->limit(1);
     }
 
@@ -51,7 +52,8 @@ class Meta extends Engine {
      * 
      * @return type
      */
-    public function handle($meta) {
+    public function handle($meta)
+    {
         $result = [];
         $this->setMyKey($meta['id']);
         $this->setObjectName();
@@ -60,8 +62,8 @@ class Meta extends Engine {
         $meta['documentID'] = urldecode($pathParts[4]);
         $meta['subject'] = $pathParts[3];
         $meta['company'] = $pathParts[2];
-        $meta['companyuri'] = $components['scheme'] . '://' . $components['host'] . ':' . $components['port'] . '/c/' . $meta['company'];
-        $meta['url'] = $components['scheme'] . '://' . $components['host'] . ':' . $components['port'];
+        $meta['companyuri'] = $components['scheme'].'://'.$components['host'].':'.$components['port'].'/c/'.$meta['company'];
+        $meta['url'] = $components['scheme'].'://'.$components['host'].':'.$components['port'];
         $meta = array_merge($meta, $components);
 
         if (array_key_exists($meta['companyuri'], $this->credentials)) {
@@ -90,14 +92,17 @@ class Meta extends Engine {
      * 
      * @return type
      */
-    public function setMetaProcessed($metaID) {
-        return $this->getFluentPDO()->update($this->getMyTable())->set('processed', new \Envms\FluentPDO\Literal('NOW()'))->where('id', $metaID)->execute();
+    public function setMetaProcessed($metaID)
+    {
+        return $this->getFluentPDO()->update($this->getMyTable())->set('processed',
+                new \Envms\FluentPDO\Literal('NOW()'))->where('id', $metaID)->execute();
     }
 
     /**
      * 
      */
-    public function processMetas() {
+    public function processMetas()
+    {
         foreach ($this->unprocessed() as $meta) {
             $this->handle($meta);
         }
@@ -110,7 +115,8 @@ class Meta extends Engine {
      * 
      * @return array of commands
      */
-    public function getRulesFor($meta) {
+    public function getRulesFor($meta)
+    {
 
 //    [id] => 1
 //    [uri] => https://flexibee-dev.spoje.net:5434/c/spoje_net_s_r_o_/faktura-vydana/code:VF1-4698%2F2022
@@ -134,9 +140,10 @@ class Meta extends Engine {
 //+----+---------------------+------+--------------------+--------+-------------------------+
 
         $rules = $this->getFluentPDO()->from('rules')->select('command', true)
-                        ->where("host", [$meta['host'], '-'])
-                        ->where("company", [$meta['company'], '-'])
-                        ->where("subject", [$meta['subject'], '-'])->where('meta', $meta['meta'])->disableSmartJoin();
+                ->where("host", [$meta['host'], '-'])
+                ->where("company", [$meta['company'], '-'])
+                ->where("subject", [$meta['subject'], '-'])->where('meta',
+                $meta['meta'])->disableSmartJoin();
 
         return $rules;
     }
@@ -148,7 +155,8 @@ class Meta extends Engine {
      * 
      * @return array
      */
-    public function getCommandsFor($rules) {
+    public function getCommandsFor($rules)
+    {
         $commands = [];
         while ($command = $rules->fetch()) {
             $commands[] = $command['command'];
@@ -164,7 +172,8 @@ class Meta extends Engine {
      * 
      * @return type
      */
-    public function executeCommand($command, $meta) {
+    public function executeCommand($command, $meta)
+    {
         $stdout = '';
         $stderr = '';
         $meta['email'] = '';
@@ -180,16 +189,19 @@ class Meta extends Engine {
         ];
 
         foreach (array_merge($meta, $envNames) as $envName => $sqlValue) {
-            $this->addStatusMessage(sprintf(_('Setting Environment %s to %s'), strtoupper($envName), $sqlValue), 'debug');
-            putenv(strtoupper($envName) . '=' . $sqlValue);
+            $this->addStatusMessage(sprintf(_('Setting Environment %s to %s'),
+                    strtoupper($envName), $sqlValue), 'debug');
+            putenv(strtoupper($envName).'='.$sqlValue);
         }
 
         $exec = $command;
         $cmdparams = '';
         if ($this->debug) {
-            $this->addStatusMessage('start: ' . $exec . ' ' . $cmdparams, 'debug');
+            $this->addStatusMessage('start: '.$exec.' '.$cmdparams, 'debug');
         }
-        $this->addStatusMessage($exec . ' done', $this->shellExec($exec . ' ' . $cmdparams, $stdout, $stderr) ? 'warning' : 'success' );
+        $this->addStatusMessage($exec.' done',
+            $this->shellExec($exec.' '.$cmdparams, $stdout, $stderr) ? 'warning'
+                    : 'success' );
 
         if ($stdout) {
             foreach (explode("\n", $stdout) as $row) {
@@ -203,7 +215,7 @@ class Meta extends Engine {
         }
 
         if ($this->debug) {
-            $this->addStatusMessage('end: ' . $exec, 'debug');
+            $this->addStatusMessage('end: '.$exec, 'debug');
         }
         return $command;
     }
@@ -217,11 +229,13 @@ class Meta extends Engine {
      * 
      * @return int
      */
-    function shellExec($cmd, &$stdout = null, &$stderr = null) {
-        $proc = proc_open($cmd, [
-            1 => ['pipe', 'w'],
-            2 => ['pipe', 'w'],
-                ], $pipes);
+    function shellExec($cmd, &$stdout = null, &$stderr = null)
+    {
+        $proc = proc_open($cmd,
+            [
+                1 => ['pipe', 'w'],
+                2 => ['pipe', 'w'],
+            ], $pipes);
         $stdout = stream_get_contents($pipes[1]);
         fclose($pipes[1]);
         $stderr = stream_get_contents($pipes[2]);
@@ -231,12 +245,18 @@ class Meta extends Engine {
 
     /**
      * 
+     *
      * @param array $newItemData
      * 
      * @return int
      */
-    public function insertItem(array $newItemData) {
-        return $this->insertToSQL($newItemData);
+    public function insertItem(array $newItemData)
+    {
+        $jobId = $this->insertToSQL($newItemData);
+        if(array_key_exists('job', $newItemData) === false){
+            $this->updateToSQL(['id' => $jobId, 'job' => $jobId]);
+        }
+        return $jobId;
     }
 
     /**
@@ -246,8 +266,10 @@ class Meta extends Engine {
      * 
      * @return type
      */
-    public function insertObject(\AbraFlexi\RO $afrecord, string $metaState, $changeid = 0) {
-        return $this->insertItem(['uri' => $afrecord->getApiURL(), 'meta' => $metaState, 'changeid' => $changeid]);
+    public function insertObject(\AbraFlexi\RO $afrecord, string $metaState,
+                                 $changeid = 0)
+    {
+        return $this->insertItem(['uri' => $afrecord->getApiURL(), 'meta' => $metaState,
+                'changeid' => $changeid]);
     }
-
 }
