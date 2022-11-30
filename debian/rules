@@ -18,9 +18,11 @@ override_dh_install:
 	dh_install
 	jq '.version = "'`dpkg-parsechangelog | sed -n 's/^Version: //p'| sed 's/~.*//'`'"'  debian/conf/composer.json |sponge debian/conf/composer.json
 	sed -i '/__DIR__/c\require_once "/var/lib/composer/abraflexi-changes-processor/autoload.php";' debian/abraflexi-changes-processor/usr/share/abraflexi-changes-processor/*.php
+	sed -i '/__DIR__/c\require_once "/var/lib/composer/abraflexi-changes-processor/autoload.php";' debian/abraflexi-changes-processor-api/usr/share/abraflexi-changes-processor-api/*.php
 	sed -i -e 's/..\/vendor/\/var\/lib\/composer\/abraflexi-changes-processor/g'   debian/abraflexi-changes-processor/usr/share/abraflexi-changes-processor/*.php
 	sed -i -e 's/.\/vendor/\/var\/lib\/composer\/abraflexi-changes-processor/g'    debian/abraflexi-changes-processor/usr/lib/abraflexi-changes-processor/phinx-adapter.php
 	sed -i 's/\.\.\/\.env/\/etc\/abraflexi-changes-processor\/\.env/' debian/abraflexi-changes-processor/usr/*/abraflexi-changes-processor/*.php
+	sed -i 's/\.\.\/\.env/\/etc\/abraflexi-changes-processor\/\.env/' debian/abraflexi-changes-processor-api/usr/*/abraflexi-changes-processor-api/*.php
 	sed -i '/prefix =/c\ $$prefix = "\/usr\/lib\/abraflexi-changes-processor\/db\/";' debian/abraflexi-changes-processor/usr/lib/abraflexi-changes-processor/phinx-adapter.php
 	sed -i 's/__DIR__/"\/etc\/abraflexi-changes-processor"/' debian/abraflexi-changes-processor/usr/lib/abraflexi-changes-processor/phinx-adapter.php
 	sed -i '/DB_DATABASE/c\ $$sqlOptions["database"] = "\/var\/lib\/dbconfig-common\/sqlite3\/abraflexi-changes-processor\/".basename(\\Ease\\Functions::cfg("DB_DATABASE"));' debian/abraflexi-changes-processor/usr/lib/abraflexi-changes-processor/phinx-adapter.php

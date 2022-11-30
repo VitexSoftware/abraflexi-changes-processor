@@ -14,3 +14,6 @@ debian/.debhelper
 /debian/abraflexi-changes-processor.debhelper.log
 /debian/files
 /.phpunit.result.cache
+/debian/abraflexi-changes-processor-api.debhelper.log
+/debian/abraflexi-changes-processor-api.substvars
+/debian/abraflexi-changes-processor-api/
