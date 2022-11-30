@@ -8,7 +8,8 @@
     "deb/abraflexi": "*",
     "deb/ease-bricks": "*",
     "deb/abraflexi-bricks": "*",
-    "deb/ease-fluentpdo": "*"
+    "deb/ease-fluentpdo": "*",
+    "mevdschee/php-crud-api": "dev-main"
   },
   "license": "MIT",
   "authors": [
