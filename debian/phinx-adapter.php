@@ -12,6 +12,7 @@ require_once '/var/lib/composer/abraflexi-changes-processor/autoload.php';
 
 $cfg = '/etc/abraflexi-changes-processor/.env';
 if(file_exists($cfg)){
+    fpassthru($cfg);
     \Ease\Shared::singleton()->loadConfig($cfg, true);
 }
 
