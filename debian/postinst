@@ -22,8 +22,8 @@ if [ -f /usr/share/dbconfig-common/dpkg/postinst ]; then
     cat /etc/dbconfig-common/abraflexi-changes-processor.conf
     echo "Configuration Used: /etc/abraflexi-changes-processor/.env"
     cat /etc/abraflexi-changes-processor/.env
-    echo "Phinx Adapter: /usr/lib/abraflexi-changes-processor/phinx-adapter.php"
-    cat /usr/lib/abraflexi-changes-processor/phinx-adapter.php
+#    echo "Phinx Adapter: /usr/lib/abraflexi-changes-processor/phinx-adapter.php"
+#    cat /usr/lib/abraflexi-changes-processor/phinx-adapter.php
 
 
     phinx migrate -c /usr/lib/abraflexi-changes-processor/phinx-adapter.php
