@@ -1,13 +1,13 @@
-#src/favicon.ico                           usr/share/abraflexi-changes-processor
+#src/favicon.ico                          usr/share/abraflexi-changes-processor
 db/migrations/*				  usr/lib/abraflexi-changes-processor/db/migrations
 db/seeds/*				  usr/lib/abraflexi-changes-processor/db/seeds
 debian/conf/composer.json                 usr/lib/abraflexi-changes-processor
-phinx-adapter.php			  usr/lib/abraflexi-changes-processor
+debian/phinx-adapter.php		  usr/lib/abraflexi-changes-processor
 debian/conf/abraflexi-changes-processor.conf    etc/apache2/conf-available
 debian/conf/abraflexi-changes-processor.service etc/avahi/services
 debian/cz.vitexsoftware.abraflexi_changes_processor.metainfo.xml    usr/share/metainfo/
 debian/cz.vitexsoftware.abraflexi_changes_processor.desktop         usr/share/applications/
-abraflexi-changes-processor.svg             usr/share/icons/hicolor/scalable/apps/
+abraflexi-changes-processor.svg            usr/share/icons/hicolor/scalable/apps/
 #i18n/cs_CZ/LC_MESSAGES/*.mo               usr/share/locale/cs_CZ/LC_MESSAGES/
 #i18n/en_US/LC_MESSAGES/*.mo               usr/share/locale/en_US/LC_MESSAGES/
 
@@ -17,5 +17,3 @@ src/AbraFlexi/Processor/Notify/*.php	usr/lib/abraflexi-changes-processor/Process
 src/AbraFlexi/Processor/Plugins/*.php	usr/lib/abraflexi-changes-processor/Processor/Plugins
 #src/AbraFlexi/Processor/Ui/*.php	usr/lib/abraflexi-changes-processor/Processor/Ui
 bin/*					usr/bin
-
-
