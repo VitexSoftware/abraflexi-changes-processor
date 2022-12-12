@@ -34,8 +34,9 @@ class Db extends \Ease\SQL\Engine implements Notifier {
      * @param \AbraFlexi\Processor\Plugin $handler
      */
     function notify(\AbraFlexi\Processor\Plugin $handler) {
-        $handler->setDataValue('external-ids', null);
-        $this->addStatusMessage('Notify to Database', is_integer($this->insertToSQL(['uri' => $handler->getApiURL(), 'changeid' => $handler->changeid, 'meta' => $handler->getMetaState()])) ? 'success' : 'error' );
+        $this->setObjectName();
+        $handler->unsetDataValue('external-ids');
+        $this->addStatusMessage('Notify to Database '.$handler->getApiURL().' '.$handler->getMetaState() , is_integer($this->insertToSQL(['uri' => $handler->getApiURL(), 'changeid' => $handler->changeid, 'meta' => $handler->getMetaState()])) ? 'success' : 'error' );
     }
 
 }

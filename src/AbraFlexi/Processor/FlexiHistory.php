@@ -116,6 +116,22 @@ class FlexiHistory extends \Ease\SQL\Engine
     }
 
     /**
+     *
+     *
+     * @param type $evidence
+     * @param type $recordId
+     *
+     * @return type
+     */
+    public function getPreviousHistoryState($evidence, $recordId)
+    {
+        $lastChangeJson = $this->listingQuery()->where('recordid', $recordId)->where('evidence',
+                $evidence)->orderBy('when DESC')->offset(1)->limit(1);
+        return empty($lastChangeJson) ? null : json_decode($lastChangeJson, true);
+    }
+
+
+    /**
      * 
      * @return array|null
      */
