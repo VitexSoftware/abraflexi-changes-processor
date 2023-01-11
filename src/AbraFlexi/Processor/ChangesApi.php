@@ -16,6 +16,10 @@ namespace AbraFlexi\Processor;
  */
 class ChangesApi extends Engine {
 
+    /**
+     *
+     * @var string
+     */
     public $myTable = 'changesapi';
 
     /**
