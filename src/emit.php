@@ -12,16 +12,7 @@ const APP_NAME = 'AbraFlexiIncomeConfirm';
 
 require_once __DIR__.'/../vendor/autoload.php';
 
-if (file_exists('../.env')) {
-    \Ease\Shared::singleton()->loadConfig('../.env', true);
-}
-
-foreach (['DB_CONNECTION', 'DB_DATABASE'] as $cfgKey) {
-    if (empty(\Ease\Functions::cfg($cfgKey))) {
-        echo 'Requied configuration '.$cfgKey.' is not set.';
-        exit(1);
-    }
-}
+Engine::init(['DB_TYPE','DB_HOST','DB_PORT','DB_DATABASE','DB_USERNAME','DB_PASSWORD'], '../.env');
 
 if ($argv > 2) {
 

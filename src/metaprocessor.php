@@ -11,9 +11,7 @@ namespace AbraFlexi\Processor;
 define('APP_NAME', 'MetaExecutor');
 require_once __DIR__ . '/../vendor/autoload.php';
 
-if (file_exists('../.env')) {
-    \Ease\Shared::singleton()->loadConfig('../.env', true);
-}
+Engine::init(['DB_TYPE','DB_HOST','DB_PORT','DB_DATABASE','DB_USERNAME','DB_PASSWORD'], '../.env');
 
 $metar = new Meta();
 

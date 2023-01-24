@@ -3,29 +3,15 @@
 namespace AbraFlexi\Processor;
 
 /**
- * Settled invoice Analyser
+ * Settled invoice Analyzer
  *
  * @author     Vítězslav Dvořák <vitex@arachne.cz>
- * @copyright  2022 VitexSoftware
+ * @copyright  2022-2023 VitexSoftware
  */
 define('APP_NAME', 'SettledInvoice');
 require_once __DIR__ . '/../vendor/autoload.php';
 
-if (file_exists('../.env')) {
-    \Ease\Shared::singleton()->loadConfig('../.env', true);
-}
-
-$cfgKeys = ['ABRAFLEXI_URL', 'ABRAFLEXI_LOGIN', 'ABRAFLEXI_PASSWORD', 'ABRAFLEXI_COMPANY', 'DOCUMENTID', 'CHANGEID'];
-$configured = true;
-foreach ($cfgKeys as $cfgKey) {
-    if (empty(\Ease\Functions::cfg($cfgKey))) {
-        fwrite(STDERR, 'Requied configuration ' . $cfgKey . " is not set." . PHP_EOL);
-        $configured = false;
-    }
-}
-if ($configured === false) {
-    exit(1);
-}
+Engine::init(['ABRAFLEXI_URL', 'ABRAFLEXI_LOGIN', 'ABRAFLEXI_PASSWORD', 'ABRAFLEXI_COMPANY', 'DOCUMENTID', 'CHANGEID'], '../.env');
 
 $invoicer = new Plugins\FakturaVydana(\Ease\Functions::cfg('DOCUMENTID'), []);
 if (\Ease\Functions::cfg('APP_DEBUG') == 'True') {

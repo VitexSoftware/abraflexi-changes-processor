@@ -12,18 +12,9 @@ const APP_NAME = 'AbraFlexiIncomeConfirm';
 
 require_once __DIR__.'/../vendor/autoload.php';
 
-if (file_exists('../.env')) {
-    \Ease\Shared::singleton()->loadConfig('../.env', true);
-}
+Engine::init(['ABRAFLEXI_URL', 'ABRAFLEXI_LOGIN', 'ABRAFLEXI_PASSWORD', 'ABRAFLEXI_COMPANY',
+'EASE_LOGGER', 'SUBJECT','DB_TYPE','DB_HOST','DB_PORT','DB_DATABASE','DB_USERNAME','DB_PASSWORD'], '../.env');
 
-
-foreach (['ABRAFLEXI_URL', 'ABRAFLEXI_LOGIN', 'ABRAFLEXI_PASSWORD', 'ABRAFLEXI_COMPANY',
-'EASE_LOGGER', 'SUBJECT'] as $cfgKey) {
-    if (empty(\Ease\Functions::cfg($cfgKey))) {
-        echo 'Requied configuration '.$cfgKey.' is not set.';
-        exit(1);
-    }
-}
 
 if ($argc > 1) {
     $docId = $argv[1];

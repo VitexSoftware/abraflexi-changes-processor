@@ -3,7 +3,7 @@
 namespace AbraFlexi\Processor;
 
 /**
- * AbraFlexi document Analyser.
+ * AbraFlexi document Analyzer.
  *
  * @author     Vítězslav Dvořák <vitex@arachne.cz>
  * @copyright  2023 VitexSoftware

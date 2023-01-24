@@ -7,14 +7,12 @@ namespace AbraFlexi\Processor;
  * System.Spoje.Net - WebHook Acceptor & Saver to SQL Cache.
  *
  * @author     Vítězslav Dvořák <info@vitexsoftware.cz>
- * @copyright  2017-2020 Spoje.Net 2021-2022 VitexSoftware
+ * @copyright  2017-2020 Spoje.Net 2021-2023 VitexSoftware
  */
 define('APP_NAME', 'HistoryInitializer');
 require_once __DIR__ . '/../vendor/autoload.php';
 
-if (file_exists('../.env')) {
-    \Ease\Shared::singleton()->loadConfig('../.env', true);
-}
+Engine::init(['DB_TYPE','DB_HOST','DB_PORT','DB_DATABASE','DB_USERNAME','DB_PASSWORD'], '../.env');
 
 $changesApi = new ChangesApi();
 $sourceId = $changesApi->getSourceId();

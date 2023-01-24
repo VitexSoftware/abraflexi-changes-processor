@@ -70,12 +70,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/mevdschee/php-crud-api.git",
-                "reference": "52e1868be313b945f79f7228ae0992786f8fadd6"
+                "reference": "e07f7e7de6187f571991f83984fe8a63cdabc44e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mevdschee/php-crud-api/zipball/52e1868be313b945f79f7228ae0992786f8fadd6",
-                "reference": "52e1868be313b945f79f7228ae0992786f8fadd6",
+                "url": "https://api.github.com/repos/mevdschee/php-crud-api/zipball/e07f7e7de6187f571991f83984fe8a63cdabc44e",
+                "reference": "e07f7e7de6187f571991f83984fe8a63cdabc44e",
                 "shasum": ""
             },
             "require": {
@@ -139,7 +139,7 @@
                 "issues": "https://github.com/mevdschee/php-crud-api/issues",
                 "source": "https://github.com/mevdschee/php-crud-api/tree/main"
             },
-            "time": "2023-01-01T10:30:49+00:00"
+            "time": "2023-01-11T20:05:25+00:00"
         },
         {
             "name": "nyholm/psr7",
@@ -342,12 +342,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/pear/Mail.git",
-                "reference": "b11363a99a02a3d021c67ccbd0fa42543cf71f4f"
+                "reference": "19be349ce46efbd8c08565b45d8033fcea4627d8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pear/Mail/zipball/b11363a99a02a3d021c67ccbd0fa42543cf71f4f",
-                "reference": "b11363a99a02a3d021c67ccbd0fa42543cf71f4f",
+                "url": "https://api.github.com/repos/pear/Mail/zipball/19be349ce46efbd8c08565b45d8033fcea4627d8",
+                "reference": "19be349ce46efbd8c08565b45d8033fcea4627d8",
                 "shasum": ""
             },
             "require": {
@@ -402,7 +402,7 @@
                 "issues": "http://pear.php.net/bugs/search.php?cmd=display&package_name[]=Mail",
                 "source": "https://github.com/pear/Mail"
             },
-            "time": "2022-12-10T20:24:18+00:00"
+            "time": "2023-01-13T19:57:34+00:00"
         },
         {
             "name": "pear/mail_mime",
@@ -894,12 +894,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Spoje-NET/php-abraflexi.git",
-                "reference": "ee4b1b9233abb4041c169725cd0918049a40c63c"
+                "reference": "31cce9df0e1275771b58fa32f1cf430dd17df3eb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Spoje-NET/php-abraflexi/zipball/ee4b1b9233abb4041c169725cd0918049a40c63c",
-                "reference": "ee4b1b9233abb4041c169725cd0918049a40c63c",
+                "url": "https://api.github.com/repos/Spoje-NET/php-abraflexi/zipball/31cce9df0e1275771b58fa32f1cf430dd17df3eb",
+                "reference": "31cce9df0e1275771b58fa32f1cf430dd17df3eb",
                 "shasum": ""
             },
             "require": {
@@ -945,7 +945,7 @@
                 "issues": "https://github.com/Spoje-NET/php-abraflexi/issues",
                 "source": "https://github.com/Spoje-NET/php-abraflexi/tree/main"
             },
-            "time": "2023-01-10T21:54:05+00:00"
+            "time": "2023-01-24T19:47:02+00:00"
         },
         {
             "name": "vitexsoftware/abraflexi-bricks",
@@ -997,20 +997,19 @@
         },
         {
             "name": "vitexsoftware/ease-core",
-            "version": "dev-main",
+            "version": "1.37",
             "source": {
                 "type": "git",
                 "url": "https://github.com/VitexSoftware/php-ease-core.git",
-                "reference": "4247270080404b818675b0989868ff24f4d27e7d"
+                "reference": "c92bbd3a0669d36970ef6f4e31e7721a5a679871"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/VitexSoftware/php-ease-core/zipball/4247270080404b818675b0989868ff24f4d27e7d",
-                "reference": "4247270080404b818675b0989868ff24f4d27e7d",
+                "url": "https://api.github.com/repos/VitexSoftware/php-ease-core/zipball/c92bbd3a0669d36970ef6f4e31e7721a5a679871",
+                "reference": "c92bbd3a0669d36970ef6f4e31e7721a5a679871",
                 "shasum": ""
             },
             "require": {
-                "ext-intl": "*",
                 "pear/mail": ">=1.3",
                 "pear/mail_mime": ">=1.10",
                 "php": ">=7"
@@ -1019,11 +1018,9 @@
                 "vitexsoftware/ease-framework": "*"
             },
             "require-dev": {
-                "phpstan/phpstan": "*",
-                "phpunit/phpunit": "*",
+                "phpunit/phpunit": ">=9",
                 "roave/security-advisories": "dev-latest"
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -1046,7 +1043,7 @@
             "homepage": "http://v.s.cz/ease.php",
             "support": {
                 "issues": "https://github.com/VitexSoftware/php-ease-core/issues",
-                "source": "https://github.com/VitexSoftware/php-ease-core/tree/main"
+                "source": "https://github.com/VitexSoftware/php-ease-core/tree/1.37"
             },
             "funding": [
                 {
@@ -1054,7 +1051,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2023-01-07T16:47:31+00:00"
+            "time": "2021-11-11T05:11:23+00:00"
         },
         {
             "name": "vitexsoftware/ease-core-bricks",
@@ -1586,12 +1583,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "3182d12b55895a2e71ed6684f9bd5cd13527e94e"
+                "reference": "570e980a201d8ed0236b0a62ddf2c9cbb2034039"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/3182d12b55895a2e71ed6684f9bd5cd13527e94e",
-                "reference": "3182d12b55895a2e71ed6684f9bd5cd13527e94e",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/570e980a201d8ed0236b0a62ddf2c9cbb2034039",
+                "reference": "570e980a201d8ed0236b0a62ddf2c9cbb2034039",
                 "shasum": ""
             },
             "require": {
@@ -1633,9 +1630,9 @@
             ],
             "support": {
                 "issues": "https://github.com/nikic/PHP-Parser/issues",
-                "source": "https://github.com/nikic/PHP-Parser/tree/4.x"
+                "source": "https://github.com/nikic/PHP-Parser/tree/v4.15.3"
             },
-            "time": "2022-12-14T20:51:15+00:00"
+            "time": "2023-01-16T22:05:37+00:00"
         },
         {
             "name": "phar-io/manifest",
@@ -1762,12 +1759,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "e82a70327b9d0300b47e52b411e9566049d30cdb"
+                "reference": "ddb9dc52c53b57bc1cb2f4c828606444bd6db545"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/e82a70327b9d0300b47e52b411e9566049d30cdb",
-                "reference": "e82a70327b9d0300b47e52b411e9566049d30cdb",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/ddb9dc52c53b57bc1cb2f4c828606444bd6db545",
+                "reference": "ddb9dc52c53b57bc1cb2f4c828606444bd6db545",
                 "shasum": ""
             },
             "require": {
@@ -1814,7 +1811,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-01-10T16:05:23+00:00"
+            "time": "2023-01-24T11:10:20+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -1822,12 +1819,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "3bd773131666fd5457a2a89ff790dfd2b2260ae9"
+                "reference": "08b2022df9708328731f1e9094e81d720739acf8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/3bd773131666fd5457a2a89ff790dfd2b2260ae9",
-                "reference": "3bd773131666fd5457a2a89ff790dfd2b2260ae9",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/08b2022df9708328731f1e9094e81d720739acf8",
+                "reference": "08b2022df9708328731f1e9094e81d720739acf8",
                 "shasum": ""
             },
             "require": {
@@ -1891,7 +1888,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-01-02T08:36:34+00:00"
+            "time": "2023-01-24T14:18:22+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -2136,16 +2133,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "9.5.x-dev",
+            "version": "9.6.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "ee288073d1c628c31e281f81fc2242edc05adb1f"
+                "reference": "aa658d693d68e23604fcd3504b6e5efd59d341ab"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/ee288073d1c628c31e281f81fc2242edc05adb1f",
-                "reference": "ee288073d1c628c31e281f81fc2242edc05adb1f",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/aa658d693d68e23604fcd3504b6e5efd59d341ab",
+                "reference": "aa658d693d68e23604fcd3504b6e5efd59d341ab",
                 "shasum": ""
             },
             "require": {
@@ -2187,7 +2184,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "9.5-dev"
+                    "dev-master": "9.6-dev"
                 }
             },
             "autoload": {
@@ -2218,7 +2215,7 @@
             ],
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/9.5"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/9.6"
             },
             "funding": [
                 {
@@ -2234,7 +2231,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-01-10T16:28:00+00:00"
+            "time": "2023-01-24T14:15:16+00:00"
         },
         {
             "name": "psr/container",
@@ -2397,17 +2394,17 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/phinx.git",
-                "reference": "e0ea0e6298796bd86cdbb037aa63da6f9b223f1d"
+                "reference": "2880900c48b103e2ace65f012bfa4951255292a2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/phinx/zipball/e0ea0e6298796bd86cdbb037aa63da6f9b223f1d",
-                "reference": "e0ea0e6298796bd86cdbb037aa63da6f9b223f1d",
+                "url": "https://api.github.com/repos/cakephp/phinx/zipball/2880900c48b103e2ace65f012bfa4951255292a2",
+                "reference": "2880900c48b103e2ace65f012bfa4951255292a2",
                 "shasum": ""
             },
             "require": {
                 "cakephp/database": "^4.0",
-                "php-64bit": ">=7.2",
+                "php-64bit": ">=7.3",
                 "psr/container": "^1.0 || ^2.0",
                 "symfony/config": "^3.4|^4.0|^5.0|^6.0",
                 "symfony/console": "^3.4|^4.0|^5.0|^6.0"
@@ -2416,7 +2413,7 @@
                 "cakephp/cakephp-codesniffer": "^4.0",
                 "ext-json": "*",
                 "ext-pdo": "*",
-                "phpunit/phpunit": "^8.5|^9.3",
+                "phpunit/phpunit": "^9.5",
                 "sebastian/comparator": ">=1.2.3",
                 "symfony/yaml": "^3.4|^4.0|^5.0"
             },
@@ -2476,7 +2473,7 @@
                 "issues": "https://github.com/cakephp/phinx/issues",
                 "source": "https://github.com/cakephp/phinx/tree/0.x"
             },
-            "time": "2023-01-08T14:16:14+00:00"
+            "time": "2023-01-23T10:46:53+00:00"
         },
         {
             "name": "sebastian/cli-parser",
@@ -3693,12 +3690,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/filesystem.git",
-                "reference": "0c64ad0187c8e7738509ebfa3fe524439aad6f32"
+                "reference": "648bfaca6a494f3e22378123bcee2894045dc9d8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/filesystem/zipball/0c64ad0187c8e7738509ebfa3fe524439aad6f32",
-                "reference": "0c64ad0187c8e7738509ebfa3fe524439aad6f32",
+                "url": "https://api.github.com/repos/symfony/filesystem/zipball/648bfaca6a494f3e22378123bcee2894045dc9d8",
+                "reference": "648bfaca6a494f3e22378123bcee2894045dc9d8",
                 "shasum": ""
             },
             "require": {
@@ -3749,7 +3746,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-01-01T08:32:19+00:00"
+            "time": "2023-01-14T19:14:44+00:00"
         },
         {
             "name": "symfony/polyfill-ctype",
@@ -4536,5 +4533,5 @@
     "prefer-lowest": false,
     "platform": [],
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.0.0"
 }

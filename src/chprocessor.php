@@ -6,14 +6,12 @@ namespace AbraFlexi\Processor;
  * WebHook Acceptor & Saver to SQL Cache.
  *
  * @author     Vítězslav Dvořák <vitex@arachne.cz>
- * @copyright  2017-2022 Spoje.Net, 2021-2022 VitexSoftware
+ * @copyright  2017-2022 Spoje.Net, 2021-2023 VitexSoftware
  */
 define('APP_NAME', 'AbraFlexiChangesProcessor');
 require_once __DIR__ . '/../vendor/autoload.php';
 
-if (file_exists('../.env')) {
-    \Ease\Shared::singleton()->loadConfig('../.env', true);
-}
+Engine::init(['DB_TYPE','DB_HOST','DB_PORT','DB_DATABASE','DB_USERNAME','DB_PASSWORD'], '../.env');
 
 $hooker = new ChangesApi();
 if (\Ease\Functions::cfg('APP_DEBUG')) {
