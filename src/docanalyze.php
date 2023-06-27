@@ -11,17 +11,10 @@ namespace AbraFlexi\Processor;
 define('APP_NAME', 'AbraFlexiChangesProcessor');
 require_once __DIR__.'/../vendor/autoload.php';
 
-if (file_exists('../.env')) {
-    \Ease\Shared::singleton()->loadConfig('../.env', true);
-}
+// Check required configuration
+\Ease\Shared::init(['ABRAFLEXI_URL', 'ABRAFLEXI_LOGIN', 'ABRAFLEXI_PASSWORD', 'ABRAFLEXI_COMPANY',
+'EASE_LOGGER', 'SUBJECT', 'DB_CONNECTION', 'DB_DATABASE'], '../.env');
 
-foreach (['ABRAFLEXI_URL', 'ABRAFLEXI_LOGIN', 'ABRAFLEXI_PASSWORD', 'ABRAFLEXI_COMPANY',
-'EASE_LOGGER', 'SUBJECT', 'DB_CONNECTION', 'DB_DATABASE'] as $cfgKey) {
-    if (empty(\Ease\Functions::cfg($cfgKey))) {
-        echo 'Requied configuration '.$cfgKey.' is not set.';
-        exit(1);
-    }
-}
 
 if ($argc > 1) {
     $docId = $argv[1];

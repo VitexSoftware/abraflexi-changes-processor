@@ -14,7 +14,8 @@
         "vitexsoftware/abraflexi-bricks": "*",
         "vitexsoftware/ease-fluentpdo": "*",
         "rogervila/array-diff-multidimensional": "*",
-        "mevdschee/php-crud-api": "dev-main"
+        "mevdschee/php-crud-api": "dev-main",
+        "vitexsoftware/ease-core": "dev-main"
     },
     "require-dev": {
         "phpunit/phpunit": "*",

@@ -12,7 +12,7 @@ namespace AbraFlexi\Processor;
 define('APP_NAME', 'HistoryInitializer');
 require_once __DIR__ . '/../vendor/autoload.php';
 
-Engine::init(['DB_TYPE','DB_HOST','DB_PORT','DB_DATABASE','DB_USERNAME','DB_PASSWORD'], '../.env');
+\Ease\Shared::init(['DB_TYPE','DB_HOST','DB_PORT','DB_DATABASE','DB_USERNAME','DB_PASSWORD'], '../.env');
 
 $changesApi = new ChangesApi();
 $sourceId = $changesApi->getSourceId();

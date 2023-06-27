@@ -11,7 +11,7 @@ namespace AbraFlexi\Processor;
 define('APP_NAME', 'SettledInvoice');
 require_once __DIR__ . '/../vendor/autoload.php';
 
-Engine::init(['ABRAFLEXI_URL', 'ABRAFLEXI_LOGIN', 'ABRAFLEXI_PASSWORD', 'ABRAFLEXI_COMPANY', 'DOCUMENTID', 'CHANGEID'], '../.env');
+\Ease\Shared::init(['ABRAFLEXI_URL', 'ABRAFLEXI_LOGIN', 'ABRAFLEXI_PASSWORD', 'ABRAFLEXI_COMPANY', 'DOCUMENTID', 'CHANGEID'], '../.env');
 
 $invoicer = new Plugins\FakturaVydana(\Ease\Functions::cfg('DOCUMENTID'), []);
 if (\Ease\Functions::cfg('APP_DEBUG') == 'True') {

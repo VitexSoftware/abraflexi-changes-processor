@@ -95,28 +95,6 @@ class Engine extends \Ease\SQL\Engine {
     private $lastProcessedVersion;
 
     /**
-     * Load required Initial Configuration
-     * 
-     * @param array  $configKeys
-     * @param string $envFile
-     */
-    public static function init($configKeys = [], $envFile = '.env') {
-        if (file_exists($envFile)) {
-            \Ease\Shared::singleton()->loadConfig($envFile, true);
-        }
-        $configured = true;
-        foreach ($cfgKeys as $cfgKey) {
-            if (empty(\Ease\Functions::cfg($cfgKey))) {
-                fwrite(STDERR, 'Requied configuration ' . $cfgKey . " is not set." . PHP_EOL);
-                $configured = false;
-            }
-        }
-        if ($configured === false) {
-            exit(1);
-        }
-    }
-
-    /**
      * Processor engine class
      */
     public function __construct($options = []) {
