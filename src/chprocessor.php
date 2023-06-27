@@ -5,7 +5,7 @@ namespace AbraFlexi\Processor;
 /**
  * WebHook Acceptor & Saver to SQL Cache.
  *
- * @author     Vítězslav Dvořák <vitex@arachne.cz>
+ * @author     Vítězslav Dvořák <info@vitexsoftware.cz>
  * @copyright  2017-2022 Spoje.Net, 2021-2023 VitexSoftware
  */
 define('APP_NAME', 'AbraFlexiChangesProcessor');

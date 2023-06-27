@@ -5,7 +5,7 @@ namespace AbraFlexi\Processor;
 /**
  * Meta State Processor.
  *
- * @author     Vítězslav Dvořák <vitex@arachne.cz>
+ * @author     Vítězslav Dvořák <info@vitexsoftware.cz>
  * @copyright  2022 VitexSoftware
  */
 const APP_NAME = 'AbraFlexiIncomeConfirm';

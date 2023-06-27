@@ -9,7 +9,7 @@ use Tqdev\PhpCrudApi\ResponseUtils;
 /**
  * System.Spoje.Net - API
  *
- * @author     Vítězslav Dvořák <vitex@arachne.cz>
+ * @author     Vítězslav Dvořák <info@vitexsoftware.cz>
  * @copyright  2021 Spoje.Net
  */
 define('APP_NAME', 'AbraFlexiChangesProcessor');

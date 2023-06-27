@@ -3,7 +3,7 @@
 /**
  * Changes API Hanfler.
  *
- * @author     Vítězslav Dvořák <vitex@arachne.cz>
+ * @author     Vítězslav Dvořák <info@vitexsoftware.cz>
  * @copyright  2022 VitexSoftware
  */
 

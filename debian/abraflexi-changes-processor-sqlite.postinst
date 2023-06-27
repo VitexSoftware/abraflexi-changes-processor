@@ -18,6 +18,10 @@ if [ -f /usr/share/dbconfig-common/dpkg/postinst ]; then
 
     dbc_go abraflexi-changes-processor "$@" || true
 
+    sed -i '/DB_DATABASE/c\DB_DATABASE=_DBC_DBNAME_'      /etc/abraflexi-changes-processor/.env
+
+    
+
     echo "Pre-DependsDbconfig Common configuration: /etc/dbconfig-common/abraflexi-changes-processor.conf"
     cat /etc/dbconfig-common/abraflexi-changes-processor.conf
     echo "Configuration Used: /etc/abraflexi-changes-processor/.env"

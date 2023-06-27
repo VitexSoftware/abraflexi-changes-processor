@@ -5,7 +5,7 @@ namespace AbraFlexi\Processor;
 /**
  * AbraFlexi document Analyzer.
  *
- * @author     Vítězslav Dvořák <vitex@arachne.cz>
+ * @author     Vítězslav Dvořák <info@vitexsoftware.cz>
  * @copyright  2023 VitexSoftware
  */
 define('APP_NAME', 'AbraFlexiChangesProcessor');

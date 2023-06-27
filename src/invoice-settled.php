@@ -5,7 +5,7 @@ namespace AbraFlexi\Processor;
 /**
  * Settled invoice Analyzer
  *
- * @author     Vítězslav Dvořák <vitex@arachne.cz>
+ * @author     Vítězslav Dvořák <info@vitexsoftware.cz>
  * @copyright  2022-2023 VitexSoftware
  */
 define('APP_NAME', 'SettledInvoice');

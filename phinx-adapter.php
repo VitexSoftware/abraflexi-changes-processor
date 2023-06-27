@@ -4,7 +4,7 @@
  * AbraFlexi Webhook Acceptor - Phinx database adapter.
  *
  * @author Vítězslav Dvořák <info@vitexsoftware.cz>
- * @copyright  2021-2022 Vitex Software
+ * @copyright  2021-2023 Vitex Software
  */
 if (file_exists('./vendor/autoload.php')) {
     include_once './vendor/autoload.php';

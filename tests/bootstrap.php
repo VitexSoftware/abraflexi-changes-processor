@@ -3,7 +3,7 @@
 /**
  * AbraFlexi Changes processor - nastavení testů.
  *
- * @author     Vítězslav Dvořák <vitex@arachne.cz>
+ * @author     Vítězslav Dvořák <info@vitexsoftware.cz>
  * @copyright  2015-2020 Spoje.Net
  */
 /**
