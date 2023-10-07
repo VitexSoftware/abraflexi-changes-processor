@@ -5,7 +5,7 @@ namespace AbraFlexi\Processor;
 /**
  * AbraFlexi document Analyzer.
  *
- * @author     Vítězslav Dvořák <vitex@arachne.cz>
+ * @author     Vítězslav Dvořák <info@vitexsoftware.cz>
  * @copyright  2023 VitexSoftware
  */
 
@@ -16,15 +16,8 @@ if (file_exists('../.env')) {
     \Ease\Shared::singleton()->loadConfig('../.env', true);
 }
 
-foreach (
-    ['ABRAFLEXI_URL', 'ABRAFLEXI_LOGIN', 'ABRAFLEXI_PASSWORD', 'ABRAFLEXI_COMPANY',
-'EASE_LOGGER', 'SUBJECT', 'DB_CONNECTION', 'DB_DATABASE'] as $cfgKey
-) {
-    if (empty(\Ease\Functions::cfg($cfgKey))) {
-        echo 'Requied configuration ' . $cfgKey . ' is not set.';
-        exit(1);
-    }
-}
+\Ease\Shared::init(['ABRAFLEXI_URL', 'ABRAFLEXI_LOGIN', 'ABRAFLEXI_PASSWORD', 'ABRAFLEXI_COMPANY',
+'EASE_LOGGER', 'SUBJECT', 'DB_CONNECTION', 'DB_DATABASE'], '../.env');
 
 if ($argc > 1) {
     $docId = $argv[1];

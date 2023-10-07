@@ -5,14 +5,14 @@ namespace AbraFlexi\Processor;
 /**
  * Meta State Processor.
  *
- * @author     Vítězslav Dvořák <vitex@arachne.cz>
- * @copyright  2022 VitexSoftware
+ * @author     Vítězslav Dvořák <info@vitexsoftware.cz>
+ * @copyright  2022-2023 VitexSoftware
  */
 
 define('APP_NAME', 'MetaExecutor');
 require_once __DIR__ . '/../vendor/autoload.php';
 
-Engine::init(['DB_TYPE','DB_HOST','DB_PORT','DB_DATABASE','DB_USERNAME','DB_PASSWORD'], '../.env');
+\Ease\Shared::init(['DB_TYPE','DB_HOST','DB_PORT','DB_DATABASE','DB_USERNAME','DB_PASSWORD'], '../.env');
 
 $metar = new Meta();
 

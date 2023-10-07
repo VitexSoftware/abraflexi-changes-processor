@@ -34,3 +34,6 @@ override_dh_install:
 	mkdir -p                                                             debian/abraflexi-changes-processor-pgsql/usr/lib/abraflexi-changes-processor
 	cp debian/conf/.env.template                                         debian/abraflexi-changes-processor-pgsql/usr/lib/abraflexi-changes-processor
 	sed -i '/DB_DATABASE/c\DB_DATABASE=_DBC_DBNAME_'                     debian/abraflexi-changes-processor-*sql/usr/lib/abraflexi-changes-processor/.env.template
+	sed -i '/DB_CONNECTION/c\DB_CONNECTION=sqlite'   				    debian/abraflexi-changes-processor-sqlite/usr/lib/abraflexi-changes-processor/.env.template
+	sed -i '/DB_CONNECTION/c\DB_CONNECTION=mysql'                   	debian/abraflexi-changes-processor-mysql/usr/lib/abraflexi-changes-processor/.env.template
+	sed -i '/DB_CONNECTION/c\DB_CONNECTION=pgsql'  		                debian/abraflexi-changes-processor-pgsql/usr/lib/abraflexi-changes-processor/.env.template

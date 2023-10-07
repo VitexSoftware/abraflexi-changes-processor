@@ -5,7 +5,7 @@ namespace AbraFlexi\Processor;
 /**
  * Meta State Emitor.
  *
- * @author     Vítězslav Dvořák <vitex@arachne.cz>
+ * @author     Vítězslav Dvořák <info@vitexsoftware.cz>
  * @copyright  2022 VitexSoftware
  */
 
@@ -13,7 +13,7 @@ const APP_NAME = 'AbraFlexiIncomeConfirm';
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-Engine::init(['DB_TYPE','DB_HOST','DB_PORT','DB_DATABASE','DB_USERNAME','DB_PASSWORD'], '../.env');
+\Ease\Shared::init(['DB_TYPE','DB_HOST','DB_PORT','DB_DATABASE','DB_USERNAME','DB_PASSWORD'], '../.env');
 
 if ($argv > 2) {
     if (array_key_exists(1, $argv)) {

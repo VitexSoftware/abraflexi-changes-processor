@@ -3,7 +3,7 @@
 /**
  * Changes Processor engine class
  *
- * @author     Vítězslav Dvořák <vitex@arachne.cz>
+ * @author     Vítězslav Dvořák <info@vitexsoftware.cz>
  * @copyright  2021 VitexSoftware
  */
 
@@ -93,31 +93,6 @@ class Engine extends \Ease\SQL\Engine
      * @var array
      */
     private $lastProcessedVersion;
-
-    /**
-     * Load required Initial Configuration
-     *
-     * @param array  $configKeys
-     * @param string $envFile
-     *
-     * @deprecated since version 1 moved to \Ease\Shared::init
-     */
-    public static function init($configKeys = [], $envFile = '.env')
-    {
-        if (file_exists($envFile)) {
-            \Ease\Shared::singleton()->loadConfig($envFile, true);
-        }
-        $configured = true;
-        foreach ($configKeys as $cfgKey) {
-            if (empty(\Ease\Functions::cfg($cfgKey))) {
-                fwrite(STDERR, 'Requied configuration ' . $cfgKey . " is not set." . PHP_EOL);
-                $configured = false;
-            }
-        }
-        if ($configured === false) {
-            exit(1);
-        }
-    }
 
     /**
      * Processor engine class

@@ -5,19 +5,24 @@ namespace AbraFlexi\Processor;
 /**
  * CustomerScore obtainer
  *
- * @author     Vítězslav Dvořák <vitex@arachne.cz>
- * @copyright  2022 VitexSoftware
+ * @author     Vítězslav Dvořák <info@vitexsoftware.cz>
+ * @copyright  2022-2023 VitexSoftware
  */
 
 define('APP_NAME', 'AbraFlexiIncomeConfirm');
 require_once __DIR__ . '/../vendor/autoload.php';
 
-Engine::init(['ABRAFLEXI_URL', 'ABRAFLEXI_LOGIN', 'ABRAFLEXI_PASSWORD', 'ABRAFLEXI_COMPANY', 'EASE_LOGGER', 'SUBJECT'], '../.env');
+\Ease\Shared::init(['ABRAFLEXI_URL', 'ABRAFLEXI_LOGIN', 'ABRAFLEXI_PASSWORD', 'ABRAFLEXI_COMPANY', 'EASE_LOGGER', 'SUBJECT'], '../.env');
 
 if ($argc > 1) {
     $docId = $argv[1];
 } else {
     $docId = \Ease\Functions::cfg('DOCUMENTID');
+}
+
+// Throw error if no document ID is provided
+if (empty($docId)) {
+    throw new \Ease\Exception(_('No Customer ID "DOCUMENTID" provided'));
 }
 
 $engine = new \AbraFlexi\Bricks\Customer($docId);

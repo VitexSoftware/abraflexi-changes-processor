@@ -19,7 +19,7 @@ Description: Process AbraFlexi changes
 
 Package: abraflexi-changes-processor-sqlite
 Multi-Arch: foreign
-Pre-Depends: dbconfig-sqlite3, php-sqlite3, sqlite3
+Pre-Depends: dbconfig-sqlite3 | dbconfig-no-thanks, php-sqlite3, sqlite3
 Depends: ${misc:Depends},abraflexi-changes-processor
 Conflicts: abraflexi-changes-processor-mysql, abraflexi-changes-processor-pgsql
 Architecture: all
@@ -28,7 +28,7 @@ Description: sqlite support for AbraFlexi changes processor
 
 Package: abraflexi-changes-processor-mysql
 Multi-Arch: foreign
-Pre-Depends: dbconfig-mysql, php-mysql, php-robmorgan-phinx|php-cakephp-phinx
+Pre-Depends: dbconfig-mysql | dbconfig-no-thanks, php-mysql, php-robmorgan-phinx|php-cakephp-phinx
 Depends: ${misc:Depends},abraflexi-changes-processor
 Conflicts: abraflexi-changes-processor-sqlite, abraflexi-changes-processor-pgsql
 Suggests: mariadb-server
@@ -38,7 +38,7 @@ Description: mariadb support for AbraFlexi changes processor
 
 Package: abraflexi-changes-processor-pgsql
 Multi-Arch: foreign
-Pre-Depends: dbconfig-pgsql, php-pgsql, php-robmorgan-phinx|php-cakephp-phinx
+Pre-Depends: dbconfig-pgsql | dbconfig-no-thanks, php-pgsql, php-robmorgan-phinx|php-cakephp-phinx
 Depends: ${misc:Depends},abraflexi-changes-processor, 
 Conflicts: abraflexi-changes-processor-mysql, abraflexi-changes-processor-sqlite
 Suggests: postgresql

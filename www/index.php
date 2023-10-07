@@ -9,17 +9,15 @@ use Tqdev\PhpCrudApi\ResponseUtils;
 /**
  * System.Spoje.Net - API
  *
- * @author     Vítězslav Dvořák <vitex@arachne.cz>
- * @copyright  2021 Spoje.Net
+ * @author     Vítězslav Dvořák <info@vitexsoftware.cz>
+ * @copyright  2021-2023 Spoje.Net
  */
 define('APP_NAME', 'AbraFlexiChangesProcessor');
 define('EASE_LOGGER', 'console|syslog');
 require_once __DIR__ . '/../vendor/autoload.php';
 
-if (file_exists('../.env')) {
-    \Ease\Shared::singleton()->loadConfig('../.env', true);
-}
-
+\Ease\Shared::init(['ABRAFLEXI_URL', 'ABRAFLEXI_LOGIN', 'ABRAFLEXI_PASSWORD', 'ABRAFLEXI_COMPANY',
+'EASE_LOGGER', 'SUBJECT', 'DB_CONNECTION', 'DB_DATABASE'], '../.env');
 
 $request = RequestFactory::fromGlobals();
 $api = new Api();
