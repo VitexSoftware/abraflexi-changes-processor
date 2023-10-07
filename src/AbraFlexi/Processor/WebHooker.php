@@ -12,7 +12,7 @@ namespace AbraFlexi\Processor;
  *
  * @author vitex
  */
-class WebHooker extends \AbraFlexi\RO {
+class WebHooker extends \AbraFlexi\RO
+{
     use \AbraFlexi\getChanges;
-    
 }

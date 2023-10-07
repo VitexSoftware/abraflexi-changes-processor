@@ -30,6 +30,7 @@ DB_SETUP=
 
 CUT_FLEXIHISTORY_BY_LASTID=True
 PROCESSING_ENABLED=True
+ABRAFLEXI_OST_ZAVAZEK=OST-ZAVAZEK  #typ-zavazku 
 ```
 
 Example Environment for for subcommand:

@@ -1,5 +1,7 @@
 <?php
+
 namespace AbraFlexi\Processor\Plugins;
+
 /**
  * Description of Zavazek
  *

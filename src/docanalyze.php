@@ -8,17 +8,20 @@ namespace AbraFlexi\Processor;
  * @author     Vítězslav Dvořák <vitex@arachne.cz>
  * @copyright  2023 VitexSoftware
  */
+
 define('APP_NAME', 'AbraFlexiChangesProcessor');
-require_once __DIR__.'/../vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 if (file_exists('../.env')) {
     \Ease\Shared::singleton()->loadConfig('../.env', true);
 }
 
-foreach (['ABRAFLEXI_URL', 'ABRAFLEXI_LOGIN', 'ABRAFLEXI_PASSWORD', 'ABRAFLEXI_COMPANY',
-'EASE_LOGGER', 'SUBJECT', 'DB_CONNECTION', 'DB_DATABASE'] as $cfgKey) {
+foreach (
+    ['ABRAFLEXI_URL', 'ABRAFLEXI_LOGIN', 'ABRAFLEXI_PASSWORD', 'ABRAFLEXI_COMPANY',
+'EASE_LOGGER', 'SUBJECT', 'DB_CONNECTION', 'DB_DATABASE'] as $cfgKey
+) {
     if (empty(\Ease\Functions::cfg($cfgKey))) {
-        echo 'Requied configuration '.$cfgKey.' is not set.';
+        echo 'Requied configuration ' . $cfgKey . ' is not set.';
         exit(1);
     }
 }
@@ -45,8 +48,10 @@ foreach ($engine->getSubObjects() as $subObject) {
         foreach (preg_grep('/\b$API\b/i', $labels) as $label) {
             $metaData = ['uri' => $subObject->getApiURL(), 'meta' => $meta, 'properties' => json_encode([
                     'LABEL' => $label])];
-            $metaEngine->addStatusMessage('Emit META by product '.$subObject->getRecordCode().' attribute : '.$metaData['uri'].'#'.$meta,
-                $metaEngine->insertItem($metaData) ? 'success' : 'error');
+            $metaEngine->addStatusMessage(
+                'Emit META by product ' . $subObject->getRecordCode() . ' attribute : ' . $metaData['uri'] . '#' . $meta,
+                $metaEngine->insertItem($metaData) ? 'success' : 'error'
+            );
         }
     }
     // MEMBER OF Subtree
@@ -56,8 +61,10 @@ foreach ($engine->getSubObjects() as $subObject) {
     $meta = $engine->getMetaForProduct($subObject->getRecordCode());
     if ($meta) {
         $metaData = ['uri' => $subObject->getApiURL(), 'meta' => $meta];
-        $metaEngine->addStatusMessage('Emit META by product '.$subObject->getRecordCode().' attribute : '.$metaData['uri'].'#'.$meta,
-            $metaEngine->insertItem($metaData) ? 'success' : 'error');
+        $metaEngine->addStatusMessage(
+            'Emit META by product ' . $subObject->getRecordCode() . ' attribute : ' . $metaData['uri'] . '#' . $meta,
+            $metaEngine->insertItem($metaData) ? 'success' : 'error'
+        );
     }
     //print_r($subObject->getData());
     // TODO: Skupina Zbozi

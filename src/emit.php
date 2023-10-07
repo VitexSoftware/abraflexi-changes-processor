@@ -8,14 +8,14 @@ namespace AbraFlexi\Processor;
  * @author     Vítězslav Dvořák <vitex@arachne.cz>
  * @copyright  2022 VitexSoftware
  */
+
 const APP_NAME = 'AbraFlexiIncomeConfirm';
 
-require_once __DIR__.'/../vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 Engine::init(['DB_TYPE','DB_HOST','DB_PORT','DB_DATABASE','DB_USERNAME','DB_PASSWORD'], '../.env');
 
 if ($argv > 2) {
-
     if (array_key_exists(1, $argv)) {
         $uri = $argv[1];
     } else {
@@ -41,8 +41,10 @@ if ($argv > 2) {
         $metaData['after'] = date("Y-m-d H:i:s", $timestamp);
     }
     $engine = new Meta();
-    $engine->addStatusMessage($uri.'#'.$meta.' '.$after,
-        $engine->insertItem($metaData) ? 'success' : 'error');
+    $engine->addStatusMessage(
+        $uri . '#' . $meta . ' ' . $after,
+        $engine->insertItem($metaData) ? 'success' : 'error'
+    );
 } else {
     echo "usage: $argv[0] [record URI] [meta state] <after timestamp>\n";
 }

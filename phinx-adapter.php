@@ -34,13 +34,12 @@ $cfg = [
     ],
     'environments' =>
     [
-        'default_database' => 'development',
+        'default_environment' => 'production',
         'development' => [
             'adapter' => \Ease\Functions::cfg('DB_TYPE'),
             'name' => $engine->database,
             'connection' => $engine->getPdo($sqlOptions)
         ],
-        'default_database' => 'production',
         'production' => [
             'adapter' => \Ease\Functions::cfg('DB_TYPE'),
             'name' => $engine->database,

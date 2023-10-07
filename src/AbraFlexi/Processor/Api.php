@@ -1,4 +1,5 @@
 <?php
+
 /**
  * API Handler.
  *
@@ -22,7 +23,6 @@ use Tqdev\PhpCrudApi\ResponseUtils;
  */
 class Api extends CrudApi
 {
-
     use Logging;
 
     public function __construct()
@@ -35,8 +35,10 @@ class Api extends CrudApi
             'password' => Functions::cfg('DB_PASSWORD'),
             'database' => Functions::cfg('DB_DATABASE'),
             'debug' => boolval(Functions::cfg('DEBUG')),
-            'basePath' => \Ease\Functions::cfg('BASEPATH',
-                '/EASE/abraflexi-changes-processor/www/')  // parse_url(\Ease\WebPage::phpSelf(),PHP_URL_PATH)
+            'basePath' => \Ease\Functions::cfg(
+                'BASEPATH',
+                '/EASE/abraflexi-changes-processor/www/'
+            )  // parse_url(\Ease\WebPage::phpSelf(),PHP_URL_PATH)
         ]);
         parent::__construct($config);
     }

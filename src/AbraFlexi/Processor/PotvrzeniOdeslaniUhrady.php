@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Income Confirmation handler class
  *
@@ -17,7 +18,7 @@ class PotvrzeniOdeslaniUhrady extends Mailer
 {
     /**
      * Company signature
-     * @var string 
+     * @var string
      */
     static $signature = '';
 
@@ -33,7 +34,7 @@ class PotvrzeniOdeslaniUhrady extends Mailer
     }
 
     /**
-     * 
+     *
      * @param FakturaVydana $invoice
      */
     public function assignInvoice($invoice)
@@ -65,12 +66,16 @@ class PotvrzeniOdeslaniUhrady extends Mailer
         }
 
 
-        $this->addItem(new \Ease\Html\DivTag(sprintf(_('Dear partner %s,'),
-                    $customerName)));
+        $this->addItem(new \Ease\Html\DivTag(sprintf(
+            _('Dear partner %s,'),
+            $customerName
+        )));
         $this->addItem(new \Ease\Html\DivTag("\n<br>"));
 
-        $this->addItem(new \Ease\Html\DivTag(sprintf(_('we confirm sending bank order to pay your invoice %s'),
-                    $invoice->getDataValue('cisDosle'))));
+        $this->addItem(new \Ease\Html\DivTag(sprintf(
+            _('we confirm sending bank order to pay your invoice %s'),
+            $invoice->getDataValue('cisDosle')
+        )));
         $this->addItem(new \Ease\Html\DivTag("\n<br>"));
 
         $body->addItem(new \Ease\Html\DivTag(_('With greetings')));
@@ -79,8 +84,10 @@ class PotvrzeniOdeslaniUhrady extends Mailer
 
         $body->addItem(nl2br($this->getSignature()));
 
-        parent::__construct($to, sprintf(_('Confirmation of sending of invoice %s payment'),
-                $invoice->getDataValue('cisDosle')), $body);
+        parent::__construct($to, sprintf(
+            _('Confirmation of sending of invoice %s payment'),
+            $invoice->getDataValue('cisDosle')
+        ), $body);
         $this->setMailHeaders(['Cc' => \Ease\Functions::cfg('SEND_INFO_TO')]);
     }
 }

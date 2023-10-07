@@ -14,8 +14,8 @@ namespace AbraFlexi\Processor;
  *
  * @author vitex
  */
-class ChangesApi extends Engine {
-
+class ChangesApi extends Engine
+{
     /**
      *
      * @var string
@@ -26,10 +26,11 @@ class ChangesApi extends Engine {
      * Register new data source
      *
      * @param string source uri
-     * 
+     *
      * @return int new source ID
      */
-    public function registerApi($source = null) {
+    public function registerApi($source = null)
+    {
         if (empty($source)) {
             $source = $this->sourceUri();
         }
@@ -45,19 +46,20 @@ class ChangesApi extends Engine {
     }
 
     /**
-     * 
+     *
      * @return int
      */
-    public function getSourceId() {
+    public function getSourceId()
+    {
         return $this->listingQuery()->select('id')->where('serverurl', $this->sourceUri())->fetchColumn(0);
     }
 
     /**
-     * 
+     *
      * @return string
      */
-    public function sourceUri() {
+    public function sourceUri()
+    {
         return \Ease\Functions::cfg('ABRAFLEXI_URL') . '/c/' . \Ease\Functions::cfg('ABRAFLEXI_COMPANY');
     }
-
 }

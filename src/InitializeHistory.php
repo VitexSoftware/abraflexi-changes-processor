@@ -9,6 +9,7 @@ namespace AbraFlexi\Processor;
  * @author     Vítězslav Dvořák <info@vitexsoftware.cz>
  * @copyright  2017-2020 Spoje.Net 2021-2023 VitexSoftware
  */
+
 define('APP_NAME', 'HistoryInitializer');
 require_once __DIR__ . '/../vendor/autoload.php';
 

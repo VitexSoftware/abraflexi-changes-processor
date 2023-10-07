@@ -8,6 +8,7 @@ namespace AbraFlexi\Processor;
  * @author     Vítězslav Dvořák <vitex@arachne.cz>
  * @copyright  2022 VitexSoftware
  */
+
 define('APP_NAME', 'MetaExecutor');
 require_once __DIR__ . '/../vendor/autoload.php';
 
@@ -22,8 +23,10 @@ if (\Ease\Functions::cfg('META_PROCESSING_ENABLED') == 'True') {
         $metar->processMetas();
         $metar->unlock();
     } else {
-        $metar->addStatusMessage(sprintf(_('Waiting for PID %d to be done'),
-                        $lockerPid), 'debug');
+        $metar->addStatusMessage(sprintf(
+            _('Waiting for PID %d to be done'),
+            $lockerPid
+        ), 'debug');
     }
 } else {
     $metar->addStatusMessage(_('Changes processing is disabled. (set META_PROCESSING_ENABLED=True to enable)'), 'warning');

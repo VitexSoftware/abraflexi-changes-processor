@@ -11,10 +11,10 @@ namespace AbraFlexi\Processor\Notify;
  *
  * @author vitex
  */
-interface Notifier {
-
+interface Notifier
+{
     /**
-     * 
+     *
      * @param \AbraFlexi\Processor\Plugin $handler
      */
     function notify(\AbraFlexi\Processor\Plugin $handler);

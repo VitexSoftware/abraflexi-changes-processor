@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Accpeted Invoice Confirmation Class
  *
@@ -17,7 +18,7 @@ class PotvrzeniPrijetiFaktury extends Mailer
 {
     /**
      * Company signature
-     * @var string 
+     * @var string
      */
     static $signature = '';
 
@@ -33,7 +34,7 @@ class PotvrzeniPrijetiFaktury extends Mailer
     }
 
     /**
-     * 
+     *
      * @param \AbraFlexi\FakturaPrijata $invoice
      */
     public function assignInvoice($invoice)
@@ -65,13 +66,17 @@ class PotvrzeniPrijetiFaktury extends Mailer
         }
 
 
-        $body->addItem(new \Ease\Html\DivTag(sprintf(_('Dear customer %s,'),
-                    $customerName)));
+        $body->addItem(new \Ease\Html\DivTag(sprintf(
+            _('Dear customer %s,'),
+            $customerName
+        )));
         $body->addItem(new \Ease\Html\DivTag("\n<br>"));
 
-        $body->addItem(new \Ease\Html\DivTag(sprintf(_('we confirm receipt of invoice %s as %s '),
-                    $invoice->getDataValue('cisDosle'),
-                    $invoice->getDataValue('kod'))));
+        $body->addItem(new \Ease\Html\DivTag(sprintf(
+            _('we confirm receipt of invoice %s as %s '),
+            $invoice->getDataValue('cisDosle'),
+            $invoice->getDataValue('kod')
+        )));
         $body->addItem(new \Ease\Html\DivTag("\n<br>"));
 
         $body->addItem(new \Ease\Html\DivTag(_('With greetings')));
@@ -80,9 +85,14 @@ class PotvrzeniPrijetiFaktury extends Mailer
 
         $body->addItem(nl2br($this->getSignature()));
 
-        parent::__construct($to,
-            sprintf(_('Confirmation of receipt your invoice %s'),
-                \AbraFlexi\RO::uncode($invoice->getRecordIdent())), $body);
+        parent::__construct(
+            $to,
+            sprintf(
+                _('Confirmation of receipt your invoice %s'),
+                \AbraFlexi\RO::uncode($invoice->getRecordIdent())
+            ),
+            $body
+        );
         $this->setMailHeaders(['Cc' => \Ease\Functions::cfg('SEND_INFO_TO')]);
     }
 }

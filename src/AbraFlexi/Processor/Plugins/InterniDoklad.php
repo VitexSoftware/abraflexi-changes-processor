@@ -1,4 +1,5 @@
 <?php
+
 namespace AbraFlexi\Processor\Plugins;
 
 /**
@@ -6,7 +7,7 @@ namespace AbraFlexi\Processor\Plugins;
  *
  * @author vitex
  */
-class InterniDoklad  extends \AbraFlexi\Processor\Plugin
+class InterniDoklad extends \AbraFlexi\Processor\Plugin
 {
     /**
      * Order Data
@@ -15,19 +16,19 @@ class InterniDoklad  extends \AbraFlexi\Processor\Plugin
     public $orderData   = null;
     /**
      *
-     * @var string 
+     * @var string
      */
     public $evidence    = 'interni-doklad';
 
     /**
      * Keep History for current object's evidence
-     * @var boolean 
+     * @var boolean
      */
     public $keepHistory = true;
 
     /**
      * Invoice was inserted. What to do now ?
-     * 
+     *
      * @return boolean Change was processed. Ok remeber it
      */
     public function create()
@@ -35,7 +36,7 @@ class InterniDoklad  extends \AbraFlexi\Processor\Plugin
         switch (\AbraFlexi\RO::uncode($this->getDataValue('typDokl'))) {
             case 'ZBYTEK NÁKLAD':
             case 'ZBYTEK VÝNOS':
-                $this->addStatusMessage( $this , 'warning');
+                $this->addStatusMessage($this, 'warning');
                 break;
 
             default:
@@ -44,5 +45,4 @@ class InterniDoklad  extends \AbraFlexi\Processor\Plugin
 
         return true;
     }
-
 }

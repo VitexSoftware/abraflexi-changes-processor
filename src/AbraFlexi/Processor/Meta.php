@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Meta State Processor.
  *
@@ -23,12 +24,12 @@ class Meta extends Engine
 
     /**
      * Webhook Processor lockfile
-     * @var string 
+     * @var string
      */
     protected $lockfile = '/tmp/meta.lock';
 
     /**
-     * 
+     *
      * @return type
      */
     public function unprocessed()
@@ -37,7 +38,7 @@ class Meta extends Engine
     }
 
     /**
-     * 
+     *
      * @return type
      */
     public function firstUnprocessed()
@@ -47,9 +48,9 @@ class Meta extends Engine
 
     /**
      * Handle Metastate
-     * 
+     *
      * @param array $meta
-     * 
+     *
      * @return type
      */
     public function handle($meta)
@@ -62,8 +63,8 @@ class Meta extends Engine
         $meta['documentID'] = urldecode($pathParts[4]);
         $meta['subject'] = $pathParts[3];
         $meta['company'] = $pathParts[2];
-        $meta['companyuri'] = $components['scheme'].'://'.$components['host'].':'.$components['port'].'/c/'.$meta['company'];
-        $meta['url'] = $components['scheme'].'://'.$components['host'].':'.$components['port'];
+        $meta['companyuri'] = $components['scheme'] . '://' . $components['host'] . ':' . $components['port'] . '/c/' . $meta['company'];
+        $meta['url'] = $components['scheme'] . '://' . $components['host'] . ':' . $components['port'];
         $meta = array_merge($meta, $components);
 
         if (array_key_exists($meta['companyuri'], $this->credentials)) {
@@ -86,20 +87,22 @@ class Meta extends Engine
     }
 
     /**
-     * Set Meta Record as processed 
-     * 
+     * Set Meta Record as processed
+     *
      * @param int $metaID
-     * 
+     *
      * @return type
      */
     public function setMetaProcessed($metaID)
     {
-        return $this->getFluentPDO()->update($this->getMyTable())->set('processed',
-                new \Envms\FluentPDO\Literal('NOW()'))->where('id', $metaID)->execute();
+        return $this->getFluentPDO()->update($this->getMyTable())->set(
+            'processed',
+            new \Envms\FluentPDO\Literal('NOW()')
+        )->where('id', $metaID)->execute();
     }
 
     /**
-     * 
+     *
      */
     public function processMetas()
     {
@@ -110,9 +113,9 @@ class Meta extends Engine
 
     /**
      * Obtaing Commands to handle given meta state
-     * 
+     *
      * @param array $meta
-     * 
+     *
      * @return array of commands
      */
     public function getRulesFor($meta)
@@ -122,7 +125,7 @@ class Meta extends Engine
 //    [uri] => https://flexibee-dev.spoje.net:5434/c/spoje_net_s_r_o_/faktura-vydana/code:VF1-4698%2F2022
 //    [meta] => penalised
 //    [discovered] => 2022-09-29 01:25:55
-//    [processed] => 
+//    [processed] =>
 //    [documentID] => code:VF1-4698/2022
 //    [subject] => faktura-vydana
 //    [company] => spoje_net_s_r_o_
@@ -142,17 +145,19 @@ class Meta extends Engine
         $rules = $this->getFluentPDO()->from('rules')->select('command', true)
                 ->where("host", [$meta['host'], '-'])
                 ->where("company", [$meta['company'], '-'])
-                ->where("subject", [$meta['subject'], '-'])->where('meta',
-                $meta['meta'])->disableSmartJoin();
+                ->where("subject", [$meta['subject'], '-'])->where(
+                    'meta',
+                    $meta['meta']
+                )->disableSmartJoin();
 
         return $rules;
     }
 
     /**
      * Get Commands for query
-     * 
+     *
      * @param \Envms\FluentPDO\Query $rules
-     * 
+     *
      * @return array
      */
     public function getCommandsFor($rules)
@@ -166,10 +171,10 @@ class Meta extends Engine
 
     /**
      * Run Command
-     * 
+     *
      * @param string $command
      * @param array $meta Command Metainfo
-     * 
+     *
      * @return type
      */
     public function executeCommand($command, $meta)
@@ -189,19 +194,24 @@ class Meta extends Engine
         ];
 
         foreach (array_merge($meta, $envNames) as $envName => $sqlValue) {
-            $this->addStatusMessage(sprintf(_('Setting Environment %s to %s'),
-                    strtoupper($envName), $sqlValue), 'debug');
-            putenv(strtoupper($envName).'='.$sqlValue);
+            $this->addStatusMessage(sprintf(
+                _('Setting Environment %s to %s'),
+                strtoupper($envName),
+                $sqlValue
+            ), 'debug');
+            putenv(strtoupper($envName) . '=' . $sqlValue);
         }
 
         $exec = $command;
         $cmdparams = '';
         if ($this->debug) {
-            $this->addStatusMessage('start: '.$exec.' '.$cmdparams, 'debug');
+            $this->addStatusMessage('start: ' . $exec . ' ' . $cmdparams, 'debug');
         }
-        $this->addStatusMessage($exec.' done',
-            $this->shellExec($exec.' '.$cmdparams, $stdout, $stderr) ? 'warning'
-                    : 'success' );
+        $this->addStatusMessage(
+            $exec . ' done',
+            $this->shellExec($exec . ' ' . $cmdparams, $stdout, $stderr) ? 'warning'
+            : 'success'
+        );
 
         if ($stdout) {
             foreach (explode("\n", $stdout) as $row) {
@@ -215,27 +225,30 @@ class Meta extends Engine
         }
 
         if ($this->debug) {
-            $this->addStatusMessage('end: '.$exec, 'debug');
+            $this->addStatusMessage('end: ' . $exec, 'debug');
         }
         return $command;
     }
 
     /**
      * Perform subcommand
-     * 
+     *
      * @param string $cmd
      * @param string $stdout
      * @param string $stderr
-     * 
+     *
      * @return int
      */
     function shellExec($cmd, &$stdout = null, &$stderr = null)
     {
-        $proc = proc_open($cmd,
+        $proc = proc_open(
+            $cmd,
             [
                 1 => ['pipe', 'w'],
                 2 => ['pipe', 'w'],
-            ], $pipes);
+            ],
+            $pipes
+        );
         $stdout = stream_get_contents($pipes[1]);
         fclose($pipes[1]);
         $stderr = stream_get_contents($pipes[2]);
@@ -244,31 +257,33 @@ class Meta extends Engine
     }
 
     /**
-     * 
+     *
      *
      * @param array $newItemData
-     * 
+     *
      * @return int
      */
     public function insertItem(array $newItemData)
     {
         $jobId = $this->insertToSQL($newItemData);
-        if(array_key_exists('job', $newItemData) === false){
+        if (array_key_exists('job', $newItemData) === false) {
             $this->updateToSQL(['id' => $jobId, 'job' => $jobId]);
         }
         return $jobId;
     }
 
     /**
-     * 
+     *
      * @param \AbraFlexi\RO $afrecord
      * @param string $metaState
-     * 
+     *
      * @return type
      */
-    public function insertObject(\AbraFlexi\RO $afrecord, string $metaState,
-                                 $changeid = 0)
-    {
+    public function insertObject(
+        \AbraFlexi\RO $afrecord,
+        string $metaState,
+        $changeid = 0
+    ) {
         return $this->insertItem(['uri' => $afrecord->getApiURL(), 'meta' => $metaState,
                 'changeid' => $changeid]);
     }

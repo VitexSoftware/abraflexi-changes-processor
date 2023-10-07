@@ -7,7 +7,7 @@ namespace AbraFlexi\Processor\Plugins;
  *
  * @author vitex
  */
-class Kontakt  extends \AbraFlexi\Processor\Plugin
+class Kontakt extends \AbraFlexi\Processor\Plugin
 {
     public $evidence = 'kontakt';
 }

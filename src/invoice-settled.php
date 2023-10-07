@@ -8,6 +8,7 @@ namespace AbraFlexi\Processor;
  * @author     Vítězslav Dvořák <vitex@arachne.cz>
  * @copyright  2022-2023 VitexSoftware
  */
+
 define('APP_NAME', 'SettledInvoice');
 require_once __DIR__ . '/../vendor/autoload.php';
 

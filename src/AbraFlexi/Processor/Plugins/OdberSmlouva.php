@@ -1,4 +1,5 @@
 <?php
+
 namespace AbraFlexi\Processor\Plugins;
 
 /**
@@ -6,7 +7,7 @@ namespace AbraFlexi\Processor\Plugins;
  *
  * @author vitex
  */
-class OdberSmlouva  extends \AbraFlexi\Processor\Plugin
+class OdberSmlouva extends \AbraFlexi\Processor\Plugin
 {
     public $evidence = 'smlouva';
 }

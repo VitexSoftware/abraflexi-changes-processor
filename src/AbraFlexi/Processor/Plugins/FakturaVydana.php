@@ -16,10 +16,10 @@ use AbraFlexi\Processor\Plugin;
  *
  * @author vitex
  */
-class FakturaVydana extends Plugin {
-
+class FakturaVydana extends Plugin
+{
     use firma;
-    
+
     use \AbraFlexi\subItems;
 
     /**
@@ -30,36 +30,38 @@ class FakturaVydana extends Plugin {
 
     /**
      * Evidence used
-     * @var string 
+     * @var string
      */
     public $evidence = 'faktura-vydana';
 
     /**
      * Keep History for current object's evidence
-     * @var boolean 
+     * @var boolean
      */
     public $keepHistory = true;
 
     /**
      * Is invoice Settled
-     * 
+     *
      * @return boolean
      */
-    public function isSettled() {
+    public function isSettled()
+    {
         try {
             $changes = $this->getChanges();
         } catch (\AbraFlexi\Exception $exc) {
             $changes = [];
         }
-        return array_key_exists('stavUhrK', $changes) && ($changes['stavUhrK'] == 'stavUhr.uhrazeno'); 
+        return array_key_exists('stavUhrK', $changes) && ($changes['stavUhrK'] == 'stavUhr.uhrazeno');
     }
 
     /**
      * Is invoice Dismissed
-     * 
+     *
      * @return boolean
      */
-    public function isStorned() {
+    public function isStorned()
+    {
         try {
             $changes = $this->getChanges();
         } catch (\AbraFlexi\Exception $exc) {
@@ -70,34 +72,42 @@ class FakturaVydana extends Plugin {
 
     /**
      * Invoice was created
-     * 
+     *
      * @return boolean operation success
      */
-    public function create() {
-        $this->addStatusMessage(sprintf('New invoice %s %s was created',
-                        $this->getDataValue('typDokl'), $this->getDataValue('kod')) . ' ' . $this->getDataValue('firma')->showAs . ' ' . $this->getDataValue('sumCelkem') . ' ' . $this->getDataValue('mena')->showAs);
+    public function create()
+    {
+        $this->addStatusMessage(sprintf(
+            'New invoice %s %s was created',
+            $this->getDataValue('typDokl'),
+            $this->getDataValue('kod')
+        ) . ' ' . $this->getDataValue('firma')->showAs . ' ' . $this->getDataValue('sumCelkem') . ' ' . $this->getDataValue('mena')->showAs);
         return true;
     }
 
     /**
      * Invoice was updated. What to do now ?
-     * 
+     *
      * @return boolean Change was processed. Ok remeber it
      */
-    public function update() {
+    public function update()
+    {
         if ($this->isSettled()) {
-            $this->addStatusMessage(sprintf('Processing settled invoice %s ',
-                            $this->getDataValue('kod')));
+            $this->addStatusMessage(sprintf(
+                'Processing settled invoice %s ',
+                $this->getDataValue('kod')
+            ));
         }
         return true;
     }
 
     /**
      * Discover Invoice meta state
-     * 
+     *
      * @return string settle|storno|remind1|remind2|remind3|penalised|create|update|delete
      */
-    public function getMetaState() {
+    public function getMetaState()
+    {
         if (is_null($this->metaState)) {
             $this->metaState = $this->operation;
             if ($this->metaState == 'update') {
@@ -122,14 +132,14 @@ class FakturaVydana extends Plugin {
 
     /**
      * Check reminds & penalisation dates
-     * 
-     * @param int $r 
-     * 
+     *
+     * @param int $r
+     *
      * @return boolean
      */
-    public function isReminded($r) {
+    public function isReminded($r)
+    {
         $cols = [1 => 'datUp1', 2 => 'datUp2', 3 => 'datSmir', 4 => 'datPenale'];
         return empty((string) $this->getDataValue($cols[$r])) === false;
     }
-
 }

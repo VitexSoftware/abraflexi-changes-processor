@@ -7,7 +7,9 @@ namespace AbraFlexi\Processor\Plugins;
  *
  * @author vitex
  */
-class FakturaPrijata extends \AbraFlexi\Processor\Plugin {
+class FakturaPrijata extends \AbraFlexi\Processor\Plugin
+{
+    use \AbraFlexi\subItems;
 
     /**
      * Order Data
@@ -16,45 +18,67 @@ class FakturaPrijata extends \AbraFlexi\Processor\Plugin {
     public $orderData = null;
 
     /**
+     * Handle Incoming change of Incoming Invoice
      *
-     * @var string 
+     * @param int   $id      changed record id
+     * @param array $options
+     */
+    public function __construct($id, $options)
+    {
+        \AbraFlexi\Processor\Engine::init(['ABRAFLEXI_OST_ZAVAZEK']);
+        parent::__construct($id, $options);
+    }
+
+    /**
+     *
+     * @var string
      */
     public $evidence = 'faktura-prijata';
 
     /**
      * Keep History for current object's evidence
-     * @var boolean 
+     * @var boolean
      */
     public $keepHistory = true;
 
     /**
      * Invoice was inserted. What to do now ?
-     * 
+     *
      * @return boolean Change was processed. Ok remeber it
      */
-    public function create() {
+    public function create()
+    {
 
-        $this->addStatusMessage(sprintf('New invoice %s was accepted',
-                        $this->getDataValue('kod')) . ' ' . $this->getDataValue('firma@showAs') . ' Celkem: ' . $this->getDataValue('sumCelkem') . ' Zbyva uh.: ' . $this->getDataValue('zbyvaUhradit') . ' ' . $this->getDataValue('mena@showAs'));
+        $this->addStatusMessage(sprintf(
+            'New invoice %s was accepted',
+            $this->getDataValue('kod')
+        ) . ' ' . $this->getDataValue('firma')->showAs . ' Celkem: ' . $this->getDataValue('sumCelkem') . ' Zbyva uh.: ' . $this->getDataValue('zbyvaUhradit') . ' ' . $this->getDataValue('mena')->showAs);
 
         switch (\AbraFlexi\RO::uncode($this->getDataValue('typDokl'))) {
             case 'ZAVAZEK':
-                $copyer = new \AbraFlexi\Bricks\Convertor($this,
-                        new \AbraFlexi\Zavazek(['typDokl' => 'code:OST .ZÁVAZKY', 'stitky' => 'SYSTEM'])
+                $copyer = new \AbraFlexi\Bricks\Convertor(
+                    $this,
+                    new \AbraFlexi\Zavazek(['typDokl' => 'code:' . \Ease\Functions::cfg('OST-ZAVAZEK'), 'stitky' => 'SYSTEM'])
                 );
 
                 $zavazek = $copyer->conversion();
 
                 if ($zavazek->sync()) {
-                    $zavazek->addStatusMessage(sprintf(_('new commitment %s'),
-                                    $zavazek->getApiUrl()), 'success');
+                    $zavazek->addStatusMessage(sprintf(
+                        _('new commitment %s'),
+                        $zavazek->getApiUrl()
+                    ), 'success');
                     if (!$this->deleteFromAbraFlexi()) {
-                        $this->addStatusMessage(sprintf('error removig %s',
-                                        $this));
+                        $this->addStatusMessage(sprintf(
+                            'error removig %s',
+                            $this
+                        ));
                     }
                 } else {
-                    $zavazek->addStatusMessage(sprintf(_('error creating commitment from %s'),
-                                    $this), 'error');
+                    $zavazek->addStatusMessage(sprintf(
+                        _('error creating commitment from %s'),
+                        $this
+                    ), 'error');
                 }
 
                 break;
@@ -68,17 +92,18 @@ class FakturaPrijata extends \AbraFlexi\Processor\Plugin {
 
     /**
      * Is invoice Settled
-     * 
-     * @return type
+     *
+     * @return boolean
      */
-    public function bankOrderSent() {
+    public function bankOrderSent()
+    {
         $changes = $this->getChanges();
         return isset($changes['stavUzivK']) && ($changes['datUhr'] == 'stavUziv.celPrikaz') ? true : false;
     }
 
 //    /**
 //     * Invoice was updated. What to do now ?
-//     * 
+//     *
 //     * @return boolean Change was processed. Ok remeber it
 //     */
 //    public function update()
@@ -88,7 +113,7 @@ class FakturaPrijata extends \AbraFlexi\Processor\Plugin {
 //                    $this->getDataValue('kod')));
 //
 //            if (\AbraFlexi\RO::uncode($this->getDataValue('typDokl')) == 'FAKTURA') {
-//                
+//
 //                if (!empty($this->getDataValue('kontaktEmail'))) {
 //                    $notify = $this->getDataValue('kontaktEmail');
 //                } else {
@@ -122,7 +147,8 @@ class FakturaPrijata extends \AbraFlexi\Processor\Plugin {
     /**
      * take deata from attachment order.json
      */
-    public function loadOrderData() {
+    public function loadOrderData()
+    {
         $attachments = \AbraFlexi\Priloha::getAttachmentsList($this);
         foreach ($attachments as $attachment) {
             if ($attachment['nazSoub'] == 'order.json') {
@@ -131,5 +157,4 @@ class FakturaPrijata extends \AbraFlexi\Processor\Plugin {
             }
         }
     }
-
 }

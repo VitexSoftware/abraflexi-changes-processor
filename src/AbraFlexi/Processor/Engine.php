@@ -14,41 +14,41 @@ namespace AbraFlexi\Processor;
  *
  * @author vitex
  */
-class Engine extends \Ease\SQL\Engine {
-
+class Engine extends \Ease\SQL\Engine
+{
     /**
      *
-     * @var boolean 
+     * @var boolean
      */
     public $locked = false;
 
     /**
-     * 
+     *
      * @var string
      */
     public $format = 'json';
 
     /**
      * Changes to process
-     * @var array 
+     * @var array
      */
     public $changes = null;
 
     /**
      * Last Change ID availble in AbraFlexi
-     * @var int 
+     * @var int
      */
     public $globalVersion = null;
 
     /**
      * Evidence handler cache
-     * @var array 
+     * @var array
      */
     public $handlerCache = [];
 
     /**
      * Cache for Notify object
-     * @var array 
+     * @var array
      */
     public $notifiers = [];
 
@@ -66,7 +66,7 @@ class Engine extends \Ease\SQL\Engine {
 
     /**
      * Web hook Processor lock file
-     * @var string 
+     * @var string
      */
     protected $lockfile = '/tmp/webhook.lock';
 
@@ -77,13 +77,13 @@ class Engine extends \Ease\SQL\Engine {
     private $sourceId;
 
     /**
-     * 
+     *
      * @var type
      */
     private $myCreateColumn;
 
     /**
-     * 
+     *
      * @var array
      */
     protected $credentials = [];
@@ -96,16 +96,19 @@ class Engine extends \Ease\SQL\Engine {
 
     /**
      * Load required Initial Configuration
-     * 
+     *
      * @param array  $configKeys
      * @param string $envFile
+     *
+     * @deprecated since version 1 moved to \Ease\Shared::init
      */
-    public static function init($configKeys = [], $envFile = '.env') {
+    public static function init($configKeys = [], $envFile = '.env')
+    {
         if (file_exists($envFile)) {
             \Ease\Shared::singleton()->loadConfig($envFile, true);
         }
         $configured = true;
-        foreach ($cfgKeys as $cfgKey) {
+        foreach ($configKeys as $cfgKey) {
             if (empty(\Ease\Functions::cfg($cfgKey))) {
                 fwrite(STDERR, 'Requied configuration ' . $cfgKey . " is not set." . PHP_EOL);
                 $configured = false;
@@ -119,7 +122,8 @@ class Engine extends \Ease\SQL\Engine {
     /**
      * Processor engine class
      */
-    public function __construct($options = []) {
+    public function __construct($options = [])
+    {
         parent::__construct(null, $options);
         $this->debug = \Ease\Functions::cfg('DEBUG');
         $this->lockfile = sys_get_temp_dir() . '/webhook.lock';
@@ -130,12 +134,13 @@ class Engine extends \Ease\SQL\Engine {
 
     /**
      * Changes processor
-     * 
+     *
      * @param array $changes
-     * 
+     *
      * @return array list IDS processed
      */
-    function processAbraFlexiChanges(array $changes) {
+    function processAbraFlexiChanges(array $changes)
+    {
         $changepos = 0;
         $doneIDd = [];
         foreach ($changes as $change) {
@@ -154,10 +159,9 @@ class Engine extends \Ease\SQL\Engine {
             $handlerClass = '\\AbraFlexi\\Processor\\Plugins\\' . $handlerClassName;
 
             if (class_exists($handlerClass)) {
-
                 $changeMeta = array_merge(
-                        \AbraFlexi\RO::companyUrlToOptions($source),
-                        [
+                    \AbraFlexi\RO::companyUrlToOptions($source),
+                    [
                             'evidence' => $evidence,
                             'sourceid' => $this->sourceId,
                             'operation' => $operation,
@@ -171,29 +175,40 @@ class Engine extends \Ease\SQL\Engine {
 
                 $saver = $this->getHandler($handlerClass, $docId, $changeMeta);
                 if (($saver->lastResponseCode === 200) && $saver->process($operation)) {
-
                     $ident = \AbraFlexi\RO::uncode($saver->getRecordIdent());
                     if (!empty($ident)) {
                         $id .= ' ' . $ident;
                     }
-                    $this->addStatusMessage(sprintf(_('Processing Change %s/%s version %d  ⇶ %s ( %s %s/%s ) Last %d'),
-                                    $changepos, count($this->changes), $inVersion,
-                                    $saver->getMetaState(), $operation, $evidence, $id,
-                                    $this->lastProcessedVersions[$this->sourceId]),
-                            'success');
+                    $this->addStatusMessage(
+                        sprintf(
+                            _('Processing Change %s/%s version %d  ⇶ %s ( %s %s/%s ) Last %d'),
+                            $changepos,
+                            count($this->changes),
+                            $inVersion,
+                            $saver->getMetaState(),
+                            $operation,
+                            $evidence,
+                            $id,
+                            $this->lastProcessedVersions[$this->sourceId]
+                        ),
+                        'success'
+                    );
 
                     foreach (\Ease\Functions::classesInNamespace('AbraFlexi\Processor\Notify') as $notifierClass) {
                         if (!array_key_exists($notifierClass, $this->notifiers)) {
                             $toInstance = '\\AbraFlexi\\Processor\\Notify\\' . $notifierClass;
-                            $this->notifiers[$notifierClass] = new $toInstance;
+                            $this->notifiers[$notifierClass] = new $toInstance();
                         }
                         $this->notifiers[$notifierClass]->notify($saver);
                     }
                 }
             } else {
                 if ($this->debug) {
-                    $this->addStatusMessage(sprintf(_('Request unexistent module %s for %s'),
-                                    $handlerClass, $docId), 'warning');
+                    $this->addStatusMessage(sprintf(
+                        _('Request unexistent module %s for %s'),
+                        $handlerClass,
+                        $docId
+                    ), 'warning');
                 }
             }
             $this->wipeCacheRecord($inVersion); //TODO HERE ?
@@ -205,22 +220,28 @@ class Engine extends \Ease\SQL\Engine {
 
     /**
      * Get Changed Record Handler Class
-     * 
+     *
      * @param string $handlerClass
      * @param int    $id
      * @param array  $changeMeta
-     * 
+     *
      * @return \AbraFlexi\Processor\Plugin
      */
-    public function &gethandler($handlerClass, $id, $changeMeta) {
+    public function &gethandler($handlerClass, $id, $changeMeta)
+    {
         if (isset($this->handlerCache[$handlerClass][$id])) {
             $this->handlerCache[$handlerClass][$id]->loadFromAbraFlexi($id);
         } else {
-            $this->handlerCache[$handlerClass][$id] = new $handlerClass($id,
-                    array_merge($changeMeta, ['database' => $this->database]));
+            $this->handlerCache[$handlerClass][$id] = new $handlerClass(
+                $id,
+                array_merge($changeMeta, ['database' => $this->database])
+            );
             if ($this->handlerCache[$handlerClass][$id]->lastResponseCode != 200) {
-                $this->addStatusMessage(sprintf(_('Record %s not found in %s'),
-                                $id, json_encode($changeMeta)), 'error');
+                $this->addStatusMessage(sprintf(
+                    _('Record %s not found in %s'),
+                    $id,
+                    json_encode($changeMeta)
+                ), 'error');
             }
         }
         $this->handlerCache[$handlerClass][$id]->sourceId = $changeMeta['sourceid'];
@@ -230,20 +251,23 @@ class Engine extends \Ease\SQL\Engine {
 
     /**
      * Převezme změny z WebHooku do $this->changes
-     * 
+     *
      * @link https://www.abraflexi.eu/api/dokumentace/ref/changes-api/ Changes API
-     * 
-     * @param array $changes pole změn nazvz sloupcu Json 
-     * 
+     *
+     * @param array $changes pole změn nazvz sloupcu Json
+     *
      * @return int Globální verze poslední přijaté změny
      */
-    public function takeApiChanges(array $changes) {
+    public function takeApiChanges(array $changes)
+    {
         $result = null;
         $changesToLog = [];
         if (array_key_exists('winstrom', $changes)) {
             $this->globalVersion = intval($changes['winstrom']['@globalVersion']);
-            $this->changes = \Ease\Functions::reindexArrayBy($changes['winstrom']['changes'],
-                            '@in-version');
+            $this->changes = \Ease\Functions::reindexArrayBy(
+                $changes['winstrom']['changes'],
+                '@in-version'
+            );
 
             ksort($this->changes);
         }
@@ -253,8 +277,11 @@ class Engine extends \Ease\SQL\Engine {
             $changesToLog[] = $change['@evidence'] . ' ' . $change['@operation'] . ':' . $change['id'] . (empty($change['external-ids']) ? '' : json_encode($change['external-ids']) );
         }
 
-        $this->addStatusMessage(sprintf(_('%s Changes to process: %s'),
-                        count($this->changes), implode(',', $changesToLog)), 'debug');
+        $this->addStatusMessage(sprintf(
+            _('%s Changes to process: %s'),
+            count($this->changes),
+            implode(',', $changesToLog)
+        ), 'debug');
 
         return $result;
     }
@@ -263,24 +290,29 @@ class Engine extends \Ease\SQL\Engine {
      * Ulozi posledni zpracovanou verzi
      *
      * @param int $version
-     * 
+     *
      * @return string Restult
      */
-    public function saveLastProcessedVersion($version) {
+    public function saveLastProcessedVersion($version)
+    {
         $this->myTable = 'changesapi';
         $this->createColumn = false;
         $this->lastProcessedVersion = $version;
         $this->myCreateColumn = null;
         $result = $this->updateToSQL(['doneid' => $version, 'id' => $this->sourceId]);
         if ($this->debug === true) {
-            $this->addStatusMessage(sprintf(_("Last Processed Change ID %s saved for %s"),
-                            $version, $this->serverurl()), $result ? 'success' : 'error');
+            $this->addStatusMessage(sprintf(
+                _("Last Processed Change ID %s saved for %s"),
+                $version,
+                $this->serverurl()
+            ), $result ? 'success' : 'error');
         }
         $this->myTable = 'flexihistory';
         return $result;
     }
 
-    public function serverurl() {
+    public function serverurl()
+    {
         return \Ease\Functions::cfg('ABRAFLEXI_URL') . '/c/' . \Ease\Functions::cfg('ABRAFLEXI_COMPANY');
     }
 
@@ -289,42 +321,50 @@ class Engine extends \Ease\SQL\Engine {
      *
      * @return int $version
      */
-    public function getLastProcessedVersion() {
+    public function getLastProcessedVersion()
+    {
         $lastProcessedVersion = null;
-        $chRaw = $this->getColumnsFromSQL(['changeid'],
-                ['serverurl' => $this->serverurl()]);
+        $chRaw = $this->getColumnsFromSQL(
+            ['changeid'],
+            ['serverurl' => $this->serverurl()]
+        );
         if (isset($chRaw[0]['changeid'])) {
             $lastProcessedVersion = intval($chRaw[0]['changeid']);
         } else {
-            $this->addStatusMessage(_("Last Processed Change ID Loading Failed"),
-                    'warning');
+            $this->addStatusMessage(
+                _("Last Processed Change ID Loading Failed"),
+                'warning'
+            );
         }
         return $lastProcessedVersion;
     }
 
     /**
      * Lock into lock file
-     * 
+     *
      * @return int size of saved lock file in bytes
      */
-    public function lock() {
+    public function lock()
+    {
         return file_put_contents($this->lockfile, getmypid());
     }
 
     /**
      * Web hook processor lock check
-     * 
+     *
      * @returm locked by PID
      */
-    public function locked() {
+    public function locked()
+    {
         return $this->isLocked() ? intval(file_get_contents($this->lockfile)) : 0;
     }
 
     /**
-     * 
+     *
      * @return boolean
      */
-    public function isProcessRunning() {
+    public function isProcessRunning()
+    {
         if (!file_exists($this->lockfile) || !is_file($this->lockfile)) {
             return false;
         }
@@ -333,10 +373,11 @@ class Engine extends \Ease\SQL\Engine {
     }
 
     /**
-     * 
+     *
      * @return boolean
      */
-    public function isLocked() {
+    public function isLocked()
+    {
         $locked = false;
         $lockfilePresent = file_exists($this->lockfile);
         if ($lockfilePresent) {
@@ -345,8 +386,11 @@ class Engine extends \Ease\SQL\Engine {
             } else {
                 $currentProcessPID = file_get_contents($this->lockfile);
                 $locFileAge = time() - filemtime($this->lockfile);
-                $this->addStatusMessage(sprintf('Ophraned lockfile found. pid: %d age: %s s.',
-                                $currentProcessPID, $locFileAge), 'error');
+                $this->addStatusMessage(sprintf(
+                    'Ophraned lockfile found. pid: %d age: %s s.',
+                    $currentProcessPID,
+                    $locFileAge
+                ), 'error');
                 $this->unlock();
             }
         }
@@ -356,16 +400,20 @@ class Engine extends \Ease\SQL\Engine {
     /**
      * Remove lock file
      */
-    public function unlock() {
+    public function unlock()
+    {
         return file_exists($this->lockfile) ? unlink($this->lockfile) : true;
     }
 
     /**
-     * 
+     *
      */
-    public function loadAbraFlexiServers() {
-        $this->credentials = \Ease\Functions::reindexArrayBy($this->getFluentPDO()->from('changesapi')->select('id,serverurl,login,password,doneid',
-                                true)->fetchAll(), 'serverurl');
+    public function loadAbraFlexiServers()
+    {
+        $this->credentials = \Ease\Functions::reindexArrayBy($this->getFluentPDO()->from('changesapi')->select(
+            'id,serverurl,login,password,doneid',
+            true
+        )->fetchAll(), 'serverurl');
         foreach ($this->credentials as $flexiServer) {
             $this->lastProcessedVersions[$flexiServer['id']] = intval($flexiServer['doneid']);
         }
@@ -373,10 +421,11 @@ class Engine extends \Ease\SQL\Engine {
 
     /**
      * Load all web hooks from cache and Process
-     * 
+     *
      * @return boolean all changes processed successfully ?
      */
-    public function processCachedChanges() {
+    public function processCachedChanges()
+    {
         $result = false;
         $changesRaw = $this->fluent->from('changes_cache')->select('serverurl')->leftJoin('changesapi ON changes_cache.source=changesapi.id')->orderBy('inversion');
         if ($changesRaw->count()) {
@@ -384,12 +433,14 @@ class Engine extends \Ease\SQL\Engine {
             foreach ($changesRaw as $changeId => $changeDataSaved) {
                 $changesToProcess[$changeId] = self::sqlColsToJsonCols($changeDataSaved);
             }
-            $this->changes = \Ease\Functions::reindexArrayBy($changesToProcess,
-                            '@in-version');
+            $this->changes = \Ease\Functions::reindexArrayBy(
+                $changesToProcess,
+                '@in-version'
+            );
             $changesDone = $this->processAbraFlexiChanges($this->changes);
 
             $result = !empty($changesDone);
-        } else if (\Ease\Functions::cfg('APP_DEBUG')) {
+        } elseif (\Ease\Functions::cfg('APP_DEBUG')) {
             $this->addStatusMessage('No records to process found');
         }
         return $result;
@@ -397,12 +448,13 @@ class Engine extends \Ease\SQL\Engine {
 
     /**
      * convert $sqlData column names to $jsonData column names
-     * 
+     *
      * @param array $sqlData
-     * 
+     *
      * @return array
      */
-    public static function sqlColsToJsonCols($sqlData) {
+    public static function sqlColsToJsonCols($sqlData)
+    {
         $jsonData['@in-version'] = $sqlData['inversion'];
         $jsonData['id'] = $sqlData['recordid'];
         $jsonData['@source'] = $sqlData['serverurl'];
@@ -415,12 +467,13 @@ class Engine extends \Ease\SQL\Engine {
 
     /**
      * Save json Data to SQL cache
-     * 
+     *
      * @param array $changes
-     * 
+     *
      * @return int lastChangeID
      */
-    public function saveWebhookData($changes) {
+    public function saveWebhookData($changes)
+    {
         $inversion = 0;
         foreach ($changes as $changeId => $apiData) {
             $this->fluent->insertInto('changes_cache')->values(array_merge(['source' => 'abraflexi',
@@ -432,29 +485,33 @@ class Engine extends \Ease\SQL\Engine {
 
     /**
      * convert $jsonData column names to $sqlData column names
-     * 
+     *
      * @param array $sqlData
-     * 
+     *
      * @return array
      */
-    public static function jsonColsToSQLCols($apiData) {
+    public static function jsonColsToSQLCols($apiData)
+    {
         $sqlData['inversion'] = $apiData['@in-version'];
         $sqlData['recordid'] = $apiData['id'];
         $sqlData['evidence'] = $apiData['@evidence'];
         $sqlData['operation'] = $apiData['@operation'];
-        $sqlData['externalids'] = addslashes(serialize(array_key_exists('external-ids',
-                                $apiData) ? $apiData['external-ids'] : []));
+        $sqlData['externalids'] = addslashes(serialize(array_key_exists(
+            'external-ids',
+            $apiData
+        ) ? $apiData['external-ids'] : []));
         return $sqlData;
     }
 
     /**
      * skip web hooks with 'inversion' less or equal to $this->getLastProcessedVersion()
-     * 
+     *
      * @param array $webhookJsonData
-     * 
+     *
      * @return array
      */
-    public function onlyFreshHooks($webhooksRawData) {
+    public function onlyFreshHooks($webhooksRawData)
+    {
         $lastProcessed = $this->getLastProcessedVersion();
         foreach ($webhooksRawData as $recId => $webhookRawData) {
             if ($webhookRawData['@in-version'] <= $lastProcessed) {
@@ -466,25 +523,31 @@ class Engine extends \Ease\SQL\Engine {
 
     /**
      * Empty given change version from cache
-     * 
+     *
      * @param int $inVersion
-     * 
+     *
      * @return type
      */
-    public function wipeCacheRecord($inVersion) {
+    public function wipeCacheRecord($inVersion)
+    {
         $this->setMyTable('changes_cache');
         $result = $this->deleteFromSQL(['inversion' => $inVersion, 'source' => $this->sourceId]);
         if ($this->debug === true) {
-            $this->addStatusMessage(sprintf(_("Cached change wipe %s (%s remain)"),
-                            $inVersion, $this->listingQuery()->count()),
-                    $result ? 'success' : 'error');
+            $this->addStatusMessage(
+                sprintf(
+                    _("Cached change wipe %s (%s remain)"),
+                    $inVersion,
+                    $this->listingQuery()->count()
+                ),
+                $result ? 'success' : 'error'
+            );
         }
         $this->setMyTable('flexihistory');
         return $result;
     }
 
-    public function getLastProcessedVersions() {
+    public function getLastProcessedVersions()
+    {
         return [];
     }
-
 }

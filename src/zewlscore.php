@@ -8,6 +8,7 @@ namespace AbraFlexi\Processor;
  * @author     Vítězslav Dvořák <vitex@arachne.cz>
  * @copyright  2022 VitexSoftware
  */
+
 define('APP_NAME', 'AbraFlexiIncomeConfirm');
 require_once __DIR__ . '/../vendor/autoload.php';
 
@@ -25,4 +26,3 @@ $zewlScore = $engine->getCustomerScore();
 $engine->addStatusMessage(_('Customer %s score: %s'), $engine->adresar->getRecordCode(), $zewlScore);
 
 echo $zewlScore;
-

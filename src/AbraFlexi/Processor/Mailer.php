@@ -1,4 +1,5 @@
 <?php
+
 /**
  * System.Spoje.Net - Mailer class
  *
@@ -15,23 +16,24 @@ namespace AbraFlexi\Processor;
  */
 class Mailer extends \Ease\HtmlMailer
 {
-
     /**
      * Send Mail Message
-     * 
+     *
      * @param string $emailAddress
      * @param string $mailSubject
      * @param string $emailContents
      */
-    public function __construct($emailAddress, $mailSubject,
-                                $emailContents = null)
-    {
+    public function __construct(
+        $emailAddress,
+        $mailSubject,
+        $emailContents = null
+    ) {
         if (\Ease\Functions::cfg('SUPPRESS_EMAILS') == 'true') {
-            $emailContents = "OriginalTO: ".$emailAddress."\n\n ".$emailContents;
+            $emailContents = "OriginalTO: " . $emailAddress . "\n\n " . $emailContents;
             $emailAddress = \Ease\Functions::cfg('EASE_EMAILTO');
         }
         if (\Ease\Functions::cfg('SEND_INFO_TO')) {
-            $emailAddress .= ','.\Ease\Functions::cfg('SEND_INFO_TO');
+            $emailAddress .= ',' . \Ease\Functions::cfg('SEND_INFO_TO');
         }
         parent::__construct($emailAddress, $mailSubject, $emailContents);
         $this->setMailHeaders([
