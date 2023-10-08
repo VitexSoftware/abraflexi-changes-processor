@@ -19,9 +19,11 @@ final class ChangeDoneRecordID extends AbstractMigration {
      */
     public function change(): void {
 
-        $table = $this->table('changesapi');
-        $table->addColumn('doneid', 'integer', ['null' => true, 'signed' => false])
+        if ($this->adapter->getAdapterType() != 'sqlite') {
+            $table = $this->table('changesapi');
+            $table->addColumn('doneid', 'integer', ['null' => true, 'signed' => false])
                 ->update();
+        }
     }
 
 }
