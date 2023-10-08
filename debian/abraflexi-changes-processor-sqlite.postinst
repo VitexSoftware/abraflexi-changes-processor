@@ -18,8 +18,7 @@ if [ -f /usr/share/dbconfig-common/dpkg/postinst ]; then
 
     dbc_go abraflexi-changes-processor "$@" || true
 
-    sed -i '/DB_DATABASE/c\DB_DATABASE=_DBC_DBNAME_'      /etc/abraflexi-changes-processor/.env
-
+    sed -i '/DB_DATABASE/c\DB_DATABASE=changesprocessor'      /etc/abraflexi-changes-processor/.env
     
 
     echo "Pre-DependsDbconfig Common configuration: /etc/dbconfig-common/abraflexi-changes-processor.conf"
@@ -28,6 +27,9 @@ if [ -f /usr/share/dbconfig-common/dpkg/postinst ]; then
     cat /etc/abraflexi-changes-processor/.env
 #    echo "Phinx Adapter: /usr/lib/abraflexi-changes-processor/phinx-adapter.php"
 #    cat /usr/lib/abraflexi-changes-processor/phinx-adapter.php
+    mkdir -p /var/lib/dbconfig-common/sqlite3/abraflexi-changes-processor/
+    touch /var/lib/dbconfig-common/sqlite3/abraflexi-changes-processor/changesprocessor
+    chown www-data:www-data /var/lib/dbconfig-common/sqlite3/abraflexi-changes-processor/changesprocessor
 
 
     phinx migrate -c /usr/lib/abraflexi-changes-processor/phinx-adapter.php
