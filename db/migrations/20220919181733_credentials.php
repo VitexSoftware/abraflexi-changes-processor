@@ -5,6 +5,7 @@ use Phinx\Migration\AbstractMigration;
 
 final class Credentials extends AbstractMigration
 {
+
     /**
      * Change Method.
      *
@@ -19,8 +20,14 @@ final class Credentials extends AbstractMigration
     public function change(): void
     {
         $table = $this->table('changesapi');
-        $table->addColumn('login', 'string', ['null' => false, 'length' => 64])
-              ->addColumn('password', 'string', ['null' => false, 'length' => 64])  
-                ->update();
+        if ($this->adapter->getAdapterType() != 'sqlite') {
+            $table->addColumn('login', 'string', ['null' => false, 'length' => 64])
+                    ->addColumn('password', 'string', ['null' => false, 'length' => 64])
+                    ->update();
+        } else {
+            $table->addColumn('login', 'string', ['null' => false])
+                    ->addColumn('password', 'string', ['null' => false])
+                    ->update();
+        }
     }
 }
