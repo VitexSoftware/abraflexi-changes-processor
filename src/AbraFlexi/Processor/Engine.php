@@ -461,7 +461,7 @@ class Engine extends \Ease\SQL\Engine
     /**
      * convert $jsonData column names to $sqlData column names
      *
-     * @param array $sqlData
+     * @param array $apiData
      *
      * @return array
      */

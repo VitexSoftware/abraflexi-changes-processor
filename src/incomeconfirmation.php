@@ -14,8 +14,7 @@ const APP_NAME = 'AbraFlexiIncomeConfirm';
 require_once __DIR__ . '/../vendor/autoload.php';
 
 \Ease\Shared::init(['ABRAFLEXI_URL', 'ABRAFLEXI_LOGIN', 'ABRAFLEXI_PASSWORD', 'ABRAFLEXI_COMPANY',
-'EASE_LOGGER', 'SUBJECT','DB_TYPE','DB_HOST','DB_PORT','DB_DATABASE','DB_USERNAME','DB_PASSWORD'], '../.env');
-
+    'EASE_LOGGER', 'SUBJECT', 'DB_TYPE', 'DB_HOST', 'DB_PORT', 'DB_DATABASE', 'DB_USERNAME', 'DB_PASSWORD'], '../.env');
 
 if ($argc > 1) {
     $docId = $argv[1];

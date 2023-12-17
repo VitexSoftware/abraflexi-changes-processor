@@ -3,17 +3,20 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/vitex/Projects/EASE/abraflexi-changes-processor/src/invoice-settled.php</file>
-            <file>file:/home/vitex/Projects/EASE/abraflexi-changes-processor/www/index.php</file>
-            <file>file:/home/vitex/Projects/EASE/abraflexi-changes-processor/src/chprocessor.php</file>
-            <file>file:/home/vitex/Projects/EASE/abraflexi-changes-processor/src/docanalyze.php</file>
-            <file>file:/home/vitex/Projects/EASE/abraflexi-changes-processor/src/InitializeHistory.php</file>
-            <file>file:/home/vitex/Projects/EASE/abraflexi-changes-processor/phinx-adapter.php</file>
             <file>file:/home/vitex/Projects/EASE/abraflexi-changes-processor/src/zewlscore.php</file>
             <file>file:/home/vitex/Projects/EASE/abraflexi-changes-processor/src/metaprocessor.php</file>
+            <file>file:/home/vitex/Projects/EASE/abraflexi-changes-processor/debian/abraflexi-changes-processor-sqlite.postinst</file>
+            <file>file:/home/vitex/Projects/EASE/abraflexi-changes-processor/src/chprocessor.php</file>
+            <file>file:/home/vitex/Projects/EASE/abraflexi-changes-processor/db/migrations/20220919181733_credentials.php</file>
             <file>file:/home/vitex/Projects/EASE/abraflexi-changes-processor/debian/Jenkinsfile</file>
             <file>file:/home/vitex/Projects/EASE/abraflexi-changes-processor/src/incomeconfirmation.php</file>
+            <file>file:/home/vitex/Projects/EASE/abraflexi-changes-processor/www/index.php</file>
+            <file>file:/home/vitex/Projects/EASE/abraflexi-changes-processor/src/InitializeHistory.php</file>
+            <file>file:/home/vitex/Projects/EASE/abraflexi-changes-processor/src/docanalyze.php</file>
             <file>file:/home/vitex/Projects/EASE/abraflexi-changes-processor/src/emit.php</file>
+            <file>file:/home/vitex/Projects/EASE/abraflexi-changes-processor/phinx-adapter.php</file>
+            <file>file:/home/vitex/Projects/EASE/abraflexi-changes-processor/db/migrations/20210414121024_meta_states.php</file>
+            <file>file:/home/vitex/Projects/EASE/abraflexi-changes-processor/src/invoice-settled.php</file>
         </group>
     </open-files>
 </project-private>

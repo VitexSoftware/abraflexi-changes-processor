@@ -30,7 +30,7 @@ class Meta extends Engine
 
     /**
      *
-     * @return type
+     * @return \Envms\FluentPDO\Query
      */
     public function unprocessed()
     {
@@ -51,7 +51,7 @@ class Meta extends Engine
      *
      * @param array $meta
      *
-     * @return type
+     * @return array
      */
     public function handle($meta)
     {
@@ -143,12 +143,12 @@ class Meta extends Engine
 //+----+---------------------+------+--------------------+--------+-------------------------+
 
         $rules = $this->getFluentPDO()->from('rules')->select('command', true)
-                ->where("host", [$meta['host'], '-'])
-                ->where("company", [$meta['company'], '-'])
-                ->where("subject", [$meta['subject'], '-'])->where(
-                    'meta',
-                    $meta['meta']
-                )->disableSmartJoin();
+                        ->where("host", [$meta['host'], '-'])
+                        ->where("company", [$meta['company'], '-'])
+                        ->where("subject", [$meta['subject'], '-'])->where(
+                            'meta',
+                            $meta['meta']
+                        )->disableSmartJoin();
 
         return $rules;
     }
@@ -209,8 +209,7 @@ class Meta extends Engine
         }
         $this->addStatusMessage(
             $exec . ' done',
-            $this->shellExec($exec . ' ' . $cmdparams, $stdout, $stderr) ? 'warning'
-            : 'success'
+            $this->shellExec($exec . ' ' . $cmdparams, $stdout, $stderr) ? 'warning' : 'success'
         );
 
         if ($stdout) {
@@ -244,9 +243,9 @@ class Meta extends Engine
         $proc = proc_open(
             $cmd,
             [
-                1 => ['pipe', 'w'],
-                2 => ['pipe', 'w'],
-            ],
+                    1 => ['pipe', 'w'],
+                    2 => ['pipe', 'w'],
+                ],
             $pipes
         );
         $stdout = stream_get_contents($pipes[1]);
@@ -285,6 +284,6 @@ class Meta extends Engine
         $changeid = 0
     ) {
         return $this->insertItem(['uri' => $afrecord->getApiURL(), 'meta' => $metaState,
-                'changeid' => $changeid]);
+                    'changeid' => $changeid]);
     }
 }

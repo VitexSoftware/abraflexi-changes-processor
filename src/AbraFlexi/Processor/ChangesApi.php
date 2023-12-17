@@ -25,7 +25,7 @@ class ChangesApi extends Engine
     /**
      * Register new data source
      *
-     * @param string source uri
+     * @param string $source uri
      *
      * @return int new source ID
      */
