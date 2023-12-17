@@ -30,7 +30,7 @@ if [ -f /usr/share/dbconfig-common/dpkg/postinst ]; then
     mkdir -p /var/lib/dbconfig-common/sqlite3/abraflexi-changes-processor/
     touch /var/lib/dbconfig-common/sqlite3/abraflexi-changes-processor/changesprocessor
     chown www-data:www-data /var/lib/dbconfig-common/sqlite3/abraflexi-changes-processor/changesprocessor
-
+    ls -la /var/lib/dbconfig-common/sqlite3/abraflexi-changes-processor/
 
     phinx migrate -c /usr/lib/abraflexi-changes-processor/phinx-adapter.php
 
