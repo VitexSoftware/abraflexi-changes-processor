@@ -19,14 +19,6 @@ final class Credentials extends AbstractMigration {
      */
     public function change(): void {
 
-        if (!$this->hasTable('users')) {
-            $table = $this->table('changesapi');
-            $table
-                    ->addColumn('serverurl', 'string', ['limit' => 128])
-                    ->addColumn('changeid', 'integer', ['null' => true, 'signed' => false])
-                    ->create();
-        }
-
         $table = $this->table('changesapi');
         if ($this->adapter->getAdapterType() != 'sqlite') {
             $table->addColumn('login', 'string', ['null' => false, 'length' => 64])
