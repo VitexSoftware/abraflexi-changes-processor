@@ -20,7 +20,7 @@
     "require-dev": {
         "phpunit/phpunit": "*",
         "phpstan/phpstan": "*",
-        "robmorgan/phinx": "*"
+        "robmorgan/phinx": "0.15.4"
     },
     "autoload": {
         "psr-4": {
