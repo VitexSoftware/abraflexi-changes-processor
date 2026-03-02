@@ -3,7 +3,6 @@ set -e
 
 . /usr/share/debconf/confmodule
 
-composer-debian abraflexi-changes-processor
 
 if [ -f /usr/share/dbconfig-common/dpkg/postinst ]; then
     . /usr/share/dbconfig-common/dpkg/postinst
