@@ -18,9 +18,6 @@
       "email": "info@vitexsoftware.cz"
     }
   ],
-  "config": {
-    "vendor-dir": "/var/lib/abraflexi-changes-processor"
-  },
   "minimum-stability": "dev",
   "autoload": {
     "psr-4": {
