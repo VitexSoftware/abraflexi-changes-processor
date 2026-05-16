@@ -6,7 +6,7 @@
   "require": {
     "rogervila/array-diff-multidimensional": "*",
     "deb/abraflexi": "*",
-    "deb/ease-bricks": "*",
+    "deb/ease-html-widgets": "*",
     "deb/abraflexi-bricks": "*",
     "deb/ease-fluentpdo": "*",
     "mevdschee/php-crud-api": "dev-main"
