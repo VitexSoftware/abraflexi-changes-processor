@@ -11,7 +11,7 @@ Multi-Arch: foreign
 Depends: ${misc:Depends}, php-spojenet-abraflexi, php-cli, locales-all, php-vitexsoftware-ease-fluentpdo, abraflexi-changes-processor-sqlite|abraflexi-changes-processor-mysql|abraflexi-changes-processor-pgsql, libjs-jquery-datatables, php-vitexsoftware-abraflexi-bricks
 Suggests: abraflexi-server,abraflexi-client-config, abraflexi-digest, abraflexi-matcher, abraflexi-reminder, abraflexi-contract-invoices, abraflexi-mailer, abraflexi-email-importer
 Recommends: sensible-utils
-Pre-Depends: php-robmorgan-phinx|php-cakephp-phinx|php-cakephp-phinx|phinx, dbconfig-common
+Pre-Depends: php-cakephp-phinx, dbconfig-common
 Replaces: multi-flexibee-setup
 Architecture: all
 Description: Process AbraFlexi changes
@@ -28,7 +28,7 @@ Description: sqlite support for AbraFlexi changes processor
 
 Package: abraflexi-changes-processor-mysql
 Multi-Arch: foreign
-Pre-Depends: dbconfig-mysql | dbconfig-no-thanks, php-mysql, php-robmorgan-phinx|php-cakephp-phinx
+Pre-Depends: dbconfig-mysql | dbconfig-no-thanks, php-mysql, php-cakephp-phinx
 Depends: ${misc:Depends},abraflexi-changes-processor
 Conflicts: abraflexi-changes-processor-sqlite, abraflexi-changes-processor-pgsql
 Suggests: mariadb-server
@@ -38,7 +38,7 @@ Description: mariadb support for AbraFlexi changes processor
 
 Package: abraflexi-changes-processor-pgsql
 Multi-Arch: foreign
-Pre-Depends: dbconfig-pgsql | dbconfig-no-thanks, php-pgsql, php-robmorgan-phinx|php-cakephp-phinx
+Pre-Depends: dbconfig-pgsql | dbconfig-no-thanks, php-pgsql, php-cakephp-phinx
 Depends: ${misc:Depends},abraflexi-changes-processor, 
 Conflicts: abraflexi-changes-processor-mysql, abraflexi-changes-processor-sqlite
 Suggests: postgresql
